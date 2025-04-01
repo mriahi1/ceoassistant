@@ -1,0 +1,59 @@
+Replit Prompt: Automate My Work as CEO (OOTI + HubSpot + Chargebee)
+
+Objective:
+Build an AI-powered executive assistant that automates the CEO’s daily work by aggregating, analyzing, and acting on data across core platforms — OOTI.co (internal ERP), HubSpot (CRM), and Chargebee (billing/subscription) — alongside tools like Slack, Gmail, and Google Drive.
+
+⸻
+
+Key Goals
+	1.	Centralize Information:
+	•	Pull real-time data from:
+	•	OOTI.co (projects, finances, resource planning, indicators)
+	•	HubSpot (deals, contacts, sales emails)
+	•	Chargebee (subscriptions, invoices, MRR/ARR insights)
+	•	Slack, Gmail, Google Calendar, Google Drive, Dropbox
+	2.	AI Synthesis Engine:
+	•	Summarize activity across all tools.
+	•	Identify:
+	•	Sales pipeline risks or opportunities
+	•	Revenue trends and billing issues
+	•	Operational gaps in project delivery
+	•	Highlight critical tasks and decisions.
+	3.	Goal-Oriented Planning:
+	•	Accept quarterly and weekly CEO-level OKRs.
+	•	Map current context to those goals.
+	•	Recommend concrete next steps to move initiatives forward.
+	4.	Autonomous Communication:
+	•	Auto-draft or send:
+	•	Follow-up emails in Gmail
+	•	Reminders or insights in Slack
+	•	Reports or updates on Google Drive
+	•	Optional human-in-the-loop review before sending.
+
+⸻
+
+Tech Stack Suggestions
+	•	Backend: Python + FastAPI
+	•	Orchestration: LangChain / CrewAI / AutoGen
+	•	AI Models: OpenAI GPT-4 / Claude for summarization, synthesis, and next step generation
+	•	Integrations:
+	•	HubSpot API (OAuth + CRM endpoints)
+	•	Chargebee API (v2, key-based auth)
+	•	OOTI API (internal ERP — provide API spec or mock data)
+	•	Gmail, Google Calendar, Slack (OAuth2, REST)
+	•	Data Layer: PostgreSQL or Firebase
+	•	File Parsing: PDF, DOCX, XLSX via LangChain Document Loaders
+	•	Frontend (Optional): Streamlit for a dashboard view
+
+⸻
+
+Starter Tasks
+	•	Set up auth and pull recent HubSpot deals & activity logs.
+	•	Connect to Chargebee and fetch current subscriptions and MRR trends.
+	•	Ingest OOTI project/finance data.
+	•	Use OpenAI to generate:
+	•	Daily digest
+	•	Next actions
+	•	Revenue summary
+	•	Generate a Slack message summarizing today’s strategic highlights.
+	•	Log all outputs to a central dashboard or Google Drive folder.
