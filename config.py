@@ -13,6 +13,11 @@ SLACK_CHANNEL_ID = os.environ.get("SLACK_CHANNEL_ID")
 GOOGLE_CREDENTIALS_PATH = os.environ.get("GOOGLE_CREDENTIALS_PATH")
 GMAIL_ENABLED = os.environ.get("GMAIL_ENABLED", "false").lower() == "true"
 GDRIVE_ENABLED = os.environ.get("GDRIVE_ENABLED", "false").lower() == "true"
+CALENDAR_ENABLED = os.environ.get("CALENDAR_ENABLED", "false").lower() == "true"
+PENNYLANE_API_KEY = os.environ.get("PENNYLANE_API_KEY")
+PENNYLANE_COMPANY_ID = os.environ.get("PENNYLANE_COMPANY_ID")
+PENNYLANE_BASE_URL = os.environ.get("PENNYLANE_BASE_URL", "https://api.pennylane.tech/api/v1")
+PENNYLANE_ENABLED = bool(PENNYLANE_API_KEY)
 
 # Application settings
 APP_NAME = "CEO AI Assistant"

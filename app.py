@@ -15,6 +15,7 @@ from utils.data_processor import consolidate_data
 # Import Google services if enabled
 gmail_integration = None
 google_drive_integration = None
+calendar_integration = None
 if config.GMAIL_ENABLED:
     try:
         from api.gmail_integration import (
@@ -40,6 +41,37 @@ if config.GDRIVE_ENABLED:
             logger.debug("Google Drive client initialized successfully")
     except ImportError as e:
         logger.error(f"Error importing Google Drive integration: {str(e)}")
+
+# Import Calendar integration if enabled
+if config.CALENDAR_ENABLED:
+    try:
+        from api.calendar_integration import (
+            get_calendar_list, get_calendar_events, get_weekly_schedule,
+            get_daily_meeting_load, identify_meeting_conflicts,
+            identify_meeting_priorities, find_free_time_slots,
+            get_calendar_summary, get_all_calendar_data,
+            initialize_calendar_client
+        )
+        # Initialize Calendar client
+        if initialize_calendar_client():
+            logger.debug("Google Calendar client initialized successfully")
+    except ImportError as e:
+        logger.error(f"Error importing Google Calendar integration: {str(e)}")
+
+# Import Pennylane integration if enabled
+if config.PENNYLANE_ENABLED:
+    try:
+        from api.pennylane_integration import (
+            get_company_info, get_bank_accounts, get_bank_balance,
+            get_invoices, get_expenses, get_expense_categories,
+            get_expense_trends, get_profitability, get_cash_flow,
+            get_all_pennylane_data, initialize_pennylane_client
+        )
+        # Initialize Pennylane client
+        if initialize_pennylane_client():
+            logger.debug("Pennylane client initialized successfully")
+    except ImportError as e:
+        logger.error(f"Error importing Pennylane integration: {str(e)}")
 
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
@@ -138,7 +170,9 @@ def integrations():
         "slack": bool(config.SLACK_BOT_TOKEN and config.SLACK_CHANNEL_ID),
         "openai": bool(config.OPENAI_API_KEY),
         "gmail": config.GMAIL_ENABLED and bool(config.GOOGLE_CREDENTIALS_PATH),
-        "google_drive": config.GDRIVE_ENABLED and bool(config.GOOGLE_CREDENTIALS_PATH)
+        "google_drive": config.GDRIVE_ENABLED and bool(config.GOOGLE_CREDENTIALS_PATH),
+        "calendar": config.CALENDAR_ENABLED and bool(config.GOOGLE_CREDENTIALS_PATH),
+        "pennylane": config.PENNYLANE_ENABLED and bool(config.PENNYLANE_API_KEY)
     }
     return render_template('integrations.html', integration_status=integration_status)
 
@@ -231,7 +265,9 @@ def settings():
         "slack": bool(config.SLACK_BOT_TOKEN and config.SLACK_CHANNEL_ID),
         "openai": bool(config.OPENAI_API_KEY),
         "gmail": config.GMAIL_ENABLED and bool(config.GOOGLE_CREDENTIALS_PATH),
-        "google_drive": config.GDRIVE_ENABLED and bool(config.GOOGLE_CREDENTIALS_PATH)
+        "google_drive": config.GDRIVE_ENABLED and bool(config.GOOGLE_CREDENTIALS_PATH),
+        "calendar": config.CALENDAR_ENABLED and bool(config.GOOGLE_CREDENTIALS_PATH),
+        "pennylane": config.PENNYLANE_ENABLED and bool(config.PENNYLANE_API_KEY)
     }
     return render_template('settings.html', integration_status=integration_status)
 
@@ -674,6 +710,42 @@ def upload_digest_to_drive_route(filename):
         flash(f"Error uploading digest to Google Drive: {str(e)}", "danger")
     
     return redirect(url_for('view_digest', filename=filename))
+
+# Calendar routes
+@app.route('/calendar')
+def calendar_view():
+    """Google Calendar overview page"""
+    if not config.CALENDAR_ENABLED or 'get_all_calendar_data' not in globals():
+        flash("Google Calendar integration is not enabled or properly configured.", "warning")
+        return redirect(url_for('integrations'))
+    
+    try:
+        # Get calendar data
+        calendar_data = get_all_calendar_data()
+        
+        return render_template('calendar.html', calendar_data=calendar_data)
+    except Exception as e:
+        logger.error(f"Error accessing Google Calendar: {str(e)}")
+        flash(f"Error accessing Google Calendar: {str(e)}", "danger")
+        return redirect(url_for('index'))
+
+# Pennylane routes
+@app.route('/financials')
+def financials_view():
+    """Pennylane financial overview page"""
+    if not config.PENNYLANE_ENABLED or 'get_all_pennylane_data' not in globals():
+        flash("Pennylane integration is not enabled or properly configured.", "warning")
+        return redirect(url_for('integrations'))
+    
+    try:
+        # Get financial data
+        financial_data = get_all_pennylane_data()
+        
+        return render_template('pennylane.html', financial_data=financial_data)
+    except Exception as e:
+        logger.error(f"Error accessing Pennylane: {str(e)}")
+        flash(f"Error accessing Pennylane: {str(e)}", "danger")
+        return redirect(url_for('index'))
 
 # Slack routes
 @app.route('/slack')

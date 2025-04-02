@@ -30,7 +30,7 @@
                     </div>
                     <div class="card-body dashboard-card-body">
                         <div class="digest-date mb-2">
-                            Generated on {{ digest.timestamp | replace("T", " at ").split(".")[0] }}
+                            Generated on {{ digest.timestamp | default('') | replace("T", " at ") }}
                         </div>
                         
                         {% if digest.executive_summary %}

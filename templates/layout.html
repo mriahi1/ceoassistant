@@ -47,6 +47,19 @@
                 <i data-feather="hard-drive" class="sidebar-icon"></i>
                 <span>Google Drive</span>
             </a>
+            <a href="{{ url_for('calendar_view') }}" class="sidebar-link {% if '/calendar' in request.path %}active{% endif %}">
+                <i data-feather="calendar" class="sidebar-icon"></i>
+                <span>Calendar</span>
+            </a>
+            
+            <div class="sidebar-section mt-2 mb-2">
+                <span class="sidebar-header px-3">Business</span>
+            </div>
+            
+            <a href="{{ url_for('financials_view') }}" class="sidebar-link {% if '/financials' in request.path %}active{% endif %}">
+                <i data-feather="dollar-sign" class="sidebar-icon"></i>
+                <span>Financials</span>
+            </a>
             
             <div class="sidebar-section mt-2 mb-2">
                 <span class="sidebar-header px-3">System</span>

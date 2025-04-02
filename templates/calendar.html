@@ -1,0 +1,480 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1>Calendar Overview</h1>
+            <p class="text-muted">Schedule, meetings, and time management insights</p>
+        </div>
+    </div>
+    
+    <!-- Calendar Summary Cards -->
+    <div class="row mb-4">
+        <!-- Meeting Load Card -->
+        <div class="col-lg-4 mb-4">
+            <div class="card dashboard-card h-100">
+                <div class="card-header dashboard-card-header bg-gradient-primary">
+                    <h5 class="card-title mb-0 text-white">
+                        <i data-feather="calendar" class="me-2"></i> Meeting Load
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    {% if calendar_data and calendar_data.meeting_load %}
+                        <div class="row g-0 mb-4">
+                            <div class="col-6 border-end">
+                                <div class="p-3 text-center">
+                                    <h6 class="text-muted mb-1">Total Meetings</h6>
+                                    <p class="mb-0 fw-bold">{{ calendar_data.meeting_load.total_events }}</p>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-3 text-center">
+                                    <h6 class="text-muted mb-1">Total Hours</h6>
+                                    <p class="mb-0 fw-bold">{{ calendar_data.meeting_load.total_duration_hours }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h6 class="mb-2">Daily Meeting Distribution</h6>
+                            {% for day_key, day_data in calendar_data.meeting_load.days.items() %}
+                                <div class="d-flex align-items-center mb-2">
+                                    <div style="width: 100px;">{{ day_data.day_name }}</div>
+                                    <div class="flex-grow-1">
+                                        <div class="progress" style="height: 8px;">
+                                            {% set max_events = 10 %}
+                                            {% set percent = (day_data.total_events / max_events * 100)|round|min(100) %}
+                                            <div class="progress-bar" role="progressbar" 
+                                                style="width: {{ percent }}%;" 
+                                                aria-valuenow="{{ day_data.total_events }}" aria-valuemin="0" aria-valuemax="{{ max_events }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="ms-2" style="width: 30px;">{{ day_data.total_events }}</div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="row g-0 mt-4">
+                            <div class="col-6 border-end">
+                                <div class="p-3 text-center">
+                                    <h6 class="text-muted mb-1">Busiest Day</h6>
+                                    {% if calendar_data.meeting_load.busiest_day.day %}
+                                        <p class="mb-0">{{ calendar_data.meeting_load.days[calendar_data.meeting_load.busiest_day.day].day_name }}</p>
+                                        <small class="text-muted">{{ calendar_data.meeting_load.busiest_day.events }} meetings</small>
+                                    {% else %}
+                                        <p class="mb-0 small text-muted">No data</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-3 text-center">
+                                    <h6 class="text-muted mb-1">Lightest Day</h6>
+                                    {% if calendar_data.meeting_load.lightest_day.day %}
+                                        <p class="mb-0">{{ calendar_data.meeting_load.days[calendar_data.meeting_load.lightest_day.day].day_name }}</p>
+                                        <small class="text-muted">{{ calendar_data.meeting_load.lightest_day.events }} meetings</small>
+                                    {% else %}
+                                        <p class="mb-0 small text-muted">No data</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i data-feather="calendar" class="text-muted mb-3" style="width: 48px; height: 48px;"></i>
+                            <p>Meeting load data not available.</p>
+                            <p class="small text-muted">Connect Google Calendar to view your schedule data.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Meeting Priorities Card -->
+        <div class="col-lg-4 mb-4">
+            <div class="card dashboard-card h-100">
+                <div class="card-header dashboard-card-header bg-gradient-primary">
+                    <h5 class="card-title mb-0 text-white">
+                        <i data-feather="flag" class="me-2"></i> Meeting Priorities
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    {% if calendar_data and calendar_data.priorities %}
+                        <div class="row g-0 mb-4">
+                            <div class="col-6 border-end">
+                                <div class="p-3 text-center">
+                                    <h6 class="text-muted mb-1">High Priority</h6>
+                                    <p class="mb-0 fw-bold">{{ calendar_data.priorities.total_high_priority }}</p>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-3 text-center">
+                                    <h6 class="text-muted mb-1">Delegatable</h6>
+                                    <p class="mb-0 fw-bold">{{ calendar_data.priorities.total_possible_delegation }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {% if calendar_data.priorities.high_priority %}
+                            <h6 class="mt-4 mb-2">High Priority Meetings</h6>
+                            <div class="list-group">
+                                {% for item in calendar_data.priorities.high_priority %}
+                                <div class="list-group-item bg-transparent border-0 px-0 py-1">
+                                    <div class="d-flex align-items-center">
+                                        <i data-feather="star" class="text-warning me-2" style="width: 16px; height: 16px;"></i>
+                                        <div>
+                                            <div class="fw-bold">{{ item.event.summary }}</div>
+                                            <div class="small text-muted">
+                                                {% if not item.event.all_day %}
+                                                    {{ item.event.start_time }} - {{ item.event.end_time }}
+                                                {% else %}
+                                                    All day
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        
+                        {% if calendar_data.priorities.possible_delegation %}
+                            <h6 class="mt-4 mb-2">Consider Delegating</h6>
+                            <div class="list-group">
+                                {% for item in calendar_data.priorities.possible_delegation %}
+                                <div class="list-group-item bg-transparent border-0 px-0 py-1">
+                                    <div class="d-flex align-items-center">
+                                        <i data-feather="user-plus" class="text-info me-2" style="width: 16px; height: 16px;"></i>
+                                        <div>
+                                            <div>{{ item.event.summary }}</div>
+                                            <div class="small text-muted">
+                                                {% if not item.event.all_day %}
+                                                    {{ item.event.start_time }} - {{ item.event.end_time }}
+                                                {% else %}
+                                                    All day
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i data-feather="flag" class="text-muted mb-3" style="width: 48px; height: 48px;"></i>
+                            <p>Meeting priority data not available.</p>
+                            <p class="small text-muted">Connect Google Calendar to view your priority analysis.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Meeting Conflicts Card -->
+        <div class="col-lg-4 mb-4">
+            <div class="card dashboard-card h-100">
+                <div class="card-header dashboard-card-header bg-gradient-primary">
+                    <h5 class="card-title mb-0 text-white">
+                        <i data-feather="alert-triangle" class="me-2"></i> Meeting Conflicts
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    {% if calendar_data and calendar_data.conflicts %}
+                        <div class="row g-0 mb-4">
+                            <div class="col-6 border-end">
+                                <div class="p-3 text-center">
+                                    <h6 class="text-muted mb-1">Conflicts</h6>
+                                    <p class="mb-0 fw-bold 
+                                        {% if calendar_data.conflicts.total_conflicts > 0 %}text-danger{% endif %}">
+                                        {{ calendar_data.conflicts.total_conflicts }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-3 text-center">
+                                    <h6 class="text-muted mb-1">Back-to-Back</h6>
+                                    <p class="mb-0 fw-bold 
+                                        {% if calendar_data.conflicts.total_back_to_back > 3 %}text-warning{% endif %}">
+                                        {{ calendar_data.conflicts.total_back_to_back }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {% if calendar_data.conflicts.conflicts %}
+                            <h6 class="mt-4 mb-2 text-danger">Conflicting Meetings</h6>
+                            <div class="list-group">
+                                {% for conflict in calendar_data.conflicts.conflicts %}
+                                <div class="list-group-item bg-transparent border-0 px-0 py-2">
+                                    <div class="d-flex align-items-center mb-1">
+                                        <i data-feather="x-circle" class="text-danger me-2" style="width: 16px; height: 16px;"></i>
+                                        <div>
+                                            <div class="fw-bold">{{ conflict.event1.summary }}</div>
+                                            <div class="small text-muted">
+                                                {{ conflict.event1.start_time }} - {{ conflict.event1.end_time }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center ms-4">
+                                        <i data-feather="arrow-down" class="text-muted me-2" style="width: 16px; height: 16px;"></i>
+                                        <div>
+                                            <div>{{ conflict.event2.summary }}</div>
+                                            <div class="small text-muted">
+                                                {{ conflict.event2.start_time }} - {{ conflict.event2.end_time }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        
+                        {% if calendar_data.conflicts.back_to_back %}
+                            <h6 class="mt-4 mb-2 text-warning">Back-to-Back Meetings</h6>
+                            <div class="list-group">
+                                {% for b2b in calendar_data.conflicts.back_to_back %}
+                                <div class="list-group-item bg-transparent border-0 px-0 py-1">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <span>{{ b2b.event1.summary }}</span>
+                                        <small class="text-muted">{{ b2b.event1.end_time }}</small>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center ms-3">
+                                        <span>{{ b2b.event2.summary }}</span>
+                                        <small class="text-muted">{{ b2b.event2.start_time }}</small>
+                                    </div>
+                                    <small class="d-block text-warning ms-3">{{ b2b.break_minutes|round|int }} min break</small>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i data-feather="alert-triangle" class="text-muted mb-3" style="width: 48px; height: 48px;"></i>
+                            <p>Meeting conflict data not available.</p>
+                            <p class="small text-muted">Connect Google Calendar to view potential conflicts.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Weekly Schedule Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="calendar" class="me-2"></i> Weekly Schedule
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    {% if calendar_data and calendar_data.weekly_schedule and calendar_data.weekly_schedule.days %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Day</th>
+                                        <th>Events</th>
+                                        <th>Duration</th>
+                                        <th>Time Distribution</th>
+                                        <th>Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for day_key, day_data in calendar_data.weekly_schedule.days.items() %}
+                                    <tr>
+                                        <td class="fw-bold">{{ day_data.day_name }}</td>
+                                        <td>{{ day_data.total_events }}</td>
+                                        <td>{{ (day_data.total_duration_minutes / 60)|round(1) }} hrs</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="me-2" style="width: 70px;">Morning</div>
+                                                <div class="progress flex-grow-1 me-2" style="height: 8px;">
+                                                    {% set morning_percent = (day_data.time_slots.morning / (day_data.total_events or 1) * 100)|round %}
+                                                    <div class="progress-bar bg-info" role="progressbar" 
+                                                        style="width: {{ morning_percent }}%;" 
+                                                        aria-valuenow="{{ day_data.time_slots.morning }}" aria-valuemin="0" aria-valuemax="{{ day_data.total_events }}">
+                                                    </div>
+                                                </div>
+                                                <div style="width: 20px;">{{ day_data.time_slots.morning }}</div>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <div class="me-2" style="width: 70px;">Afternoon</div>
+                                                <div class="progress flex-grow-1 me-2" style="height: 8px;">
+                                                    {% set afternoon_percent = (day_data.time_slots.afternoon / (day_data.total_events or 1) * 100)|round %}
+                                                    <div class="progress-bar bg-warning" role="progressbar" 
+                                                        style="width: {{ afternoon_percent }}%;" 
+                                                        aria-valuenow="{{ day_data.time_slots.afternoon }}" aria-valuemin="0" aria-valuemax="{{ day_data.total_events }}">
+                                                    </div>
+                                                </div>
+                                                <div style="width: 20px;">{{ day_data.time_slots.afternoon }}</div>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <div class="me-2" style="width: 70px;">Evening</div>
+                                                <div class="progress flex-grow-1 me-2" style="height: 8px;">
+                                                    {% set evening_percent = (day_data.time_slots.evening / (day_data.total_events or 1) * 100)|round %}
+                                                    <div class="progress-bar bg-danger" role="progressbar" 
+                                                        style="width: {{ evening_percent }}%;" 
+                                                        aria-valuenow="{{ day_data.time_slots.evening }}" aria-valuemin="0" aria-valuemax="{{ day_data.total_events }}">
+                                                    </div>
+                                                </div>
+                                                <div style="width: 20px;">{{ day_data.time_slots.evening }}</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" 
+                                                data-bs-target="#day-{{ day_key }}" aria-expanded="false" aria-controls="day-{{ day_key }}">
+                                                View Events <i data-feather="chevron-down" style="width: 16px; height: 16px;"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr class="collapse" id="day-{{ day_key }}">
+                                        <td colspan="5" class="p-0">
+                                            <div class="p-3 bg-body-secondary">
+                                                {% if day_data.all_day_events %}
+                                                    <h6 class="mb-2">All-day Events</h6>
+                                                    <ul class="list-unstyled mb-3">
+                                                        {% for event in day_data.all_day_events %}
+                                                        <li class="mb-1">
+                                                            <i data-feather="calendar" class="text-primary me-2" style="width: 16px; height: 16px;"></i>
+                                                            {{ event.summary }}
+                                                        </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                {% endif %}
+                                                
+                                                {% if day_data.events %}
+                                                    <h6 class="mb-2">Scheduled Events</h6>
+                                                    <ul class="list-unstyled">
+                                                        {% for event in day_data.events|sort(attribute='start_time') %}
+                                                        <li class="mb-2">
+                                                            <div class="d-flex">
+                                                                <div class="text-muted me-2" style="width: 100px;">
+                                                                    {{ event.start_time }} - {{ event.end_time }}
+                                                                </div>
+                                                                <div>
+                                                                    <div class="fw-bold">{{ event.summary }}</div>
+                                                                    {% if event.location %}
+                                                                    <div class="small text-muted">
+                                                                        <i data-feather="map-pin" style="width: 12px; height: 12px;"></i>
+                                                                        {{ event.location }}
+                                                                    </div>
+                                                                    {% endif %}
+                                                                    {% if event.attendees > 0 %}
+                                                                    <div class="small text-muted">
+                                                                        <i data-feather="users" style="width: 12px; height: 12px;"></i>
+                                                                        {{ event.attendees }} attendees
+                                                                    </div>
+                                                                    {% endif %}
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                {% endif %}
+                                                
+                                                {% if not day_data.all_day_events and not day_data.events %}
+                                                    <p class="text-muted">No events scheduled for this day.</p>
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i data-feather="calendar" class="text-muted mb-3" style="width: 64px; height: 64px;"></i>
+                            <h4>No Schedule Data Available</h4>
+                            <p class="text-muted">Connect Google Calendar to view your weekly schedule.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Free Time Slots Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="clock" class="me-2"></i> Available Free Time
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    {% if calendar_data and calendar_data.free_time %}
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6>Available Free Slots This Week</h6>
+                                <span class="badge bg-primary">{{ calendar_data.free_time.total_free_slots }} slots ({{ calendar_data.free_time.total_free_hours }} hours)</span>
+                            </div>
+                        </div>
+                        
+                        {% if calendar_data.free_time.slots_by_day %}
+                            <div class="row">
+                                {% for day, slots in calendar_data.free_time.slots_by_day.items() %}
+                                <div class="col-md-6 col-lg-4 mb-4">
+                                    <h6 class="border-bottom pb-2 mb-3">
+                                        {{ calendar_data.weekly_schedule.days[day].day_name }}
+                                        <span class="badge bg-secondary float-end">{{ slots|length }} slots</span>
+                                    </h6>
+                                    <ul class="list-group">
+                                        {% for slot in slots %}
+                                        <li class="list-group-item bg-transparent border-0 px-0 py-1">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="fw-bold">{{ slot.start_time }} - {{ slot.end_time }}</span>
+                                                <span class="badge bg-light text-dark">{{ (slot.duration_minutes / 60)|round(1) }} hrs</span>
+                                            </div>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-center text-muted">No free time slots available this week.</p>
+                        {% endif %}
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i data-feather="clock" class="text-muted mb-3" style="width: 64px; height: 64px;"></i>
+                            <h4>No Free Time Data Available</h4>
+                            <p class="text-muted">Connect Google Calendar to view your available free time.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Connection Information -->
+    <div class="row mt-3">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="info" class="me-2"></i> About Calendar Integration
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    <p>The Google Calendar integration provides time management insights for your business:</p>
+                    <ul>
+                        <li><strong>Weekly Schedule:</strong> View and manage your week at a glance.</li>
+                        <li><strong>Meeting Load:</strong> Understand your meeting commitments and distribution.</li>
+                        <li><strong>Meeting Priorities:</strong> Identifies high-priority meetings and delegation opportunities.</li>
+                        <li><strong>Conflicts:</strong> Detects scheduling conflicts and back-to-back meetings.</li>
+                        <li><strong>Free Time:</strong> Shows available slots for focused work or new commitments.</li>
+                    </ul>
+                    <p>This data is continuously synchronized with your Google Calendar.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

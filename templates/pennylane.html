@@ -1,0 +1,290 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1>Financial Overview</h1>
+            <p class="text-muted">Pennylane financial data and insights</p>
+        </div>
+    </div>
+    
+    <!-- Financial Summary Cards -->
+    <div class="row mb-4">
+        <!-- Bank Balance Card -->
+        <div class="col-lg-4 mb-4">
+            <div class="card dashboard-card h-100">
+                <div class="card-header dashboard-card-header bg-gradient-primary">
+                    <h5 class="card-title mb-0 text-white">
+                        <i data-feather="dollar-sign" class="me-2"></i> Bank Balance
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    {% if financial_data and financial_data.bank_balance %}
+                        <h3 class="mb-3">€{{ "{:,.2f}".format(financial_data.bank_balance.total_balance) }}</h3>
+                        
+                        {% if financial_data.bank_balance.accounts %}
+                            <h6 class="mt-4 mb-2">Accounts</h6>
+                            <div class="list-group">
+                                {% for account in financial_data.bank_balance.accounts %}
+                                <div class="list-group-item bg-transparent border-0 px-0 py-1">
+                                    <div class="d-flex justify-content-between">
+                                        <span>{{ account.name }}</span>
+                                        <span class="fw-bold">€{{ "{:,.2f}".format(account.balance) }}</span>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-muted">No account details available</p>
+                        {% endif %}
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i data-feather="dollar-sign" class="text-muted mb-3" style="width: 48px; height: 48px;"></i>
+                            <p>Bank balance data not available.</p>
+                            <p class="small text-muted">Connect Pennylane to view your financial data.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Profitability Card -->
+        <div class="col-lg-4 mb-4">
+            <div class="card dashboard-card h-100">
+                <div class="card-header dashboard-card-header bg-gradient-primary">
+                    <h5 class="card-title mb-0 text-white">
+                        <i data-feather="trending-up" class="me-2"></i> Profitability
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    {% if financial_data and financial_data.profitability %}
+                        <div class="d-flex justify-content-between mb-4">
+                            <div>
+                                <h6 class="text-muted mb-1">Period</h6>
+                                <p class="mb-0">{{ financial_data.profitability.period|capitalize }}</p>
+                            </div>
+                            <div>
+                                <h6 class="text-muted mb-1">Margin</h6>
+                                <p class="mb-0 fw-bold 
+                                    {% if financial_data.profitability.margin_percent > 15 %}text-success
+                                    {% elif financial_data.profitability.margin_percent > 0 %}text-warning
+                                    {% else %}text-danger{% endif %}">
+                                    {{ financial_data.profitability.margin_percent }}%
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="row g-0 mt-2">
+                            <div class="col-4 border-end">
+                                <div class="p-3 text-center">
+                                    <h6 class="text-muted mb-1">Revenue</h6>
+                                    <p class="mb-0 fw-bold">€{{ "{:,.0f}".format(financial_data.profitability.total_revenue) }}</p>
+                                </div>
+                            </div>
+                            <div class="col-4 border-end">
+                                <div class="p-3 text-center">
+                                    <h6 class="text-muted mb-1">Expenses</h6>
+                                    <p class="mb-0 fw-bold">€{{ "{:,.0f}".format(financial_data.profitability.total_expenses) }}</p>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="p-3 text-center">
+                                    <h6 class="text-muted mb-1">Profit</h6>
+                                    <p class="mb-0 fw-bold 
+                                        {% if financial_data.profitability.profit > 0 %}text-success
+                                        {% else %}text-danger{% endif %}">
+                                        €{{ "{:,.0f}".format(financial_data.profitability.profit) }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress mt-4" style="height: 8px;">
+                            {% set margin = financial_data.profitability.margin_percent %}
+                            {% if margin > 0 %}
+                                <div class="progress-bar 
+                                    {% if margin > 15 %}bg-success
+                                    {% else %}bg-warning{% endif %}" 
+                                    role="progressbar" style="width: {{ min(margin * 2, 100) }}%" 
+                                    aria-valuenow="{{ margin }}" aria-valuemin="0" aria-valuemax="100">
+                                </div>
+                            {% else %}
+                                <div class="progress-bar bg-danger" 
+                                    role="progressbar" style="width: {{ min(margin * -1, 100) }}%" 
+                                    aria-valuenow="{{ margin }}" aria-valuemin="0" aria-valuemax="100">
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i data-feather="trending-up" class="text-muted mb-3" style="width: 48px; height: 48px;"></i>
+                            <p>Profitability data not available.</p>
+                            <p class="small text-muted">Connect Pennylane to view your financial data.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Cash Flow Card -->
+        <div class="col-lg-4 mb-4">
+            <div class="card dashboard-card h-100">
+                <div class="card-header dashboard-card-header bg-gradient-primary">
+                    <h5 class="card-title mb-0 text-white">
+                        <i data-feather="refresh-cw" class="me-2"></i> Cash Flow
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    {% if financial_data and financial_data.cash_flow %}
+                        <div class="row g-0 mb-4">
+                            <div class="col-6 border-end">
+                                <div class="p-3 text-center">
+                                    <h6 class="text-muted mb-1">Cash In</h6>
+                                    <p class="mb-0 fw-bold text-success">€{{ "{:,.0f}".format(financial_data.cash_flow.total_cash_in) }}</p>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="p-3 text-center">
+                                    <h6 class="text-muted mb-1">Cash Out</h6>
+                                    <p class="mb-0 fw-bold text-danger">€{{ "{:,.0f}".format(financial_data.cash_flow.total_cash_out) }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h6 class="mt-4 mb-2">Net Cash Flow</h6>
+                        <h3 class="{% if financial_data.cash_flow.net_cash_flow >= 0 %}text-success{% else %}text-danger{% endif %}">
+                            €{{ "{:,.0f}".format(financial_data.cash_flow.net_cash_flow) }}
+                        </h3>
+                        
+                        {% if financial_data.cash_flow.monthly_cash_flow %}
+                            <h6 class="mt-4 mb-2">Monthly Breakdown</h6>
+                            <div class="list-group">
+                                {% for month, data in financial_data.cash_flow.monthly_cash_flow.items() %}
+                                <div class="list-group-item bg-transparent border-0 px-0 py-1">
+                                    <div class="d-flex justify-content-between">
+                                        <span>{{ month }}</span>
+                                        <span class="fw-bold {% if data.net >= 0 %}text-success{% else %}text-danger{% endif %}">
+                                            €{{ "{:,.0f}".format(data.net) }}
+                                        </span>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i data-feather="refresh-cw" class="text-muted mb-3" style="width: 48px; height: 48px;"></i>
+                            <p>Cash flow data not available.</p>
+                            <p class="small text-muted">Connect Pennylane to view your financial data.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Expense Trends Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="bar-chart-2" class="me-2"></i> Expense Trends
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    {% if financial_data and financial_data.expense_trends %}
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <h6 class="mb-3">Monthly Expenses</h6>
+                                <div class="expense-chart" style="height: 300px;">
+                                    <!-- Placeholder for chart - would be implemented with JavaScript -->
+                                    <div class="d-flex h-100 align-items-center justify-content-center">
+                                        <p class="text-muted">Chart visualization would be rendered here.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <h6 class="mb-3">Top Expense Categories</h6>
+                                {% if financial_data.expense_trends.top_categories %}
+                                    <div class="list-group">
+                                        {% for category, amount in financial_data.expense_trends.top_categories.items() %}
+                                        <div class="list-group-item bg-transparent border-0 px-0 py-2">
+                                            <div class="d-flex justify-content-between">
+                                                <span>{{ category }}</span>
+                                                <span class="fw-bold">€{{ "{:,.0f}".format(amount) }}</span>
+                                            </div>
+                                            <div class="progress mt-1" style="height: 4px;">
+                                                {% set percent = (amount / financial_data.expense_trends.total_expenses * 100)|round %}
+                                                <div class="progress-bar" role="progressbar" 
+                                                    style="width: {{ percent }}%" 
+                                                    aria-valuenow="{{ percent }}" aria-valuemin="0" aria-valuemax="100">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <p class="text-muted">No category data available</p>
+                                {% endif %}
+                                
+                                <h6 class="mt-4 mb-2">Month-over-Month Changes</h6>
+                                {% if financial_data.expense_trends.month_over_month_changes %}
+                                    <div class="list-group">
+                                        {% for month, data in financial_data.expense_trends.month_over_month_changes.items() %}
+                                        <div class="list-group-item bg-transparent border-0 px-0 py-2">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span>{{ month }}</span>
+                                                <div class="text-end">
+                                                    <span class="fw-bold d-block">€{{ "{:,.0f}".format(data.amount) }}</span>
+                                                    <small class="{% if data.change_percent > 0 %}text-danger{% elif data.change_percent < 0 %}text-success{% else %}text-muted{% endif %}">
+                                                        {% if data.change_percent > 0 %}+{% endif %}{{ data.change_percent }}%
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <p class="text-muted">No monthly change data available</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i data-feather="bar-chart-2" class="text-muted mb-3" style="width: 64px; height: 64px;"></i>
+                            <h4>No Expense Data Available</h4>
+                            <p class="text-muted">Connect Pennylane to view your expense trends.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Connection Information -->
+    <div class="row mt-3">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="info" class="me-2"></i> About Pennylane Integration
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    <p>The Pennylane integration provides financial insights for your business:</p>
+                    <ul>
+                        <li><strong>Bank Balance:</strong> Current account balances and total cash available.</li>
+                        <li><strong>Profitability:</strong> Analyzes your revenue, expenses, and profit margins.</li>
+                        <li><strong>Cash Flow:</strong> Tracks the flow of money in and out of your business.</li>
+                        <li><strong>Expense Trends:</strong> Identifies spending patterns and top expense categories.</li>
+                    </ul>
+                    <p>This data is updated daily from your Pennylane account.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
