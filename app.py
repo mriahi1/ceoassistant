@@ -11,6 +11,7 @@ from services.integrations import get_all_platform_data
 from api.slack_integration import post_message
 from utils.insights_generator import generate_insights, generate_action_items
 from utils.data_processor import consolidate_data
+from api.ooti import OOTIAPI
 
 # Import Google services if enabled
 gmail_integration = None
@@ -745,6 +746,27 @@ def financials_view():
     except Exception as e:
         logger.error(f"Error accessing Pennylane: {str(e)}")
         flash(f"Error accessing Pennylane: {str(e)}", "danger")
+        return redirect(url_for('index'))
+
+# OOTI Scorecard route
+@app.route('/scorecard')
+def scorecard_view():
+    """OOTI KPI scorecard page"""
+    if not config.OOTI_API_KEY:
+        flash("OOTI integration is not enabled or properly configured.", "warning")
+        return redirect(url_for('integrations'))
+    
+    try:
+        # Initialize OOTI API
+        ooti_api = OOTIAPI()
+        
+        # Get scorecard data
+        scorecard_data = ooti_api.get_all_ooti_data()
+        
+        return render_template('scorecard.html', scorecard_data=scorecard_data)
+    except Exception as e:
+        logger.error(f"Error accessing OOTI for scorecard: {str(e)}")
+        flash(f"Error accessing OOTI data: {str(e)}", "danger")
         return redirect(url_for('index'))
 
 # Slack routes

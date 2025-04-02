@@ -508,7 +508,12 @@ def generate_ooti_mock_data():
         indicators = {
             "delivery_on_time": random.randint(70, 95),
             "client_satisfaction": random.randint(75, 98),
-            "team_utilization": sum(r.get("utilization", 0) for r in resources) / len(resources) if resources else 0,
+            "employee_satisfaction": random.randint(65, 90),
+            "project_profitability": random.randint(15, 30),
+            "resource_utilization": sum(r.get("utilization", 0) for r in resources) / len(resources) if resources else 0,
+            "sales_pipeline_value": random.randint(2000000, 4000000),
+            "win_rate": random.randint(25, 45),
+            "average_deal_size": random.randint(150000, 300000),
             "budget_adherence": random.randint(80, 95),
             "project_success_rate": random.randint(75, 95)
         }

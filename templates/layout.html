@@ -60,6 +60,10 @@
                 <i data-feather="dollar-sign" class="sidebar-icon"></i>
                 <span>Financials</span>
             </a>
+            <a href="{{ url_for('scorecard_view') }}" class="sidebar-link {% if '/scorecard' in request.path %}active{% endif %}">
+                <i data-feather="bar-chart" class="sidebar-icon"></i>
+                <span>Scorecard</span>
+            </a>
             
             <div class="sidebar-section mt-2 mb-2">
                 <span class="sidebar-header px-3">System</span>

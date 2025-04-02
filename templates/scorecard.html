@@ -1,0 +1,402 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1>Business Scorecard</h1>
+            <p class="text-muted">Key Performance Indicators from OOTI.co</p>
+        </div>
+    </div>
+    
+    <!-- KPI Cards -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card dashboard-card h-100">
+                <div class="card-header dashboard-card-header bg-gradient-primary">
+                    <h5 class="card-title mb-0 text-white">
+                        <i data-feather="check-circle" class="me-2"></i> Delivery Performance
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body text-center">
+                    {% if scorecard_data and scorecard_data.indicators %}
+                        <div class="display-4 fw-bold mb-3">
+                            {{ scorecard_data.indicators.delivery_on_time }}%
+                        </div>
+                        <p class="text-muted">Projects Delivered On Time</p>
+                        
+                        <!-- Progress bar -->
+                        <div class="progress mt-3" style="height: 8px;">
+                            {% set delivery_pct = scorecard_data.indicators.delivery_on_time %}
+                            <div class="progress-bar {% if delivery_pct >= 90 %}bg-success
+                                                     {% elif delivery_pct >= 75 %}bg-warning
+                                                     {% else %}bg-danger{% endif %}" 
+                                 role="progressbar" style="width: {{ delivery_pct }}%" 
+                                 aria-valuenow="{{ delivery_pct }}" aria-valuemin="0" aria-valuemax="100">
+                            </div>
+                        </div>
+                        <small class="text-muted mt-2 d-block">Target: 95%</small>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i data-feather="check-circle" class="text-muted mb-3" style="width: 48px; height: 48px;"></i>
+                            <p>Delivery data not available</p>
+                            <p class="small text-muted">Connect OOTI.co to view KPI data</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card dashboard-card h-100">
+                <div class="card-header dashboard-card-header bg-gradient-primary">
+                    <h5 class="card-title mb-0 text-white">
+                        <i data-feather="users" class="me-2"></i> Client Satisfaction
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body text-center">
+                    {% if scorecard_data and scorecard_data.indicators %}
+                        <div class="display-4 fw-bold mb-3">
+                            {{ scorecard_data.indicators.client_satisfaction }}%
+                        </div>
+                        <p class="text-muted">Client Satisfaction Score</p>
+                        
+                        <!-- Progress bar -->
+                        <div class="progress mt-3" style="height: 8px;">
+                            {% set satisfaction = scorecard_data.indicators.client_satisfaction %}
+                            <div class="progress-bar {% if satisfaction >= 90 %}bg-success
+                                                     {% elif satisfaction >= 75 %}bg-warning
+                                                     {% else %}bg-danger{% endif %}" 
+                                 role="progressbar" style="width: {{ satisfaction }}%" 
+                                 aria-valuenow="{{ satisfaction }}" aria-valuemin="0" aria-valuemax="100">
+                            </div>
+                        </div>
+                        <small class="text-muted mt-2 d-block">Target: 90%</small>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i data-feather="users" class="text-muted mb-3" style="width: 48px; height: 48px;"></i>
+                            <p>Satisfaction data not available</p>
+                            <p class="small text-muted">Connect OOTI.co to view KPI data</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card dashboard-card h-100">
+                <div class="card-header dashboard-card-header bg-gradient-primary">
+                    <h5 class="card-title mb-0 text-white">
+                        <i data-feather="dollar-sign" class="me-2"></i> Project Profitability
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body text-center">
+                    {% if scorecard_data and scorecard_data.indicators %}
+                        <div class="display-4 fw-bold mb-3">
+                            {{ scorecard_data.indicators.project_profitability }}%
+                        </div>
+                        <p class="text-muted">Average Project Profit Margin</p>
+                        
+                        <!-- Progress bar -->
+                        <div class="progress mt-3" style="height: 8px;">
+                            {% set profitability = scorecard_data.indicators.project_profitability %}
+                            {% set profit_percent = (profitability / 35 * 100)|round|min(100) %}
+                            <div class="progress-bar {% if profitability >= 25 %}bg-success
+                                                     {% elif profitability >= 15 %}bg-warning
+                                                     {% else %}bg-danger{% endif %}" 
+                                 role="progressbar" style="width: {{ profit_percent }}%" 
+                                 aria-valuenow="{{ profitability }}" aria-valuemin="0" aria-valuemax="35">
+                            </div>
+                        </div>
+                        <small class="text-muted mt-2 d-block">Target: 25%</small>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i data-feather="dollar-sign" class="text-muted mb-3" style="width: 48px; height: 48px;"></i>
+                            <p>Profitability data not available</p>
+                            <p class="small text-muted">Connect OOTI.co to view KPI data</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="card dashboard-card h-100">
+                <div class="card-header dashboard-card-header bg-gradient-primary">
+                    <h5 class="card-title mb-0 text-white">
+                        <i data-feather="clock" class="me-2"></i> Resource Utilization
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body text-center">
+                    {% if scorecard_data and scorecard_data.indicators %}
+                        <div class="display-4 fw-bold mb-3">
+                            {{ scorecard_data.indicators.resource_utilization }}%
+                        </div>
+                        <p class="text-muted">Team Utilization Rate</p>
+                        
+                        <!-- Progress bar -->
+                        <div class="progress mt-3" style="height: 8px;">
+                            {% set utilization = scorecard_data.indicators.resource_utilization %}
+                            <div class="progress-bar {% if utilization >= 85 %}bg-success
+                                                     {% elif utilization >= 70 %}bg-warning
+                                                     {% else %}bg-danger{% endif %}" 
+                                 role="progressbar" style="width: {{ utilization }}%" 
+                                 aria-valuenow="{{ utilization }}" aria-valuemin="0" aria-valuemax="100">
+                            </div>
+                        </div>
+                        <small class="text-muted mt-2 d-block">Target: 85%</small>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i data-feather="clock" class="text-muted mb-3" style="width: 48px; height: 48px;"></i>
+                            <p>Utilization data not available</p>
+                            <p class="small text-muted">Connect OOTI.co to view KPI data</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sales KPIs Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="trending-up" class="me-2"></i> Sales Performance
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    {% if scorecard_data and scorecard_data.indicators %}
+                        <div class="row">
+                            <div class="col-md-4 text-center mb-4">
+                                <h6 class="text-muted">Sales Pipeline Value</h6>
+                                <h3 class="mb-3">€{{ "{:,.0f}".format(scorecard_data.indicators.sales_pipeline_value) }}</h3>
+                                <div class="progress" style="height: 8px;">
+                                    {% set pipeline_goal = 3000000 %}
+                                    {% set pipeline_percent = (scorecard_data.indicators.sales_pipeline_value / pipeline_goal * 100)|round|min(100) %}
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: {{ pipeline_percent }}%" 
+                                         aria-valuenow="{{ scorecard_data.indicators.sales_pipeline_value }}" aria-valuemin="0" aria-valuemax="{{ pipeline_goal }}">
+                                    </div>
+                                </div>
+                                <small class="text-muted mt-2 d-block">Goal: €3,000,000</small>
+                            </div>
+                            <div class="col-md-4 text-center mb-4">
+                                <h6 class="text-muted">Win Rate</h6>
+                                <h3 class="mb-3">{{ scorecard_data.indicators.win_rate }}%</h3>
+                                <div class="progress" style="height: 8px;">
+                                    {% set win_rate = scorecard_data.indicators.win_rate %}
+                                    <div class="progress-bar {% if win_rate >= 40 %}bg-success
+                                                           {% elif win_rate >= 30 %}bg-warning
+                                                           {% else %}bg-danger{% endif %}" 
+                                         role="progressbar" style="width: {{ win_rate }}%" 
+                                         aria-valuenow="{{ win_rate }}" aria-valuemin="0" aria-valuemax="100">
+                                    </div>
+                                </div>
+                                <small class="text-muted mt-2 d-block">Target: 40%</small>
+                            </div>
+                            <div class="col-md-4 text-center mb-4">
+                                <h6 class="text-muted">Average Deal Size</h6>
+                                <h3 class="mb-3">€{{ "{:,.0f}".format(scorecard_data.indicators.average_deal_size) }}</h3>
+                                <div class="progress" style="height: 8px;">
+                                    {% set avg_deal_goal = 250000 %}
+                                    {% set deal_percent = (scorecard_data.indicators.average_deal_size / avg_deal_goal * 100)|round|min(100) %}
+                                    <div class="progress-bar bg-primary" role="progressbar" style="width: {{ deal_percent }}%" 
+                                         aria-valuenow="{{ scorecard_data.indicators.average_deal_size }}" aria-valuemin="0" aria-valuemax="{{ avg_deal_goal }}">
+                                    </div>
+                                </div>
+                                <small class="text-muted mt-2 d-block">Goal: €250,000</small>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i data-feather="trending-up" class="text-muted mb-3" style="width: 64px; height: 64px;"></i>
+                            <h4>No Sales KPI Data Available</h4>
+                            <p class="text-muted">Connect OOTI.co to view sales performance metrics</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Project and HR KPIs Section -->
+    <div class="row mb-4">
+        <!-- Project Metrics -->
+        <div class="col-lg-6 mb-4">
+            <div class="card dashboard-card h-100">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="briefcase" class="me-2"></i> Project Metrics
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    {% if scorecard_data and scorecard_data.metrics %}
+                        <div class="row mb-4">
+                            <div class="col-6 text-center">
+                                <h6 class="text-muted">Active Projects</h6>
+                                <h3>{{ scorecard_data.metrics.active_projects_count }}</h3>
+                            </div>
+                            <div class="col-6 text-center">
+                                <h6 class="text-muted">At Risk Projects</h6>
+                                <h3 class="{% if scorecard_data.metrics.at_risk_projects_count > 0 %}text-warning{% endif %}">
+                                    {{ scorecard_data.metrics.at_risk_projects_count }}
+                                </h3>
+                            </div>
+                        </div>
+                        
+                        <h6 class="mb-3">Budget Utilization</h6>
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="flex-grow-1 me-3">
+                                <div class="progress" style="height: 8px;">
+                                    {% set budget_util = scorecard_data.metrics.budget_utilization %}
+                                    <div class="progress-bar {% if budget_util <= 85 %}bg-success
+                                                           {% elif budget_util <= 100 %}bg-warning
+                                                           {% else %}bg-danger{% endif %}" 
+                                         role="progressbar" style="width: {{ budget_util|min(100) }}%" 
+                                         aria-valuenow="{{ budget_util }}" aria-valuemin="0" aria-valuemax="100">
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="min-width: 60px;" class="text-end">
+                                {{ "%.1f"|format(budget_util) }}%
+                            </div>
+                        </div>
+                        
+                        <div class="row mt-4">
+                            <div class="col-md-4 text-center mb-3">
+                                <h6 class="text-muted small">Total Budget</h6>
+                                <p class="mb-0">€{{ "{:,.0f}".format(scorecard_data.metrics.total_budget) }}</p>
+                            </div>
+                            <div class="col-md-4 text-center mb-3">
+                                <h6 class="text-muted small">Total Spent</h6>
+                                <p class="mb-0">€{{ "{:,.0f}".format(scorecard_data.metrics.total_spent) }}</p>
+                            </div>
+                            <div class="col-md-4 text-center mb-3">
+                                <h6 class="text-muted small">Remaining</h6>
+                                <p class="mb-0">€{{ "{:,.0f}".format(scorecard_data.metrics.total_remaining) }}</p>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i data-feather="briefcase" class="text-muted mb-3" style="width: 48px; height: 48px;"></i>
+                            <h5>No Project Metrics Available</h5>
+                            <p class="text-muted">Connect OOTI.co to view project metrics</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- HR Metrics -->
+        <div class="col-lg-6 mb-4">
+            <div class="card dashboard-card h-100">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="user" class="me-2"></i> Human Resources
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    {% if scorecard_data and scorecard_data.indicators %}
+                        <div class="row mb-4">
+                            <div class="col-6 text-center">
+                                <h6 class="text-muted">Employee Satisfaction</h6>
+                                <h3>{{ scorecard_data.indicators.employee_satisfaction }}%</h3>
+                                <div class="progress mt-2" style="height: 8px;">
+                                    {% set emp_sat = scorecard_data.indicators.employee_satisfaction %}
+                                    <div class="progress-bar {% if emp_sat >= 85 %}bg-success
+                                                           {% elif emp_sat >= 70 %}bg-warning
+                                                           {% else %}bg-danger{% endif %}" 
+                                         role="progressbar" style="width: {{ emp_sat }}%" 
+                                         aria-valuenow="{{ emp_sat }}" aria-valuemin="0" aria-valuemax="100">
+                                    </div>
+                                </div>
+                                <small class="text-muted mt-2 d-block">Target: 85%</small>
+                            </div>
+                            <div class="col-6 text-center">
+                                <h6 class="text-muted">Overall Utilization</h6>
+                                <h3>{{ "%.1f"|format(scorecard_data.metrics.overall_resource_utilization) }}%</h3>
+                                <div class="progress mt-2" style="height: 8px;">
+                                    {% set resource_util = scorecard_data.metrics.overall_resource_utilization %}
+                                    <div class="progress-bar {% if resource_util >= 85 %}bg-success
+                                                           {% elif resource_util >= 70 %}bg-warning
+                                                           {% else %}bg-danger{% endif %}" 
+                                         role="progressbar" style="width: {{ resource_util }}%" 
+                                         aria-valuenow="{{ resource_util }}" aria-valuemin="0" aria-valuemax="100">
+                                    </div>
+                                </div>
+                                <small class="text-muted mt-2 d-block">Target: 85%</small>
+                            </div>
+                        </div>
+                        
+                        {% if scorecard_data.resources %}
+                            <h6 class="mb-3">Department Utilization</h6>
+                            {% for department in scorecard_data.resources %}
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span>{{ department.department }}</span>
+                                        <span>{{ department.utilization }}%</span>
+                                    </div>
+                                    <div class="progress" style="height: 5px;">
+                                        <div class="progress-bar {% if department.utilization >= 85 %}bg-success
+                                                               {% elif department.utilization >= 70 %}bg-warning
+                                                               {% else %}bg-danger{% endif %}" 
+                                             role="progressbar" style="width: {{ department.utilization }}%" 
+                                             aria-valuenow="{{ department.utilization }}" aria-valuemin="0" aria-valuemax="100">
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between mt-1">
+                                        <small class="text-muted">{{ department.allocated }}/{{ department.total_staff }} allocated</small>
+                                        <small class="text-muted">Planned hires: {{ department.planned_hires }}</small>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i data-feather="user" class="text-muted mb-3" style="width: 48px; height: 48px;"></i>
+                            <h5>No HR Metrics Available</h5>
+                            <p class="text-muted">Connect OOTI.co to view HR metrics</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Historical Trends Section -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="info" class="me-2"></i> About This Scorecard
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    <p>This Business Scorecard provides a comprehensive view of your key performance indicators (KPIs) sourced from OOTI.co:</p>
+                    <ul>
+                        <li><strong>Delivery Performance:</strong> Tracks how well your team meets project deadlines.</li>
+                        <li><strong>Client Satisfaction:</strong> Measures client happiness with your services.</li>
+                        <li><strong>Project Profitability:</strong> Shows the profit margin across all projects.</li>
+                        <li><strong>Resource Utilization:</strong> Indicates how efficiently your team's time is being used.</li>
+                        <li><strong>Sales KPIs:</strong> Includes pipeline value, win rate, and average deal size.</li>
+                        <li><strong>Project Metrics:</strong> Provides insights into project status and budget utilization.</li>
+                        <li><strong>HR Metrics:</strong> Shows employee satisfaction and departmental utilization.</li>
+                    </ul>
+                    <p>The data in this scorecard is updated in real-time from your OOTI.co account. Use these insights to make strategic decisions and keep your business on track.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Additional scripts for scorecard if needed
+    });
+</script>
+{% endblock %}

@@ -177,7 +177,9 @@ class OOTIAPI:
                 "resource_utilization": 90,
                 "sales_pipeline_value": 2800000,
                 "win_rate": 35,
-                "average_deal_size": 210000
+                "average_deal_size": 210000,
+                "budget_adherence": 88,
+                "project_success_rate": 82
             }
     
     def get_all_ooti_data(self):
