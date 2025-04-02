@@ -1,0 +1,301 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1>Settings</h1>
+            <p class="text-muted">Configure your CEO AI Assistant preferences</p>
+        </div>
+    </div>
+    
+    <!-- System Info Card -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header bg-gradient-primary">
+                    <h5 class="card-title mb-0 text-white">
+                        <i data-feather="info" class="me-2"></i> System Information
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Application</h6>
+                            <table class="table table-sm">
+                                <tr>
+                                    <td>Name:</td>
+                                    <td>CEO AI Assistant</td>
+                                </tr>
+                                <tr>
+                                    <td>Version:</td>
+                                    <td>1.0.0</td>
+                                </tr>
+                                <tr>
+                                    <td>OpenAI Model:</td>
+                                    <td>GPT-4o</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Platform Status</h6>
+                            <table class="table table-sm">
+                                <tr>
+                                    <td>HubSpot:</td>
+                                    <td>
+                                        {% if integration_status.hubspot %}
+                                        <span class="badge text-bg-success">Connected</span>
+                                        {% else %}
+                                        <span class="badge text-bg-danger">Disconnected</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Chargebee:</td>
+                                    <td>
+                                        {% if integration_status.chargebee %}
+                                        <span class="badge text-bg-success">Connected</span>
+                                        {% else %}
+                                        <span class="badge text-bg-danger">Disconnected</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>OOTI:</td>
+                                    <td>
+                                        {% if integration_status.ooti %}
+                                        <span class="badge text-bg-success">Connected</span>
+                                        {% else %}
+                                        <span class="badge text-bg-danger">Disconnected</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Slack:</td>
+                                    <td>
+                                        {% if integration_status.slack %}
+                                        <span class="badge text-bg-success">Connected</span>
+                                        {% else %}
+                                        <span class="badge text-bg-warning">Optional</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Feature Settings -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="settings" class="me-2"></i> Feature Settings
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    <form>
+                        <h6>Notifications</h6>
+                        <div class="mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="slackNotifications" checked>
+                                <label class="form-check-label" for="slackNotifications">
+                                    Enable Slack notifications
+                                </label>
+                            </div>
+                            <small class="text-muted">Send digest summaries to Slack automatically after generation</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="emailDigests" disabled>
+                                <label class="form-check-label" for="emailDigests">
+                                    Enable email digests
+                                </label>
+                            </div>
+                            <small class="text-muted">Send digest summaries via email (coming soon)</small>
+                        </div>
+                        
+                        <h6 class="mt-4">Data Refresh</h6>
+                        <div class="mb-3">
+                            <label for="dataRefreshInterval" class="form-label">Auto-refresh interval</label>
+                            <select class="form-select" id="dataRefreshInterval">
+                                <option value="30">Every 30 minutes</option>
+                                <option value="60" selected>Every hour</option>
+                                <option value="120">Every 2 hours</option>
+                                <option value="240">Every 4 hours</option>
+                                <option value="0">Manually only</option>
+                            </select>
+                            <small class="text-muted">How often to refresh data from connected platforms</small>
+                        </div>
+                        
+                        <h6 class="mt-4">AI Analysis</h6>
+                        <div class="mb-3">
+                            <label for="insightDepth" class="form-label">Analysis depth</label>
+                            <select class="form-select" id="insightDepth">
+                                <option value="concise">Concise (faster, less detailed)</option>
+                                <option value="balanced" selected>Balanced</option>
+                                <option value="deep">Deep (slower, more detailed)</option>
+                            </select>
+                            <small class="text-muted">Controls the depth of AI analysis when generating insights</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="actionableInsights" checked>
+                                <label class="form-check-label" for="actionableInsights">
+                                    Prioritize actionable insights
+                                </label>
+                            </div>
+                            <small class="text-muted">Focus on insights that can be directly acted upon</small>
+                        </div>
+                        
+                        <div class="alert alert-info mt-4">
+                            <i data-feather="info" class="me-2"></i> These settings are for display purposes only in the current version. Settings functionality will be implemented in a future update.
+                        </div>
+                        
+                        <div class="text-end mt-3">
+                            <button type="button" class="btn btn-secondary" disabled>Cancel</button>
+                            <button type="button" class="btn btn-primary" disabled>Save Settings</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Environment Variables Info -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="key" class="me-2"></i> API Configuration
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    <p>This application uses environment variables for API configuration. Set these in your hosting environment:</p>
+                    
+                    <h6 class="mt-3">Required API Keys</h6>
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Environment Variable</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>HUBSPOT_API_KEY</code></td>
+                                <td>HubSpot API key for CRM access</td>
+                                <td>
+                                    {% if integration_status.hubspot %}
+                                    <span class="badge text-bg-success">Configured</span>
+                                    {% else %}
+                                    <span class="badge text-bg-danger">Missing</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>CHARGEBEE_API_KEY</code></td>
+                                <td>Chargebee API key for subscription data</td>
+                                <td>
+                                    {% if integration_status.chargebee %}
+                                    <span class="badge text-bg-success">Configured</span>
+                                    {% else %}
+                                    <span class="badge text-bg-danger">Missing</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>CHARGEBEE_SITE</code></td>
+                                <td>Your Chargebee site name</td>
+                                <td>
+                                    {% if integration_status.chargebee %}
+                                    <span class="badge text-bg-success">Configured</span>
+                                    {% else %}
+                                    <span class="badge text-bg-danger">Missing</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>OOTI_API_KEY</code></td>
+                                <td>OOTI API key for ERP data</td>
+                                <td>
+                                    {% if integration_status.ooti %}
+                                    <span class="badge text-bg-success">Configured</span>
+                                    {% else %}
+                                    <span class="badge text-bg-danger">Missing</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>OPENAI_API_KEY</code></td>
+                                <td>OpenAI API key for GPT-4o access</td>
+                                <td>
+                                    {% if integration_status.openai %}
+                                    <span class="badge text-bg-success">Configured</span>
+                                    {% else %}
+                                    <span class="badge text-bg-danger">Missing</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <h6 class="mt-4">Optional Configuration</h6>
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Environment Variable</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>SLACK_BOT_TOKEN</code></td>
+                                <td>Slack Bot Token for posting notifications</td>
+                                <td>
+                                    {% if integration_status.slack %}
+                                    <span class="badge text-bg-success">Configured</span>
+                                    {% else %}
+                                    <span class="badge text-bg-secondary">Optional</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>SLACK_CHANNEL_ID</code></td>
+                                <td>Slack Channel ID for posting notifications</td>
+                                <td>
+                                    {% if integration_status.slack %}
+                                    <span class="badge text-bg-success">Configured</span>
+                                    {% else %}
+                                    <span class="badge text-bg-secondary">Optional</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code>OOTI_BASE_URL</code></td>
+                                <td>Base URL for OOTI API (defaults to https://api.ooti.co)</td>
+                                <td><span class="badge text-bg-secondary">Optional</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>SESSION_SECRET</code></td>
+                                <td>Secret key for session management</td>
+                                <td><span class="badge text-bg-success">Configured</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

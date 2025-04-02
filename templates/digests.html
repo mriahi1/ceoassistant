@@ -1,0 +1,128 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12 d-flex justify-content-between align-items-center">
+            <div>
+                <h1>Daily Digests</h1>
+                <p class="text-muted">AI-generated daily summaries and insights</p>
+            </div>
+            <form action="{{ url_for('generate_digest') }}" method="post">
+                <button type="submit" class="btn btn-primary">
+                    <i data-feather="plus" class="me-2"></i> Generate New Digest
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Digests List -->
+    <div class="row">
+        {% if digests %}
+            {% for digest in digests %}
+            <div class="col-lg-4 mb-4">
+                <div class="card dashboard-card digest-card h-100">
+                    <div class="card-header dashboard-card-header bg-gradient-primary">
+                        <h5 class="card-title mb-0 text-white">
+                            <i data-feather="file-text" class="me-2"></i> {{ digest.date }}
+                        </h5>
+                    </div>
+                    <div class="card-body dashboard-card-body">
+                        <div class="digest-date mb-2">
+                            Generated on {{ digest.timestamp | replace("T", " at ").split(".")[0] }}
+                        </div>
+                        
+                        {% if digest.executive_summary %}
+                        <div class="mb-3">
+                            <h6>Executive Summary</h6>
+                            <p class="text-truncate-2">{{ digest.executive_summary[:150] }}{% if digest.executive_summary|length > 150 %}...{% endif %}</p>
+                        </div>
+                        {% endif %}
+                        
+                        {% if digest.key_metrics %}
+                        <div class="mb-3">
+                            <h6>Key Metrics</h6>
+                            <div class="row">
+                                {% for key, value in digest.key_metrics.items() %}
+                                {% if loop.index <= 4 %}
+                                <div class="col-6 mb-2">
+                                    <small class="d-block text-muted">{{ key }}</small>
+                                    <strong>{{ value }}</strong>
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        {% if digest.action_items %}
+                        <div class="mb-3">
+                            <h6>Top Actions</h6>
+                            <ul class="list-unstyled">
+                                {% for item in digest.action_items[:2] %}
+                                <li>
+                                    <i data-feather="check-circle" class="text-success me-1" style="width: 16px; height: 16px;"></i>
+                                    {{ item[:50] }}{% if item|length > 50 %}...{% endif %}
+                                </li>
+                                {% endfor %}
+                                {% if digest.action_items|length > 2 %}
+                                <li class="text-muted"><small>+ {{ digest.action_items|length - 2 }} more action items</small></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="text-end">
+                            <a href="{{ url_for('view_digest', filename=digest.filename) }}" class="btn btn-sm btn-outline-primary">
+                                View Full Digest <i data-feather="arrow-right" class="ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="card dashboard-card">
+                    <div class="card-body dashboard-card-body text-center py-5">
+                        <i data-feather="file-text" style="width: 64px; height: 64px;" class="text-muted mb-3"></i>
+                        <h4>No Digests Generated Yet</h4>
+                        <p class="text-muted">Generate your first digest to see AI-powered insights about your business.</p>
+                        <form action="{{ url_for('generate_digest') }}" method="post">
+                            <button type="submit" class="btn btn-primary mt-3">
+                                <i data-feather="plus" class="me-2"></i> Generate Your First Digest
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    
+    <!-- Digest Information -->
+    {% if digests %}
+    <div class="row mt-3">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="info" class="me-2"></i> About Daily Digests
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    <p>Daily digests are AI-generated summaries that analyze data from all your connected platforms:</p>
+                    <ul>
+                        <li><strong>Executive Summary:</strong> A high-level overview of key business developments.</li>
+                        <li><strong>Key Metrics:</strong> Important numbers that track business health across platforms.</li>
+                        <li><strong>Action Items:</strong> Prioritized tasks based on current business state.</li>
+                        <li><strong>Platform Stats:</strong> Detailed metrics from each connected platform.</li>
+                    </ul>
+                    <p>Digests are generated on-demand and can optionally be sent to Slack for easy sharing.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

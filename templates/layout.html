@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEO AI Assistant</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <!-- Feather Icons -->
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="bg-dark text-light">
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="d-flex align-items-center mb-4 px-3">
+            <i data-feather="cpu" class="text-primary me-2"></i>
+            <h4 class="mb-0">CEO Assistant</h4>
+        </div>
+        
+        <div class="nav flex-column">
+            <a href="{{ url_for('index') }}" class="sidebar-link {% if request.path == url_for('index') %}active{% endif %}">
+                <i data-feather="grid" class="sidebar-icon"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="{{ url_for('digests') }}" class="sidebar-link {% if request.path == url_for('digests') %}active{% endif %}">
+                <i data-feather="file-text" class="sidebar-icon"></i>
+                <span>Daily Digests</span>
+            </a>
+            <a href="{{ url_for('integrations') }}" class="sidebar-link {% if request.path == url_for('integrations') %}active{% endif %}">
+                <i data-feather="link" class="sidebar-icon"></i>
+                <span>Integrations</span>
+            </a>
+            <a href="{{ url_for('settings') }}" class="sidebar-link {% if request.path == url_for('settings') %}active{% endif %}">
+                <i data-feather="settings" class="sidebar-icon"></i>
+                <span>Settings</span>
+            </a>
+        </div>
+        
+        <div class="mt-auto px-3 py-3">
+            <form action="{{ url_for('generate_digest') }}" method="post">
+                <button type="submit" class="btn btn-primary w-100 d-flex align-items-center justify-content-center">
+                    <i data-feather="refresh-cw" class="me-2"></i> Generate Digest
+                </button>
+            </form>
+            
+            <form action="{{ url_for('refresh_data') }}" method="post" class="mt-2">
+                <button type="submit" class="btn btn-outline-secondary w-100 d-flex align-items-center justify-content-center">
+                    <i data-feather="refresh-cw" class="me-2"></i> Refresh Data
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <!-- Page Content -->
+        {% block content %}{% endblock %}
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Initialize Feather Icons -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            feather.replace();
+        });
+    </script>
+    
+    <!-- Page-specific scripts -->
+    {% block scripts %}{% endblock %}
+</body>
+</html>

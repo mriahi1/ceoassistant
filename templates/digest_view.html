@@ -1,0 +1,215 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12 d-flex justify-content-between align-items-center">
+            <div>
+                <h1>Daily Digest: {{ digest.date }}</h1>
+                <p class="text-muted">Generated on {{ digest.timestamp | replace("T", " at ").split(".")[0] }}</p>
+            </div>
+            <div>
+                <a href="{{ url_for('digests') }}" class="btn btn-outline-secondary me-2">
+                    <i data-feather="arrow-left" class="me-1"></i> Back to Digests
+                </a>
+                {% if config.ENABLE_SLACK_NOTIFICATIONS and config.SLACK_BOT_TOKEN and config.SLACK_CHANNEL_ID %}
+                <a href="#" class="btn btn-primary" onclick="shareToSlack(); return false;">
+                    <i data-feather="share-2" class="me-1"></i> Share to Slack
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Executive Summary -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header bg-gradient-primary">
+                    <h5 class="card-title mb-0 text-white">
+                        <i data-feather="briefcase" class="me-2"></i> Executive Summary
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    <p class="card-text">{{ digest.executive_summary }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Key Metrics & Action Items -->
+    <div class="row mb-4">
+        <!-- Key Metrics -->
+        <div class="col-lg-6 mb-3">
+            <div class="card dashboard-card h-100">
+                <div class="card-header dashboard-card-header bg-gradient-secondary">
+                    <h5 class="card-title mb-0 text-white">
+                        <i data-feather="bar-chart-2" class="me-2"></i> Key Metrics
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    {% if digest.key_metrics %}
+                        <div class="row">
+                            {% for key, value in digest.key_metrics.items() %}
+                            <div class="col-md-6 mb-3">
+                                <div class="metric-card">
+                                    <div class="metric-label">{{ key }}</div>
+                                    <div class="metric-value">{{ value }}</div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center text-muted py-4">
+                            <p>No key metrics available in this digest.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Action Items -->
+        <div class="col-lg-6 mb-3">
+            <div class="card dashboard-card h-100">
+                <div class="card-header dashboard-card-header bg-gradient-warning">
+                    <h5 class="card-title mb-0 text-white">
+                        <i data-feather="check-square" class="me-2"></i> Priority Action Items
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    {% if digest.action_items %}
+                        {% for item in digest.action_items %}
+                        <div class="action-item">
+                            <span class="action-number">{{ loop.index }}</span>
+                            <span>{{ item }}</span>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center text-muted py-4">
+                            <p>No action items available in this digest.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Platform Statistics -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="database" class="me-2"></i> Platform Statistics
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    {% if digest.platform_stats %}
+                        <div class="row">
+                            <!-- HubSpot Stats -->
+                            <div class="col-md-4 mb-3">
+                                <div class="platform-card hubspot">
+                                    <h6><i data-feather="activity" class="text-danger me-1"></i> HubSpot</h6>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Deals:</span>
+                                        <strong>{{ digest.platform_stats.hubspot.deals_count }}</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Contacts:</span>
+                                        <strong>{{ digest.platform_stats.hubspot.contacts_count }}</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span>Deal Value:</span>
+                                        <strong>${{ "{:,.2f}".format(digest.platform_stats.hubspot.total_deal_value) }}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Chargebee Stats -->
+                            <div class="col-md-4 mb-3">
+                                <div class="platform-card chargebee">
+                                    <h6><i data-feather="credit-card" class="text-primary me-1"></i> Chargebee</h6>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Active Subscriptions:</span>
+                                        <strong>{{ digest.platform_stats.chargebee.active_subscriptions }}</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>MRR:</span>
+                                        <strong>${{ "{:,.2f}".format(digest.platform_stats.chargebee.mrr) }}</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span>Recent Invoices:</span>
+                                        <strong>{{ digest.platform_stats.chargebee.recent_invoices }}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- OOTI Stats -->
+                            <div class="col-md-4 mb-3">
+                                <div class="platform-card ooti">
+                                    <h6><i data-feather="layers" class="text-success me-1"></i> OOTI</h6>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Active Projects:</span>
+                                        <strong>{{ digest.platform_stats.ooti.active_projects }}</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>At Risk Projects:</span>
+                                        <strong>{{ digest.platform_stats.ooti.at_risk_projects }}</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span>Resource Utilization:</span>
+                                        <strong>{{ "{:.1f}".format(digest.platform_stats.ooti.resource_utilization) }}%</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="text-center text-muted py-4">
+                            <p>No platform statistics available in this digest.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Export Options -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="download" class="me-2"></i> Export Options
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    <p>Export this digest in different formats for sharing or archiving.</p>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-outline-secondary disabled">
+                            <i data-feather="file-text" class="me-1"></i> PDF (Coming Soon)
+                        </button>
+                        <button class="btn btn-outline-secondary disabled">
+                            <i data-feather="mail" class="me-1"></i> Email (Coming Soon)
+                        </button>
+                        <button class="btn btn-outline-secondary disabled">
+                            <i data-feather="calendar" class="me-1"></i> Add to Calendar (Coming Soon)
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function shareToSlack() {
+        if (confirm("Share this digest to Slack?")) {
+            // In a future version, this would make an AJAX call to re-send the digest to Slack
+            alert("Sharing functionality will be implemented in a future release.");
+        }
+    }
+</script>
+{% endblock %}

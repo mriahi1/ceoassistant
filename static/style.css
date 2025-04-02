@@ -1,0 +1,285 @@
+/* Custom styles for CEO AI Assistant */
+
+:root {
+  --primary-color: #4a6de0;
+  --secondary-color: #30c9b0;
+  --warning-color: #e07a4a;
+  --danger-color: #e04a4a;
+  --success-color: #4ae07a;
+  --dark-bg: #212529;
+  --light-text: #f8f9fa;
+  --muted-text: #adb5bd;
+  --border-color: #343a40;
+  --card-bg: #2c3034;
+}
+
+/* Dashboard layout */
+.dashboard-container {
+  padding: 1.5rem 0;
+}
+
+.dashboard-card {
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  height: 100%;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-card-header {
+  border-radius: 10px 10px 0 0;
+  padding: 1rem 1.5rem;
+}
+
+.dashboard-card-body {
+  padding: 1.5rem;
+}
+
+/* Metric cards */
+.metric-card {
+  padding: 1rem;
+  background-color: var(--card-bg);
+  border-radius: 8px;
+  border-left: 4px solid var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.metric-value {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 0.5rem 0;
+}
+
+.metric-label {
+  font-size: 0.9rem;
+  color: var(--muted-text);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Platform cards */
+.platform-card {
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.platform-card.hubspot {
+  border-left: 4px solid #ff7a59;
+}
+
+.platform-card.chargebee {
+  border-left: 4px solid #7a86ff;
+}
+
+.platform-card.ooti {
+  border-left: 4px solid #00c2b2;
+}
+
+.platform-icon {
+  font-size: 1.5rem;
+  margin-right: 0.5rem;
+}
+
+/* Insights and action items */
+.insight-item, .action-item {
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  background-color: var(--card-bg);
+}
+
+.insight-item {
+  border-left: 4px solid var(--primary-color);
+}
+
+.action-item {
+  border-left: 4px solid var(--warning-color);
+}
+
+.insight-item:hover, .action-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.action-number {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--warning-color);
+  color: white;
+  justify-content: center;
+  align-items: center;
+  margin-right: 0.5rem;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+/* Digest cards */
+.digest-card {
+  margin-bottom: 1.5rem;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.digest-date {
+  font-size: 0.85rem;
+  color: var(--muted-text);
+}
+
+/* Navigation */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 250px;
+  padding: 2rem 1rem;
+  background-color: var(--dark-bg);
+  border-right: 1px solid var(--border-color);
+  z-index: 1000;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 8px;
+  color: var(--light-text);
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.sidebar-link:hover, .sidebar-link.active {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-icon {
+  margin-right: 0.75rem;
+}
+
+.main-content {
+  margin-left: 250px;
+  padding: 2rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 80px;
+    padding: 1rem 0.5rem;
+  }
+  
+  .sidebar-link {
+    padding: 0.75rem;
+    justify-content: center;
+  }
+  
+  .sidebar-link span {
+    display: none;
+  }
+  
+  .sidebar-icon {
+    margin-right: 0;
+    font-size: 1.25rem;
+  }
+  
+  .main-content {
+    margin-left: 80px;
+    padding: 1rem;
+  }
+}
+
+/* Utilities */
+.bg-gradient-primary {
+  background: linear-gradient(45deg, var(--primary-color), #6a8bff);
+}
+
+.bg-gradient-secondary {
+  background: linear-gradient(45deg, var(--secondary-color), #50e9d0);
+}
+
+.bg-gradient-warning {
+  background: linear-gradient(45deg, var(--warning-color), #ff9a6a);
+}
+
+.text-truncate-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Status indicators */
+.status-indicator {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
+
+.status-success {
+  background-color: var(--success-color);
+}
+
+.status-warning {
+  background-color: var(--warning-color);
+}
+
+.status-danger {
+  background-color: var(--danger-color);
+}
+
+/* Platform integration status */
+.integration-status {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  background-color: var(--card-bg);
+}
+
+.integration-status.connected {
+  border-left: 4px solid var(--success-color);
+}
+
+.integration-status.error {
+  border-left: 4px solid var(--danger-color);
+}
+
+/* Loading spinner */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--primary-color);
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

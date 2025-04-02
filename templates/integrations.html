@@ -1,0 +1,257 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1>Platform Integrations</h1>
+            <p class="text-muted">Manage and monitor your platform connections</p>
+        </div>
+    </div>
+    
+    <!-- Integration Status Cards -->
+    <div class="row mb-4">
+        <!-- HubSpot Integration -->
+        <div class="col-lg-4 mb-3">
+            <div class="card dashboard-card h-100">
+                <div class="card-header dashboard-card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="activity" class="text-danger me-2"></i> HubSpot
+                    </h5>
+                    <span class="badge {% if integration_status.hubspot %}text-bg-success{% else %}text-bg-danger{% endif %}">
+                        {% if integration_status.hubspot %}Connected{% else %}Disconnected{% endif %}
+                    </span>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    {% if integration_status.hubspot %}
+                        <div class="integration-status connected">
+                            <div class="status-indicator status-success"></div>
+                            <div>Connected successfully</div>
+                        </div>
+                        <p>Your HubSpot CRM integration is active. The system can access:</p>
+                        <ul>
+                            <li>Deals and sales pipeline</li>
+                            <li>Contacts and companies</li>
+                            <li>Activity logs and emails</li>
+                        </ul>
+                    {% else %}
+                        <div class="integration-status error">
+                            <div class="status-indicator status-danger"></div>
+                            <div>Connection failed</div>
+                        </div>
+                        <p>The HubSpot integration is not configured correctly.</p>
+                        <div class="alert alert-secondary">
+                            <h6>How to connect:</h6>
+                            <ol>
+                                <li>Set the <code>HUBSPOT_API_KEY</code> environment variable</li>
+                                <li>Make sure your API key has permissions for Contacts, Deals, and Activities</li>
+                                <li>Restart the application</li>
+                            </ol>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chargebee Integration -->
+        <div class="col-lg-4 mb-3">
+            <div class="card dashboard-card h-100">
+                <div class="card-header dashboard-card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="credit-card" class="text-primary me-2"></i> Chargebee
+                    </h5>
+                    <span class="badge {% if integration_status.chargebee %}text-bg-success{% else %}text-bg-danger{% endif %}">
+                        {% if integration_status.chargebee %}Connected{% else %}Disconnected{% endif %}
+                    </span>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    {% if integration_status.chargebee %}
+                        <div class="integration-status connected">
+                            <div class="status-indicator status-success"></div>
+                            <div>Connected successfully</div>
+                        </div>
+                        <p>Your Chargebee subscription management integration is active. The system can access:</p>
+                        <ul>
+                            <li>Subscriptions and plans</li>
+                            <li>Invoices and payments</li>
+                            <li>MRR/ARR metrics</li>
+                            <li>Customer billing information</li>
+                        </ul>
+                    {% else %}
+                        <div class="integration-status error">
+                            <div class="status-indicator status-danger"></div>
+                            <div>Connection failed</div>
+                        </div>
+                        <p>The Chargebee integration is not configured correctly.</p>
+                        <div class="alert alert-secondary">
+                            <h6>How to connect:</h6>
+                            <ol>
+                                <li>Set the <code>CHARGEBEE_API_KEY</code> environment variable</li>
+                                <li>Set the <code>CHARGEBEE_SITE</code> environment variable</li>
+                                <li>Ensure the API key has full read access</li>
+                                <li>Restart the application</li>
+                            </ol>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- OOTI Integration -->
+        <div class="col-lg-4 mb-3">
+            <div class="card dashboard-card h-100">
+                <div class="card-header dashboard-card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="layers" class="text-success me-2"></i> OOTI
+                    </h5>
+                    <span class="badge {% if integration_status.ooti %}text-bg-success{% else %}text-bg-danger{% endif %}">
+                        {% if integration_status.ooti %}Connected{% else %}Disconnected{% endif %}
+                    </span>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    {% if integration_status.ooti %}
+                        <div class="integration-status connected">
+                            <div class="status-indicator status-success"></div>
+                            <div>Connected successfully</div>
+                        </div>
+                        <p>Your OOTI ERP integration is active. The system can access:</p>
+                        <ul>
+                            <li>Projects and timelines</li>
+                            <li>Financial data and forecasts</li>
+                            <li>Resource allocation</li>
+                            <li>Performance indicators</li>
+                        </ul>
+                    {% else %}
+                        <div class="integration-status error">
+                            <div class="status-indicator status-danger"></div>
+                            <div>Connection failed</div>
+                        </div>
+                        <p>The OOTI integration is not configured correctly.</p>
+                        <div class="alert alert-secondary">
+                            <h6>How to connect:</h6>
+                            <ol>
+                                <li>Set the <code>OOTI_API_KEY</code> environment variable</li>
+                                <li>Optionally set <code>OOTI_BASE_URL</code> if not using the default</li>
+                                <li>Restart the application</li>
+                            </ol>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Secondary Integrations -->
+    <div class="row mb-4">
+        <!-- OpenAI Integration -->
+        <div class="col-lg-6 mb-3">
+            <div class="card dashboard-card h-100">
+                <div class="card-header dashboard-card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="cpu" class="text-info me-2"></i> OpenAI (GPT-4o)
+                    </h5>
+                    <span class="badge {% if integration_status.openai %}text-bg-success{% else %}text-bg-danger{% endif %}">
+                        {% if integration_status.openai %}Connected{% else %}Disconnected{% endif %}
+                    </span>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    {% if integration_status.openai %}
+                        <div class="integration-status connected">
+                            <div class="status-indicator status-success"></div>
+                            <div>Connected successfully</div>
+                        </div>
+                        <p>Your OpenAI integration is active. The system uses GPT-4o for:</p>
+                        <ul>
+                            <li>Data analysis and synthesis</li>
+                            <li>Generating insights and recommendations</li>
+                            <li>Creating digestible summaries</li>
+                            <li>Identifying patterns and trends</li>
+                        </ul>
+                    {% else %}
+                        <div class="integration-status error">
+                            <div class="status-indicator status-danger"></div>
+                            <div>Connection failed</div>
+                        </div>
+                        <p>The OpenAI integration is not configured correctly.</p>
+                        <div class="alert alert-secondary">
+                            <h6>How to connect:</h6>
+                            <ol>
+                                <li>Set the <code>OPENAI_API_KEY</code> environment variable</li>
+                                <li>Ensure your API key has access to the GPT-4o model</li>
+                                <li>Restart the application</li>
+                            </ol>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slack Integration -->
+        <div class="col-lg-6 mb-3">
+            <div class="card dashboard-card h-100">
+                <div class="card-header dashboard-card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="message-square" class="text-warning me-2"></i> Slack
+                    </h5>
+                    <span class="badge {% if integration_status.slack %}text-bg-success{% else %}text-bg-warning{% endif %}">
+                        {% if integration_status.slack %}Connected{% else %}Optional{% endif %}
+                    </span>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    {% if integration_status.slack %}
+                        <div class="integration-status connected">
+                            <div class="status-indicator status-success"></div>
+                            <div>Connected successfully</div>
+                        </div>
+                        <p>Your Slack integration is active. The system can:</p>
+                        <ul>
+                            <li>Post daily digests to your Slack channel</li>
+                            <li>Send strategic updates and alerts</li>
+                            <li>Deliver time-sensitive insights</li>
+                        </ul>
+                    {% else %}
+                        <div class="integration-status warning">
+                            <div class="status-indicator status-warning"></div>
+                            <div>Not configured (optional)</div>
+                        </div>
+                        <p>Slack integration is optional but recommended for automatic notifications.</p>
+                        <div class="alert alert-secondary">
+                            <h6>How to connect:</h6>
+                            <ol>
+                                <li>Create a Slack bot in your workspace</li>
+                                <li>Set the <code>SLACK_BOT_TOKEN</code> environment variable</li>
+                                <li>Set the <code>SLACK_CHANNEL_ID</code> for notifications</li>
+                                <li>Restart the application</li>
+                            </ol>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Integration Test & Refresh -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header bg-gradient-primary">
+                    <h5 class="card-title mb-0 text-white">
+                        <i data-feather="refresh-cw" class="me-2"></i> Integration Management
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    <p>Test your integrations or refresh connections if you've updated API keys or settings.</p>
+                    <div class="d-flex gap-3">
+                        <form action="{{ url_for('refresh_data') }}" method="post">
+                            <button type="submit" class="btn btn-primary">
+                                <i data-feather="refresh-cw" class="me-2"></i> Refresh All Connections
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
