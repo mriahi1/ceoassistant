@@ -1,0 +1,150 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1>Search Gmail</h1>
+                <div>
+                    <a href="{{ url_for('gmail_inbox') }}" class="btn btn-outline-secondary">
+                        <i data-feather="arrow-left" class="me-2"></i> Back to Inbox
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Search Form -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="search" class="me-2"></i> Search Emails
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    <form action="{{ url_for('search_gmail') }}" method="post">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="query" placeholder="Search emails..." value="{{ query }}" required>
+                            <button class="btn btn-primary" type="submit">
+                                <i data-feather="search" class="me-2"></i> Search
+                            </button>
+                        </div>
+                        <div class="mt-2 text-muted small">
+                            <p>Use Gmail search operators for more precise results:</p>
+                            <ul class="mb-0 small">
+                                <li><code>from:email@example.com</code> - Search for emails from a specific sender</li>
+                                <li><code>to:email@example.com</code> - Search for emails sent to a specific recipient</li>
+                                <li><code>subject:meeting</code> - Search for emails with specific text in the subject</li>
+                                <li><code>after:2023/04/01</code> - Search for emails after a specific date</li>
+                            </ul>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Search Results -->
+    {% if results %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="list" class="me-2"></i> Search Results
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Sender</th>
+                                    <th>Subject</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for email in results %}
+                                <tr>
+                                    <td class="text-nowrap">{{ email.sender }}</td>
+                                    <td>
+                                        <a href="{{ url_for('view_email', email_id=email.id) }}">
+                                            {{ email.subject }}
+                                        </a>
+                                    </td>
+                                    <td class="text-nowrap">{{ email.date }}</td>
+                                    <td class="text-nowrap">
+                                        <a href="{{ url_for('view_email', email_id=email.id) }}" class="btn btn-sm btn-outline-primary">
+                                            <i data-feather="eye" class="me-1"></i> View
+                                        </a>
+                                        <a href="{{ url_for('compose_email', reply_to=email.id) }}" class="btn btn-sm btn-outline-secondary">
+                                            <i data-feather="corner-up-left" class="me-1"></i> Reply
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% elif query %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-body dashboard-card-body text-center py-5">
+                    <i data-feather="search" style="width: 48px; height: 48px;" class="mb-3 text-muted"></i>
+                    <h3>No Results Found</h3>
+                    <p class="text-muted">No emails matching your search criteria were found.</p>
+                    <p>Try using different keywords or search operators.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Search Tips -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="info" class="me-2"></i> Search Tips
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Common Search Operators</h6>
+                            <ul>
+                                <li><code>from:name</code> - Emails from a specific sender</li>
+                                <li><code>to:name</code> - Emails to a specific recipient</li>
+                                <li><code>subject:topic</code> - Emails with specific subject text</li>
+                                <li><code>is:unread</code> - Unread emails only</li>
+                                <li><code>has:attachment</code> - Emails with attachments</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Date-Based Search</h6>
+                            <ul>
+                                <li><code>after:2023/04/01</code> - Emails after April 1, 2023</li>
+                                <li><code>before:2023/05/01</code> - Emails before May 1, 2023</li>
+                                <li><code>older:7d</code> - Emails older than 7 days</li>
+                                <li><code>newer:3d</code> - Emails within the last 3 days</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

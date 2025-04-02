@@ -30,6 +30,28 @@
                 <i data-feather="file-text" class="sidebar-icon"></i>
                 <span>Daily Digests</span>
             </a>
+            
+            <div class="sidebar-section mt-2 mb-2">
+                <span class="sidebar-header px-3">Communications</span>
+            </div>
+            
+            <a href="{{ url_for('gmail_inbox') }}" class="sidebar-link {% if '/gmail' in request.path %}active{% endif %}">
+                <i data-feather="mail" class="sidebar-icon"></i>
+                <span>Gmail</span>
+            </a>
+            <a href="{{ url_for('slack_channel') }}" class="sidebar-link {% if '/slack' in request.path %}active{% endif %}">
+                <i data-feather="message-square" class="sidebar-icon"></i>
+                <span>Slack</span>
+            </a>
+            <a href="{{ url_for('drive_files') }}" class="sidebar-link {% if '/drive' in request.path %}active{% endif %}">
+                <i data-feather="hard-drive" class="sidebar-icon"></i>
+                <span>Google Drive</span>
+            </a>
+            
+            <div class="sidebar-section mt-2 mb-2">
+                <span class="sidebar-header px-3">System</span>
+            </div>
+            
             <a href="{{ url_for('integrations') }}" class="sidebar-link {% if request.path == url_for('integrations') %}active{% endif %}">
                 <i data-feather="link" class="sidebar-icon"></i>
                 <span>Integrations</span>

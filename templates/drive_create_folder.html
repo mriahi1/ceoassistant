@@ -1,0 +1,122 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1>Create Folder</h1>
+                <div>
+                    <a href="{{ url_for('drive_files', folder=parent_folder.id if parent_folder else None) }}" class="btn btn-outline-secondary">
+                        <i data-feather="arrow-left" class="me-2"></i> Back to Drive
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Current Location -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('drive_files') }}">My Drive</a></li>
+                    {% if parent_folder %}
+                    <li class="breadcrumb-item active" aria-current="page">{{ parent_folder.name }}</li>
+                    {% endif %}
+                </ol>
+            </nav>
+        </div>
+    </div>
+    
+    <!-- Create Folder Form -->
+    <div class="row mb-4">
+        <div class="col-md-8 mx-auto">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="folder-plus" class="me-2"></i> Create New Folder
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    {% if error %}
+                    <div class="alert alert-danger mb-4">
+                        <i data-feather="alert-triangle" class="me-2"></i> {{ error }}
+                    </div>
+                    {% endif %}
+                    
+                    {% if success %}
+                    <div class="alert alert-success mb-4">
+                        <i data-feather="check-circle" class="me-2"></i> {{ success }}
+                    </div>
+                    {% endif %}
+                    
+                    <form action="{{ url_for('create_drive_folder', parent=parent_folder.id if parent_folder else None) }}" method="post">
+                        <input type="hidden" name="parent_folder_id" value="{{ parent_folder.id if parent_folder else '' }}">
+                        
+                        <div class="mb-4 text-center">
+                            <div class="p-4 mb-3">
+                                <i data-feather="folder-plus" style="width: 48px; height: 48px;" class="mb-3 text-primary"></i>
+                                <h4>New Folder</h4>
+                                <p class="text-muted">Creating folder in: {% if parent_folder %}<strong>{{ parent_folder.name }}</strong>{% else %}<strong>My Drive (Root)</strong>{% endif %}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="folder_name" class="form-label">Folder Name:</label>
+                            <input type="text" class="form-control" id="folder_name" name="folder_name" placeholder="Enter folder name" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description (optional):</label>
+                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Add a description for this folder..."></textarea>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">
+                                <i data-feather="folder-plus" class="me-2"></i> Create Folder
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Organization Tips -->
+    <div class="row mb-4">
+        <div class="col-md-8 mx-auto">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="info" class="me-2"></i> Folder Organization Tips
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Effective Naming Conventions</h6>
+                            <ul>
+                                <li>Use clear, descriptive names</li>
+                                <li>Include dates for time-sensitive materials (YYYY-MM-DD)</li>
+                                <li>Use consistent naming patterns</li>
+                                <li>Avoid special characters and excessive spaces</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Folder Structure Best Practices</h6>
+                            <ul>
+                                <li>Create a logical hierarchy</li>
+                                <li>Limit folder depth to 3-4 levels</li>
+                                <li>Group related documents together</li>
+                                <li>Consider organizing by project, department, or year</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

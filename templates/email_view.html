@@ -1,0 +1,149 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1>Email View</h1>
+                <div>
+                    <a href="{{ url_for('gmail_inbox') }}" class="btn btn-outline-secondary">
+                        <i data-feather="arrow-left" class="me-2"></i> Back to Inbox
+                    </a>
+                    <a href="{{ url_for('compose_email', reply_to=email.id) }}" class="btn btn-primary ms-2">
+                        <i data-feather="corner-up-left" class="me-2"></i> Reply
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Email Content -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">{{ email.subject }}</h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    <div class="email-header mb-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><strong>From:</strong> {{ email.sender }}</p>
+                                <p><strong>To:</strong> {{ email.to }}</p>
+                            </div>
+                            <div class="col-md-6 text-md-end">
+                                <p><strong>Date:</strong> {{ email.date }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="email-body mt-4">
+                        <pre class="email-content">{{ email.body }}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Thread Section if applicable -->
+    {% if thread %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="message-circle" class="me-2"></i> Thread History
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body p-0">
+                    <div class="email-thread">
+                        {% for message in thread.messages %}
+                            {% if message.id != email.id %}
+                            <div class="email-thread-item p-3 {% if loop.index % 2 == 0 %}bg-light{% endif %}">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <strong>{{ message.sender }}</strong>
+                                    </div>
+                                    <div class="text-muted">
+                                        {{ message.date }}
+                                    </div>
+                                </div>
+                                <div class="mt-2">
+                                    <a href="{{ url_for('view_email', email_id=message.id) }}">
+                                        <h6>{{ message.subject }}</h6>
+                                    </a>
+                                    <div class="thread-preview">
+                                        {{ message.body[:150] }}{% if message.body|length > 150 %}...{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- AI Analysis Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="cpu" class="me-2"></i> AI Analysis
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    <p><strong>Email Importance:</strong> <span class="badge text-bg-primary">Medium</span></p>
+                    <p><strong>Requires Response:</strong> <span class="badge text-bg-success">Yes</span></p>
+                    <p><strong>Response Urgency:</strong> <span class="badge text-bg-warning">Within 24 Hours</span></p>
+                    <div class="mt-3">
+                        <h6>Suggested Actions:</h6>
+                        <div class="list-group">
+                            <a href="{{ url_for('compose_email', reply_to=email.id) }}" class="list-group-item list-group-item-action">
+                                <i data-feather="corner-up-left" class="me-2"></i> Reply to this email
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action disabled">
+                                <i data-feather="users" class="me-2"></i> Add sender to CRM (coming soon)
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action disabled">
+                                <i data-feather="calendar" class="me-2"></i> Schedule a follow-up (coming soon)
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+    .email-content {
+        white-space: pre-wrap;
+        font-family: inherit;
+        background-color: transparent;
+        border: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .email-thread-item {
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+    
+    .email-thread-item:last-child {
+        border-bottom: none;
+    }
+    
+    .thread-preview {
+        font-size: 0.9rem;
+        color: #666;
+    }
+</style>
+{% endblock %}

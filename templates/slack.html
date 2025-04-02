@@ -1,0 +1,286 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1>Slack Integration</h1>
+            <p class="text-muted">Manage and monitor your Slack communications</p>
+        </div>
+    </div>
+    
+    <!-- Action Buttons -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#composeModal">
+                    <i data-feather="message-square" class="me-2"></i> Send Message
+                </button>
+                <a href="{{ url_for('slack_channel') }}" class="btn btn-info">
+                    <i data-feather="refresh-cw" class="me-2"></i> Refresh Messages
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Channel Information -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="hash" class="me-2"></i> Channel: {{ channel_info.name }}
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Channel ID:</strong> {{ channel_info.id }}</p>
+                            <p><strong>Members:</strong> {{ channel_info.num_members }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Created:</strong> {{ channel_info.created }}</p>
+                            <p><strong>Purpose:</strong> {{ channel_info.purpose.value }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Messages -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="message-circle" class="me-2"></i> Recent Messages
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body p-0">
+                    {% if messages %}
+                        <div class="slack-messages">
+                            {% for message in messages %}
+                                <div class="slack-message p-3 {% if loop.index % 2 == 0 %}bg-light{% endif %}">
+                                    <div class="slack-message-header d-flex justify-content-between">
+                                        <div>
+                                            <strong>{{ message.user }}</strong>
+                                        </div>
+                                        <div class="text-muted">
+                                            {{ message.timestamp }}
+                                        </div>
+                                    </div>
+                                    <div class="slack-message-content mt-2">
+                                        {{ message.text }}
+                                    </div>
+                                    {% if message.reactions %}
+                                        <div class="slack-message-reactions mt-2">
+                                            {% for reaction in message.reactions %}
+                                                <span class="badge bg-light text-dark me-1">
+                                                    :{{ reaction.name }}: {{ reaction.count }}
+                                                </span>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                    {% if message.reply_count > 0 %}
+                                        <div class="slack-message-replies mt-2">
+                                            <a href="#" class="text-muted small">
+                                                <i data-feather="corner-down-right" class="me-1"></i> 
+                                                {{ message.reply_count }} repl{{ message.reply_count > 1 and 'ies' or 'y' }}
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center text-muted py-5">
+                            <i data-feather="message-square" style="width: 48px; height: 48px;" class="mb-3"></i>
+                            <p>No messages found in this channel.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Slack Messaging Stats -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="bar-chart-2" class="me-2"></i> Messaging Activity
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="text-center">
+                                <h3>{{ messages|length }}</h3>
+                                <p class="text-muted">Total Messages</p>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="text-center">
+                                <h3>{{ messages|selectattr('user')|map(attribute='user')|unique|list|length }}</h3>
+                                <p class="text-muted">Active Users</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="clock" class="me-2"></i> Recent Activity
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    {% if messages %}
+                        <p>Last message: <strong>{{ messages[0].timestamp }}</strong></p>
+                        <p>From: <strong>{{ messages[0].user }}</strong></p>
+                        <p>Most active user: <strong>{{ most_active_user }}</strong></p>
+                    {% else %}
+                        <p class="text-center text-muted py-3">No activity data available</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Compose Modal -->
+    <div class="modal fade" id="composeModal" tabindex="-1" aria-labelledby="composeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="composeModalLabel">
+                        <i data-feather="message-square" class="me-2"></i> Send Slack Message
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ url_for('send_slack_message') }}" method="post">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Message:</label>
+                            <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="use_blocks" name="use_blocks" value="1">
+                                <label class="form-check-label" for="use_blocks">
+                                    Format with Markdown
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <button type="button" class="btn btn-sm btn-outline-info" id="aiAssistBtn">
+                                <i data-feather="cpu" class="me-1"></i> AI Assist
+                            </button>
+                        </div>
+                        <div id="aiSuggestions" class="d-none">
+                            <div class="card mb-3">
+                                <div class="card-header bg-light">
+                                    <h6 class="mb-0">AI Message Suggestions</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-2">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary suggestion-btn" data-suggestion="status">Status Update</button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary suggestion-btn" data-suggestion="metrics">Metrics Report</button>
+                                        <button type="button" class="btn btn-sm btn-outline-secondary suggestion-btn" data-suggestion="digest">Daily Digest</button>
+                                    </div>
+                                    <div id="suggestionPreview" class="border p-2 rounded d-none">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const aiAssistBtn = document.getElementById('aiAssistBtn');
+        const aiSuggestions = document.getElementById('aiSuggestions');
+        const suggestionBtns = document.querySelectorAll('.suggestion-btn');
+        const suggestionPreview = document.getElementById('suggestionPreview');
+        const messageTextarea = document.getElementById('message');
+        
+        aiAssistBtn.addEventListener('click', function() {
+            if (aiSuggestions.classList.contains('d-none')) {
+                aiSuggestions.classList.remove('d-none');
+            } else {
+                aiSuggestions.classList.add('d-none');
+            }
+        });
+        
+        const suggestions = {
+            status: "🔄 *Weekly Status Update*\nHere's what happened this week:\n- Completed 3 customer onboarding sessions\n- Signed 2 new deals worth $45K in ARR\n- Fixed 5 critical bugs in the platform\n- Started planning for Q3 product roadmap\n\nNext week's focus areas:\n- Complete feature X development\n- Launch new marketing campaign\n- Finalize partnership agreement with Y",
+            
+            metrics: "📊 *Key Metrics Report*\n*Revenue*\n- MRR: $125,000 (+5% MoM)\n- ARR: $1.5M (+12% YoY)\n- New bookings: $35,000\n\n*Customers*\n- Total customers: 87 (+3 this month)\n- Churned: 1 customer (-$2,000 MRR)\n- Expansion: +$5,000 MRR from upsells\n\n*Pipeline*\n- Deals in negotiation: 12 ($180K potential ARR)\n- Avg deal size: $25K\n- Conversion rate: 22%",
+            
+            digest: "🌟 *Daily Digest - {{ today }}*\n\n*Highlights*\n- Team completed sprint planning with 45 story points committed\n- New enterprise deal with Company X moved to technical validation stage\n- Customer success reported 98% satisfaction score this week\n\n*Priorities Today*\n1. Review Q2 financial forecast\n2. Approve final marketing assets for campaign\n3. Interview senior developer candidate\n4. Follow up on pending enterprise deals\n\n*Upcoming*\n- Board meeting preparation (Thursday)\n- Product roadmap review (Friday)"
+        };
+        
+        suggestionBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const type = this.getAttribute('data-suggestion');
+                const template = suggestions[type];
+                
+                suggestionPreview.textContent = template;
+                suggestionPreview.classList.remove('d-none');
+                
+                // Add button to use template
+                const useBtn = document.createElement('button');
+                useBtn.className = 'btn btn-sm btn-primary mt-2';
+                useBtn.textContent = 'Use This Template';
+                useBtn.addEventListener('click', function() {
+                    messageTextarea.value = template;
+                    document.getElementById('use_blocks').checked = true;
+                    aiSuggestions.classList.add('d-none');
+                });
+                
+                suggestionPreview.innerHTML = '';
+                const pre = document.createElement('pre');
+                pre.className = 'mb-2';
+                pre.textContent = template;
+                suggestionPreview.appendChild(pre);
+                suggestionPreview.appendChild(useBtn);
+            });
+        });
+    });
+</script>
+{% endblock %}
+
+{% block styles %}
+<style>
+    .slack-messages {
+        max-height: 600px;
+        overflow-y: auto;
+    }
+    
+    .slack-message {
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+    
+    .slack-message:last-child {
+        border-bottom: none;
+    }
+    
+    .slack-message-content {
+        white-space: pre-wrap;
+    }
+</style>
+{% endblock %}

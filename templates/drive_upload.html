@@ -1,0 +1,183 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1>Upload to Drive</h1>
+                <div>
+                    <a href="{{ url_for('drive_files', folder=parent_folder.id if parent_folder else None) }}" class="btn btn-outline-secondary">
+                        <i data-feather="arrow-left" class="me-2"></i> Back to Drive
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Current Location -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('drive_files') }}">My Drive</a></li>
+                    {% if parent_folder %}
+                    <li class="breadcrumb-item active" aria-current="page">{{ parent_folder.name }}</li>
+                    {% endif %}
+                </ol>
+            </nav>
+        </div>
+    </div>
+    
+    <!-- Upload Form -->
+    <div class="row mb-4">
+        <div class="col-md-8 mx-auto">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="upload-cloud" class="me-2"></i> Upload File
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    {% if error %}
+                    <div class="alert alert-danger mb-4">
+                        <i data-feather="alert-triangle" class="me-2"></i> {{ error }}
+                    </div>
+                    {% endif %}
+                    
+                    {% if success %}
+                    <div class="alert alert-success mb-4">
+                        <i data-feather="check-circle" class="me-2"></i> {{ success }}
+                    </div>
+                    {% endif %}
+                    
+                    <form action="{{ url_for('upload_to_drive', parent=parent_folder.id if parent_folder else None) }}" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="parent_folder_id" value="{{ parent_folder.id if parent_folder else '' }}">
+                        
+                        <div class="mb-4 text-center">
+                            <div class="upload-area p-5 border border-dashed rounded mb-3">
+                                <i data-feather="upload-cloud" style="width: 48px; height: 48px;" class="mb-3 text-muted"></i>
+                                <h4>Drag & Drop File Here</h4>
+                                <p class="text-muted">Or click to browse your files</p>
+                                <input type="file" name="file" id="file-upload" class="form-control" style="opacity: 0; position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: pointer;" required>
+                            </div>
+                            <div id="file-name-display" class="text-start" style="display: none;">
+                                <div class="alert alert-info">
+                                    <i data-feather="file" class="me-2"></i> Selected: <span id="selected-file-name"></span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description (optional):</label>
+                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="Add a description for this file..."></textarea>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">
+                                <i data-feather="upload" class="me-2"></i> Upload File
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Upload Tips -->
+    <div class="row mb-4">
+        <div class="col-md-8 mx-auto">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="info" class="me-2"></i> Upload Tips
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    <ul>
+                        <li>Maximum file size: 10MB</li>
+                        <li>Supported file types: Documents, Spreadsheets, Images, PDFs, and more</li>
+                        <li>Google Workspace files (Docs, Sheets, Slides) are automatically converted to the appropriate format</li>
+                        <li>Files are uploaded to: {% if parent_folder %}<strong>{{ parent_folder.name }}</strong>{% else %}<strong>My Drive (Root)</strong>{% endif %}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const fileUpload = document.getElementById('file-upload');
+        const fileNameDisplay = document.getElementById('file-name-display');
+        const selectedFileName = document.getElementById('selected-file-name');
+        
+        fileUpload.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                selectedFileName.textContent = this.files[0].name;
+                fileNameDisplay.style.display = 'block';
+            } else {
+                fileNameDisplay.style.display = 'none';
+            }
+        });
+        
+        // Handle drag and drop
+        const uploadArea = document.querySelector('.upload-area');
+        
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, highlight, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, unhighlight, false);
+        });
+        
+        function highlight() {
+            uploadArea.classList.add('bg-light');
+        }
+        
+        function unhighlight() {
+            uploadArea.classList.remove('bg-light');
+        }
+        
+        uploadArea.addEventListener('drop', handleDrop, false);
+        
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            
+            fileUpload.files = files;
+            
+            if (files && files[0]) {
+                selectedFileName.textContent = files[0].name;
+                fileNameDisplay.style.display = 'block';
+            }
+        }
+    });
+</script>
+{% endblock %}
+
+{% block styles %}
+<style>
+    .upload-area {
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .upload-area:hover, .upload-area.bg-light {
+        background-color: rgba(0,0,0,0.05);
+    }
+</style>
+{% endblock %}

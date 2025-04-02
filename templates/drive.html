@@ -1,0 +1,195 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1>Google Drive</h1>
+            <p class="text-muted">Manage your documents and files</p>
+        </div>
+    </div>
+    
+    <!-- Action Buttons -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="btn-group" role="group">
+                <a href="{{ url_for('drive_files') }}" class="btn btn-primary">
+                    <i data-feather="refresh-cw" class="me-2"></i> Refresh
+                </a>
+                <a href="{{ url_for('upload_to_drive', parent=current_folder.id if current_folder else None) }}" class="btn btn-success">
+                    <i data-feather="upload" class="me-2"></i> Upload File
+                </a>
+                <a href="{{ url_for('create_drive_folder', parent=current_folder.id if current_folder else None) }}" class="btn btn-info">
+                    <i data-feather="folder-plus" class="me-2"></i> Create Folder
+                </a>
+                <a href="{{ url_for('search_drive') }}" class="btn btn-outline-secondary">
+                    <i data-feather="search" class="me-2"></i> Search
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Current Location -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('drive_files') }}">My Drive</a></li>
+                    {% if current_folder %}
+                    <li class="breadcrumb-item active" aria-current="page">{{ current_folder.name }}</li>
+                    {% endif %}
+                </ol>
+            </nav>
+        </div>
+    </div>
+    
+    <!-- Files and Folders -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="{% if current_folder %}folder{% else %}hard-drive{% endif %}" class="me-2"></i> 
+                        {% if current_folder %}{{ current_folder.name }}{% else %}My Drive{% endif %}
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body p-0">
+                    {% if files %}
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Modified</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for file in files %}
+                                <tr>
+                                    <td>
+                                        {% if file.isFolder %}
+                                        <i data-feather="folder" class="text-primary me-2"></i>
+                                        <a href="{{ url_for('drive_files', folder=file.id) }}">
+                                            {{ file.name }}
+                                        </a>
+                                        {% else %}
+                                        <i data-feather="file" class="text-secondary me-2"></i>
+                                        <a href="{{ url_for('view_drive_file', file_id=file.id) }}">
+                                            {{ file.name }}
+                                        </a>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if file.isFolder %}
+                                        Folder
+                                        {% else %}
+                                        {{ file.mimeType.split('/')[-1]|upper }}
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ file.modifiedTime }}</td>
+                                    <td>
+                                        {% if file.isFolder %}
+                                        <a href="{{ url_for('drive_files', folder=file.id) }}" class="btn btn-sm btn-outline-primary">
+                                            <i data-feather="folder-plus" class="me-1"></i> Open
+                                        </a>
+                                        {% else %}
+                                        <div class="btn-group">
+                                            <a href="{{ url_for('view_drive_file', file_id=file.id) }}" class="btn btn-sm btn-outline-primary">
+                                                <i data-feather="eye" class="me-1"></i> View
+                                            </a>
+                                            <a href="{{ url_for('share_drive_file', file_id=file.id) }}" class="btn btn-sm btn-outline-secondary">
+                                                <i data-feather="share-2" class="me-1"></i> Share
+                                            </a>
+                                        </div>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center text-muted py-5">
+                        <i data-feather="folder" style="width: 48px; height: 48px;" class="mb-3"></i>
+                        <p>This folder is empty.</p>
+                        <div class="mt-3">
+                            <a href="{{ url_for('upload_to_drive', parent=current_folder.id if current_folder else None) }}" class="btn btn-outline-primary">
+                                <i data-feather="upload" class="me-2"></i> Upload File
+                            </a>
+                            <a href="{{ url_for('create_drive_folder', parent=current_folder.id if current_folder else None) }}" class="btn btn-outline-primary ms-2">
+                                <i data-feather="folder-plus" class="me-2"></i> Create Folder
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Drive Statistics -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="bar-chart-2" class="me-2"></i> Drive Statistics
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="text-center">
+                                <h3>{{ files|selectattr('isFolder', 'equalto', true)|list|length }}</h3>
+                                <p class="text-muted">Folders</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="text-center">
+                                <h3>{{ files|selectattr('isFolder', 'equalto', false)|list|length }}</h3>
+                                <p class="text-muted">Files</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="clock" class="me-2"></i> Recent Activity
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    {% set recent_files = files|sort(attribute='modifiedTime', reverse=true)|list[:3] %}
+                    {% if recent_files %}
+                    <ul class="list-group list-group-flush">
+                        {% for file in recent_files %}
+                        <li class="list-group-item bg-transparent">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    {% if file.isFolder %}
+                                    <i data-feather="folder" class="text-primary me-2"></i>
+                                    {% else %}
+                                    <i data-feather="file" class="text-secondary me-2"></i>
+                                    {% endif %}
+                                    <span>{{ file.name }}</span>
+                                </div>
+                                <small class="text-muted">{{ file.modifiedTime }}</small>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p class="text-center text-muted py-3">No recent activity</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

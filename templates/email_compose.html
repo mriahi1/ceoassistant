@@ -1,0 +1,176 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1>Compose Email</h1>
+                <div>
+                    <a href="{{ url_for('gmail_inbox') }}" class="btn btn-outline-secondary">
+                        <i data-feather="arrow-left" class="me-2"></i> Back to Inbox
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Compose Form -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="edit-3" class="me-2"></i> 
+                        {% if reply_to %}Reply to Email{% else %}New Email{% endif %}
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    <form action="{{ url_for('compose_email') }}" method="post">
+                        {% if reply_to %}
+                        <input type="hidden" name="reply_to" value="{{ reply_to }}">
+                        {% endif %}
+                        
+                        <div class="mb-3">
+                            <label for="to" class="form-label">To:</label>
+                            <input type="email" class="form-control" id="to" name="to" value="{{ to }}" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">Subject:</label>
+                            <input type="text" class="form-control" id="subject" name="subject" value="{{ subject }}" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="body" class="form-label">Message:</label>
+                            <textarea class="form-control" id="body" name="body" rows="12">{{ body }}</textarea>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i data-feather="send" class="me-2"></i> Send Email
+                                </button>
+                                <button type="reset" class="btn btn-outline-secondary ms-2">
+                                    <i data-feather="x" class="me-2"></i> Clear
+                                </button>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-outline-info" id="aiSuggestButton">
+                                    <i data-feather="cpu" class="me-2"></i> AI Suggestions
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- AI Suggestions Panel (hidden by default) -->
+    <div class="row mb-4" id="aiSuggestionsPanel" style="display: none;">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="cpu" class="me-2"></i> AI Writing Suggestions
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    <div class="ai-suggestion-tabs">
+                        <ul class="nav nav-tabs" id="suggestionTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="professional-tab" data-bs-toggle="tab" data-bs-target="#professional" type="button" role="tab">Professional</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="concise-tab" data-bs-toggle="tab" data-bs-target="#concise" type="button" role="tab">Concise</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="detailed-tab" data-bs-toggle="tab" data-bs-target="#detailed" type="button" role="tab">Detailed</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content mt-3" id="suggestionTabsContent">
+                            <div class="tab-pane fade show active" id="professional" role="tabpanel">
+                                <div class="suggestion-content p-3 border rounded">
+                                    <p>Dear [Recipient],</p>
+                                    <p>Thank you for your email. I appreciate your reaching out on this matter.</p>
+                                    <p>Based on the information you've provided, I believe we can proceed with the next steps as outlined in our previous discussion. Our team is prepared to move forward according to the established timeline.</p>
+                                    <p>Please let me know if you have any questions or require additional information.</p>
+                                    <p>Best regards,<br>[Your Name]</p>
+                                </div>
+                                <button class="btn btn-sm btn-outline-primary mt-2 insert-suggestion" data-suggestion="professional">
+                                    <i data-feather="copy" class="me-1"></i> Use This Template
+                                </button>
+                            </div>
+                            <div class="tab-pane fade" id="concise" role="tabpanel">
+                                <div class="suggestion-content p-3 border rounded">
+                                    <p>Hi [Recipient],</p>
+                                    <p>Thanks for your message. I'm on board with the proposal.</p>
+                                    <p>We'll proceed as discussed and meet the established timeline.</p>
+                                    <p>Let me know if you need anything else.</p>
+                                    <p>Regards,<br>[Your Name]</p>
+                                </div>
+                                <button class="btn btn-sm btn-outline-primary mt-2 insert-suggestion" data-suggestion="concise">
+                                    <i data-feather="copy" class="me-1"></i> Use This Template
+                                </button>
+                            </div>
+                            <div class="tab-pane fade" id="detailed" role="tabpanel">
+                                <div class="suggestion-content p-3 border rounded">
+                                    <p>Dear [Recipient],</p>
+                                    <p>Thank you for your comprehensive email regarding the current project status. I genuinely appreciate the time you've taken to provide such detailed information.</p>
+                                    <p>After carefully reviewing the points you've raised, I concur with your assessment of the situation. Our team has analyzed the potential implications and is prepared to implement the strategy we previously outlined in our meeting on [date].</p>
+                                    <p>Specifically, we will:</p>
+                                    <ol>
+                                        <li>Initiate the first phase of implementation by [date]</li>
+                                        <li>Coordinate with all stakeholders to ensure alignment</li>
+                                        <li>Provide weekly progress updates via our established channels</li>
+                                        <li>Schedule a follow-up meeting to address any emerging concerns</li>
+                                    </ol>
+                                    <p>Should you require any clarification or have additional thoughts on this matter, please don't hesitate to reach out. I'm available for a call at your convenience.</p>
+                                    <p>Warm regards,<br>[Your Name]</p>
+                                </div>
+                                <button class="btn btn-sm btn-outline-primary mt-2 insert-suggestion" data-suggestion="detailed">
+                                    <i data-feather="copy" class="me-1"></i> Use This Template
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Toggle AI suggestions panel
+        const aiSuggestButton = document.getElementById('aiSuggestButton');
+        const aiSuggestionsPanel = document.getElementById('aiSuggestionsPanel');
+        
+        aiSuggestButton.addEventListener('click', function() {
+            if (aiSuggestionsPanel.style.display === 'none') {
+                aiSuggestionsPanel.style.display = 'block';
+            } else {
+                aiSuggestionsPanel.style.display = 'none';
+            }
+        });
+        
+        // Insert suggestion templates
+        const insertButtons = document.querySelectorAll('.insert-suggestion');
+        const bodyInput = document.getElementById('body');
+        
+        insertButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const suggestionType = button.getAttribute('data-suggestion');
+                const suggestionContent = document.querySelector(`#${suggestionType} .suggestion-content`).innerText;
+                
+                bodyInput.value = suggestionContent;
+                aiSuggestionsPanel.style.display = 'none';
+            });
+        });
+    });
+</script>
+{% endblock %}

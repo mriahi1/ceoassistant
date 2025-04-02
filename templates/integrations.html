@@ -231,6 +231,103 @@
         </div>
     </div>
     
+    <!-- Google Integrations -->
+    <div class="row mb-4">
+        <!-- Gmail Integration -->
+        <div class="col-lg-6 mb-3">
+            <div class="card dashboard-card h-100">
+                <div class="card-header dashboard-card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="mail" class="text-danger me-2"></i> Gmail
+                    </h5>
+                    <span class="badge {% if integration_status.gmail %}text-bg-success{% else %}text-bg-warning{% endif %}">
+                        {% if integration_status.gmail %}Connected{% else %}Optional{% endif %}
+                    </span>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    {% if integration_status.gmail %}
+                        <div class="integration-status connected">
+                            <div class="status-indicator status-success"></div>
+                            <div>Connected successfully</div>
+                        </div>
+                        <p>Your Gmail integration is active. The system can:</p>
+                        <ul>
+                            <li>Read and analyze your emails</li>
+                            <li>Send emails on your behalf</li>
+                            <li>Track communication history</li>
+                            <li>Monitor important conversations</li>
+                        </ul>
+                        <a href="{{ url_for('gmail_inbox') }}" class="btn btn-sm btn-outline-primary mt-2">
+                            <i data-feather="mail" class="me-1"></i> Go to Gmail
+                        </a>
+                    {% else %}
+                        <div class="integration-status warning">
+                            <div class="status-indicator status-warning"></div>
+                            <div>Not configured (optional)</div>
+                        </div>
+                        <p>Gmail integration is optional but provides valuable email management capabilities.</p>
+                        <div class="alert alert-secondary">
+                            <h6>How to connect:</h6>
+                            <ol>
+                                <li>Create Google OAuth credentials in Google Cloud Console</li>
+                                <li>Set the <code>GOOGLE_CREDENTIALS_PATH</code> environment variable</li>
+                                <li>Set <code>GMAIL_ENABLED=true</code> environment variable</li>
+                                <li>Restart the application</li>
+                            </ol>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Google Drive Integration -->
+        <div class="col-lg-6 mb-3">
+            <div class="card dashboard-card h-100">
+                <div class="card-header dashboard-card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="hard-drive" class="text-primary me-2"></i> Google Drive
+                    </h5>
+                    <span class="badge {% if integration_status.google_drive %}text-bg-success{% else %}text-bg-warning{% endif %}">
+                        {% if integration_status.google_drive %}Connected{% else %}Optional{% endif %}
+                    </span>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    {% if integration_status.google_drive %}
+                        <div class="integration-status connected">
+                            <div class="status-indicator status-success"></div>
+                            <div>Connected successfully</div>
+                        </div>
+                        <p>Your Google Drive integration is active. The system can:</p>
+                        <ul>
+                            <li>Access and manage files and folders</li>
+                            <li>Upload digests and reports automatically</li>
+                            <li>Create and share documents</li>
+                            <li>Organize CEO-related content</li>
+                        </ul>
+                        <a href="{{ url_for('drive_files') }}" class="btn btn-sm btn-outline-primary mt-2">
+                            <i data-feather="hard-drive" class="me-1"></i> Go to Drive
+                        </a>
+                    {% else %}
+                        <div class="integration-status warning">
+                            <div class="status-indicator status-warning"></div>
+                            <div>Not configured (optional)</div>
+                        </div>
+                        <p>Google Drive integration is optional but useful for document management.</p>
+                        <div class="alert alert-secondary">
+                            <h6>How to connect:</h6>
+                            <ol>
+                                <li>Create Google OAuth credentials in Google Cloud Console</li>
+                                <li>Set the <code>GOOGLE_CREDENTIALS_PATH</code> environment variable</li>
+                                <li>Set <code>GDRIVE_ENABLED=true</code> environment variable</li>
+                                <li>Restart the application</li>
+                            </ol>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <!-- Integration Test & Refresh -->
     <div class="row mb-4">
         <div class="col-12">

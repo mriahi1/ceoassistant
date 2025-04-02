@@ -1,0 +1,135 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1>Gmail Inbox</h1>
+            <p class="text-muted">Manage and monitor your email communications</p>
+        </div>
+    </div>
+    
+    <!-- Compose Button -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <a href="{{ url_for('compose_email') }}" class="btn btn-primary">
+                <i data-feather="edit" class="me-2"></i> Compose New Email
+            </a>
+            <a href="{{ url_for('search_gmail') }}" class="btn btn-outline-secondary ms-2">
+                <i data-feather="search" class="me-2"></i> Search Emails
+            </a>
+        </div>
+    </div>
+    
+    <!-- Unread Emails Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="mail" class="text-danger me-2"></i> Unread Emails
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body p-0">
+                    {% if unread_emails %}
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Sender</th>
+                                        <th>Subject</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for email in unread_emails %}
+                                    <tr>
+                                        <td class="text-nowrap">{{ email.sender }}</td>
+                                        <td>
+                                            <a href="{{ url_for('view_email', email_id=email.id) }}">
+                                                {{ email.subject }}
+                                            </a>
+                                        </td>
+                                        <td class="text-nowrap">{{ email.date }}</td>
+                                        <td class="text-nowrap">
+                                            <a href="{{ url_for('view_email', email_id=email.id) }}" class="btn btn-sm btn-outline-primary">
+                                                <i data-feather="eye" class="me-1"></i> View
+                                            </a>
+                                            <a href="{{ url_for('compose_email', reply_to=email.id) }}" class="btn btn-sm btn-outline-secondary">
+                                                <i data-feather="corner-up-left" class="me-1"></i> Reply
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center text-muted py-5">
+                            <i data-feather="inbox" style="width: 48px; height: 48px;" class="mb-3"></i>
+                            <p>No unread emails found.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent Emails Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="clock" class="text-primary me-2"></i> Recent Emails
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body p-0">
+                    {% if recent_emails %}
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Sender</th>
+                                        <th>Subject</th>
+                                        <th>Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for email in recent_emails %}
+                                    <tr>
+                                        <td class="text-nowrap">{{ email.sender }}</td>
+                                        <td>
+                                            <a href="{{ url_for('view_email', email_id=email.id) }}">
+                                                {{ email.subject }}
+                                            </a>
+                                        </td>
+                                        <td class="text-nowrap">{{ email.date }}</td>
+                                        <td class="text-nowrap">
+                                            <a href="{{ url_for('view_email', email_id=email.id) }}" class="btn btn-sm btn-outline-primary">
+                                                <i data-feather="eye" class="me-1"></i> View
+                                            </a>
+                                            <a href="{{ url_for('compose_email', reply_to=email.id) }}" class="btn btn-sm btn-outline-secondary">
+                                                <i data-feather="corner-up-left" class="me-1"></i> Reply
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center text-muted py-5">
+                            <i data-feather="inbox" style="width: 48px; height: 48px;" class="mb-3"></i>
+                            <p>No recent emails found.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

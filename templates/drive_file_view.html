@@ -1,0 +1,151 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1>File Details</h1>
+                <div>
+                    <a href="{{ url_for('drive_files', folder=file.parents[0] if file.parents else None) }}" class="btn btn-outline-secondary">
+                        <i data-feather="arrow-left" class="me-2"></i> Back to Drive
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- File Info -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="file" class="me-2"></i> {{ file.name }}
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Type:</strong> {{ file.mimeType }}</p>
+                            <p><strong>Size:</strong> {{ file.size|filesizeformat if file.size else 'N/A' }}</p>
+                            <p><strong>Created:</strong> {{ file.createdTime }}</p>
+                            <p><strong>Modified:</strong> {{ file.modifiedTime }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Owner:</strong> {{ file.owners[0].displayName if file.owners else 'N/A' }}</p>
+                            <p><strong>Web View Link:</strong> <a href="{{ file.webViewLink }}" target="_blank">Open in Google Drive</a></p>
+                            <p><strong>Last Modified By:</strong> {{ file.lastModifyingUser.displayName if file.lastModifyingUser else 'N/A' }}</p>
+                            {% if file.shared %}
+                            <p><strong>Sharing:</strong> <span class="badge text-bg-info">Shared</span></p>
+                            {% else %}
+                            <p><strong>Sharing:</strong> <span class="badge text-bg-secondary">Private</span></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <div class="d-flex flex-wrap gap-2">
+                            <a href="{{ file.webContentLink }}" class="btn btn-primary" {% if not file.webContentLink %}disabled{% endif %}>
+                                <i data-feather="download" class="me-2"></i> Download
+                            </a>
+                            <a href="{{ url_for('share_drive_file', file_id=file.id) }}" class="btn btn-info">
+                                <i data-feather="share-2" class="me-2"></i> Share
+                            </a>
+                            {% if 'google-apps' in file.mimeType %}
+                            <a href="{{ file.webViewLink }}" target="_blank" class="btn btn-success">
+                                <i data-feather="edit" class="me-2"></i> Open in Google Docs
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- File Preview -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="eye" class="me-2"></i> Preview
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    {% if 'image/' in file.mimeType %}
+                    <div class="text-center">
+                        <img src="{{ file.thumbnailLink if file.thumbnailLink else file.webContentLink }}" class="img-fluid" alt="{{ file.name }}">
+                    </div>
+                    {% elif 'google-apps-document' in file.mimeType %}
+                    <div class="embed-responsive">
+                        <iframe src="{{ file.webViewLink }}?embedded=true" class="embed-responsive-item" style="width: 100%; height: 500px;" frameborder="0"></iframe>
+                    </div>
+                    {% elif 'google-apps-spreadsheet' in file.mimeType %}
+                    <div class="embed-responsive">
+                        <iframe src="{{ file.webViewLink }}?embedded=true" class="embed-responsive-item" style="width: 100%; height: 500px;" frameborder="0"></iframe>
+                    </div>
+                    {% elif 'google-apps-presentation' in file.mimeType %}
+                    <div class="embed-responsive">
+                        <iframe src="{{ file.webViewLink }}?embedded=true" class="embed-responsive-item" style="width: 100%; height: 500px;" frameborder="0"></iframe>
+                    </div>
+                    {% elif 'pdf' in file.mimeType %}
+                    <div class="embed-responsive">
+                        <iframe src="{{ file.webViewLink }}" class="embed-responsive-item" style="width: 100%; height: 500px;" frameborder="0"></iframe>
+                    </div>
+                    {% elif 'text/' in file.mimeType %}
+                    <div class="text-preview p-3 border rounded" style="max-height: 500px; overflow-y: auto;">
+                        <pre>{{ file_content }}</pre>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <i data-feather="file" style="width: 64px; height: 64px;" class="mb-3 text-muted"></i>
+                        <h4>Preview not available</h4>
+                        <p class="text-muted">Preview is not available for this file type. Download the file to view its contents.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- File Sharing -->
+    {% if file.permissions %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="users" class="me-2"></i> Sharing
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Role</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for perm in file.permissions %}
+                                <tr>
+                                    <td>{{ perm.emailAddress if perm.emailAddress else perm.id }}</td>
+                                    <td>{{ perm.type }}</td>
+                                    <td>{{ perm.role }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

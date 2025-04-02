@@ -10,6 +10,9 @@ OOTI_BASE_URL = os.environ.get("OOTI_BASE_URL", "https://api.ooti.co")
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 SLACK_BOT_TOKEN = os.environ.get("SLACK_BOT_TOKEN")
 SLACK_CHANNEL_ID = os.environ.get("SLACK_CHANNEL_ID")
+GOOGLE_CREDENTIALS_PATH = os.environ.get("GOOGLE_CREDENTIALS_PATH")
+GMAIL_ENABLED = os.environ.get("GMAIL_ENABLED", "false").lower() == "true"
+GDRIVE_ENABLED = os.environ.get("GDRIVE_ENABLED", "false").lower() == "true"
 
 # Application settings
 APP_NAME = "CEO AI Assistant"

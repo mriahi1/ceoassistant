@@ -163,9 +163,59 @@
   margin-right: 0.75rem;
 }
 
+.sidebar-section {
+  padding: 0.5rem 0;
+}
+
+.sidebar-header {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--muted-text);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
 .main-content {
   margin-left: 250px;
   padding: 2rem;
+}
+
+/* Gmail and Slack styling */
+.email-content, .slack-message-content {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.thread-preview {
+  font-size: 0.9rem;
+  color: var(--muted-text);
+}
+
+.slack-message {
+  border-bottom: 1px solid var(--border-color);
+  transition: background-color 0.15s;
+}
+
+.slack-message:hover {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.slack-message-reactions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+/* Google Drive */
+.upload-area {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.upload-area:hover, .upload-area.bg-light {
+  background-color: rgba(255, 255, 255, 0.05) !important;
 }
 
 /* Responsive adjustments */
@@ -184,6 +234,10 @@
     display: none;
   }
   
+  .sidebar-section {
+    display: none;
+  }
+  
   .sidebar-icon {
     margin-right: 0;
     font-size: 1.25rem;
@@ -192,6 +246,22 @@
   .main-content {
     margin-left: 80px;
     padding: 1rem;
+  }
+  
+  /* Make tables more responsive */
+  .table-responsive {
+    font-size: 0.85rem;
+  }
+  
+  /* Adjust card padding */
+  .dashboard-card-body {
+    padding: 1rem;
+  }
+  
+  /* Make buttons smaller on mobile */
+  .btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
   }
 }
 

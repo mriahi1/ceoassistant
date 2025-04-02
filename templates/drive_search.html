@@ -1,0 +1,175 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1>Search Drive</h1>
+                <div>
+                    <a href="{{ url_for('drive_files') }}" class="btn btn-outline-secondary">
+                        <i data-feather="arrow-left" class="me-2"></i> Back to Drive
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Search Form -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="search" class="me-2"></i> Search Files
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    <form action="{{ url_for('search_drive') }}" method="post">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="query" placeholder="Search files and folders..." value="{{ query }}" required>
+                            <button class="btn btn-primary" type="submit">
+                                <i data-feather="search" class="me-2"></i> Search
+                            </button>
+                        </div>
+                        <div class="mt-2 text-muted small">
+                            <p class="mb-1">Search tips:</p>
+                            <ul class="mb-0 small">
+                                <li>Enter file names, content within files, or specific keywords</li>
+                                <li>Use quotes for exact phrases: <code>"quarterly report"</code></li>
+                                <li>Search for file types: <code>type:pdf</code>, <code>type:document</code>, <code>type:spreadsheet</code></li>
+                                <li>Find files owned by someone: <code>owner:email@example.com</code></li>
+                            </ul>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Search Results -->
+    {% if results %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="list" class="me-2"></i> Search Results
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Modified</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for file in results %}
+                                <tr>
+                                    <td>
+                                        {% if file.isFolder %}
+                                        <i data-feather="folder" class="text-primary me-2"></i>
+                                        <a href="{{ url_for('drive_files', folder=file.id) }}">
+                                            {{ file.name }}
+                                        </a>
+                                        {% else %}
+                                        <i data-feather="file" class="text-secondary me-2"></i>
+                                        <a href="{{ url_for('view_drive_file', file_id=file.id) }}">
+                                            {{ file.name }}
+                                        </a>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if file.isFolder %}
+                                        Folder
+                                        {% else %}
+                                        {{ file.mimeType.split('/')[-1]|upper }}
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ file.modifiedTime }}</td>
+                                    <td>
+                                        {% if file.isFolder %}
+                                        <a href="{{ url_for('drive_files', folder=file.id) }}" class="btn btn-sm btn-outline-primary">
+                                            <i data-feather="folder-plus" class="me-1"></i> Open
+                                        </a>
+                                        {% else %}
+                                        <div class="btn-group">
+                                            <a href="{{ url_for('view_drive_file', file_id=file.id) }}" class="btn btn-sm btn-outline-primary">
+                                                <i data-feather="eye" class="me-1"></i> View
+                                            </a>
+                                            <a href="{{ url_for('share_drive_file', file_id=file.id) }}" class="btn btn-sm btn-outline-secondary">
+                                                <i data-feather="share-2" class="me-1"></i> Share
+                                            </a>
+                                        </div>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% elif query %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-body dashboard-card-body text-center py-5">
+                    <i data-feather="search" style="width: 48px; height: 48px;" class="mb-3 text-muted"></i>
+                    <h3>No Results Found</h3>
+                    <p class="text-muted">No files or folders matching your search criteria were found.</p>
+                    <p>Try using different keywords or search parameters.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Advanced Search Tips -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="info" class="me-2"></i> Advanced Search Tips
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Search by File Properties</h6>
+                            <ul>
+                                <li><code>type:document</code> - Google Docs files</li>
+                                <li><code>type:spreadsheet</code> - Google Sheets files</li>
+                                <li><code>type:presentation</code> - Google Slides files</li>
+                                <li><code>type:pdf</code> - PDF files</li>
+                                <li><code>type:image</code> - Image files</li>
+                                <li><code>type:folder</code> - Folders only</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Search by File Status</h6>
+                            <ul>
+                                <li><code>owner:me</code> - Files owned by you</li>
+                                <li><code>starred</code> - Starred files</li>
+                                <li><code>trashed</code> - Files in trash</li>
+                                <li><code>modifiedTime:&lt;YYYY-MM-DD&gt;</code> - Files modified on a specific date</li>
+                                <li><code>shared</code> - Files shared with others</li>
+                                <li><code>to:email@example.com</code> - Files shared with a specific person</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
