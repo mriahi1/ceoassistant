@@ -1,0 +1,4117 @@
+{
+  "hubspot": {
+    "deals": [
+      {
+        "id": "5fbdec16-5a1a-4748-88dc-cfd68546d27c",
+        "name": "Wayne Enterprises - Strategic Alliance",
+        "amount": 94588,
+        "close_date": "2025-05-31",
+        "pipeline": "default",
+        "stage": "prospecting",
+        "last_modified": "1743574323786"
+      },
+      {
+        "id": "e095d2b1-6901-482c-bb15-d78640ce9be2",
+        "name": "Stark Industries - Strategic Alliance",
+        "amount": 107423,
+        "close_date": "2025-07-04",
+        "pipeline": "default",
+        "stage": "qualification",
+        "last_modified": "1743228723786"
+      },
+      {
+        "id": "a75a7566-ef69-4b3a-96cf-70e389f94c06",
+        "name": "Spacely Sprockets - Product Expansion",
+        "amount": 39447,
+        "close_date": "2025-06-04",
+        "pipeline": "default",
+        "stage": "qualification",
+        "last_modified": "1742969523786"
+      },
+      {
+        "id": "5950a074-1bb7-458d-8968-d3477b4d1f91",
+        "name": "Initech Systems - Multi-Year Agreement",
+        "amount": 27720,
+        "close_date": "2025-07-26",
+        "pipeline": "default",
+        "stage": "prospecting",
+        "last_modified": "1742796723786"
+      },
+      {
+        "id": "5868195c-a591-4118-944c-07ac97a6894b",
+        "name": "Cyberdyne Systems - Training Program",
+        "amount": 274967,
+        "close_date": "2025-05-30",
+        "pipeline": "default",
+        "stage": "proposal",
+        "last_modified": "1743142323786"
+      },
+      {
+        "id": "666c3938-54a6-4bda-a48e-7c5bd1682512",
+        "name": "Cyberdyne Systems - Support Package",
+        "amount": 246654,
+        "close_date": "2025-04-16",
+        "pipeline": "default",
+        "stage": "proposal",
+        "last_modified": "1743574323787"
+      },
+      {
+        "id": "fd73e2a8-5e6b-49ee-9acb-976994adc343",
+        "name": "Bluth Company - Maintenance Contract",
+        "amount": 92626,
+        "close_date": "2025-07-23",
+        "pipeline": "default",
+        "stage": "proposal",
+        "last_modified": "1743055923787"
+      },
+      {
+        "id": "79b5a2f2-8962-4eac-aca6-2630d17a9a84",
+        "name": "Wayne Enterprises - Maintenance Contract",
+        "amount": 186630,
+        "close_date": "2025-07-23",
+        "pipeline": "default",
+        "stage": "qualification",
+        "last_modified": "1743401523787"
+      },
+      {
+        "id": "d8531edb-72a3-45db-b571-953dcf8edc36",
+        "name": "Globex Corporation - Support Package",
+        "amount": 39927,
+        "close_date": "2025-07-22",
+        "pipeline": "default",
+        "stage": "prospecting",
+        "last_modified": "1743401523787"
+      },
+      {
+        "id": "d34496a6-7552-4107-8e13-1a72ccbd5641",
+        "name": "Umbrella Corp - Product Expansion",
+        "amount": 141708,
+        "close_date": "2025-05-21",
+        "pipeline": "default",
+        "stage": "proposal",
+        "last_modified": "1743228723787"
+      },
+      {
+        "id": "11a3ebd1-cdae-441e-a821-e122ed72a11e",
+        "name": "Tyrell Corporation - Services Contract",
+        "amount": 82021,
+        "close_date": "2025-07-09",
+        "pipeline": "default",
+        "stage": "qualification",
+        "last_modified": "1743142323787"
+      },
+      {
+        "id": "f88aa2af-00bd-4bce-b1c2-e46045a9baea",
+        "name": "Aperture Science - Maintenance Contract",
+        "amount": 87080,
+        "close_date": "2025-07-15",
+        "pipeline": "default",
+        "stage": "negotiation",
+        "last_modified": "1743228723787"
+      },
+      {
+        "id": "7ff6a276-b809-48f0-aa30-da142850abe9",
+        "name": "Wonka Industries - Software Bundle",
+        "amount": 183200,
+        "close_date": "2025-02-26",
+        "pipeline": "default",
+        "stage": "closed_won",
+        "last_modified": "1741068723787"
+      },
+      {
+        "id": "4a5394bb-2c44-47c2-a4e7-597c05fc3ca5",
+        "name": "Wayne Enterprises - Maintenance Contract",
+        "amount": 6447,
+        "close_date": "2025-07-16",
+        "pipeline": "default",
+        "stage": "prospecting",
+        "last_modified": "1742796723787"
+      },
+      {
+        "id": "9898e2a7-065f-439b-a5f1-1303f57f395f",
+        "name": "Cogswell Cogs - Services Contract",
+        "amount": 75365,
+        "close_date": "2025-05-18",
+        "pipeline": "default",
+        "stage": "prospecting",
+        "last_modified": "1742710323787"
+      },
+      {
+        "id": "d74f4edb-a1a7-4f5c-aa2d-05619ccce86b",
+        "name": "Spacely Sprockets - Multi-Year Agreement",
+        "amount": 217391,
+        "close_date": "2025-04-30",
+        "pipeline": "default",
+        "stage": "proposal",
+        "last_modified": "1742796723787"
+      },
+      {
+        "id": "38cc54c0-33da-4d81-9506-9f001c0f9a26",
+        "name": "Globex Corporation - Support Package",
+        "amount": 225004,
+        "close_date": "2025-04-16",
+        "pipeline": "default",
+        "stage": "proposal",
+        "last_modified": "1742710323787"
+      },
+      {
+        "id": "af32b3b6-e68e-4d09-8cc0-2d26303ad542",
+        "name": "Umbrella Corp - Platform Migration",
+        "amount": 442110,
+        "close_date": "2025-03-07",
+        "pipeline": "default",
+        "stage": "closed_won",
+        "last_modified": "1740809523787"
+      },
+      {
+        "id": "83fe1c46-8332-46dc-8b59-de9dd1266336",
+        "name": "Cyberdyne Systems - Services Contract",
+        "amount": 265733,
+        "close_date": "2025-07-16",
+        "pipeline": "default",
+        "stage": "proposal",
+        "last_modified": "1743574323787"
+      },
+      {
+        "id": "d70b29cd-a3a5-4194-9bc6-304fffe8c627",
+        "name": "Tyrell Corporation - Enterprise License",
+        "amount": 386090,
+        "close_date": "2025-07-02",
+        "pipeline": "default",
+        "stage": "negotiation",
+        "last_modified": "1742796723787"
+      },
+      {
+        "id": "abf464d2-44b4-458d-a2ab-ba5af9f0d6c9",
+        "name": "Wayne Enterprises - Services Contract",
+        "amount": 372817,
+        "close_date": "2025-06-22",
+        "pipeline": "default",
+        "stage": "negotiation",
+        "last_modified": "1743315123787"
+      },
+      {
+        "id": "9baddd21-d60a-4a80-8f6c-5e5748789659",
+        "name": "Globex Corporation - Add-On License",
+        "amount": 26337,
+        "close_date": "2025-06-07",
+        "pipeline": "default",
+        "stage": "qualification",
+        "last_modified": "1743401523787"
+      },
+      {
+        "id": "03c8d471-771e-4276-a1d9-44b4d341e30a",
+        "name": "Initech Systems - Software Bundle",
+        "amount": 136026,
+        "close_date": "2025-04-21",
+        "pipeline": "default",
+        "stage": "qualification",
+        "last_modified": "1743228723787"
+      },
+      {
+        "id": "cbfcd660-27d7-4590-94da-63f80d571197",
+        "name": "Cyberdyne Systems - Enterprise License",
+        "amount": 193568,
+        "close_date": "2025-07-22",
+        "pipeline": "default",
+        "stage": "qualification",
+        "last_modified": "1742710323787"
+      },
+      {
+        "id": "22ef3c1e-3da9-4069-abc6-9a51badaec2c",
+        "name": "Acme Technologies - Platform Migration",
+        "amount": 56394,
+        "close_date": "2025-04-30",
+        "pipeline": "default",
+        "stage": "prospecting",
+        "last_modified": "1743055923787"
+      },
+      {
+        "id": "18be8cfe-d4ad-4530-b700-ca53c9e448d4",
+        "name": "Initech Systems - Custom Development",
+        "amount": 111887,
+        "close_date": "2025-07-16",
+        "pipeline": "default",
+        "stage": "qualification",
+        "last_modified": "1743142323787"
+      },
+      {
+        "id": "7aad47fd-e468-4922-82fb-9adc76bda8ef",
+        "name": "Bluth Company - New Implementation",
+        "amount": 359437,
+        "close_date": "2025-07-03",
+        "pipeline": "default",
+        "stage": "negotiation",
+        "last_modified": "1743228723787"
+      },
+      {
+        "id": "9fa47d1c-c17c-4be2-8283-85ebdec4b669",
+        "name": "Bluth Company - Consulting Services",
+        "amount": 73152,
+        "close_date": "2025-05-03",
+        "pipeline": "default",
+        "stage": "proposal",
+        "last_modified": "1743574323787"
+      },
+      {
+        "id": "745d7031-4a22-432b-96d5-6766a645c3dc",
+        "name": "Stark Industries - Software Bundle",
+        "amount": 121870,
+        "close_date": "2025-07-29",
+        "pipeline": "default",
+        "stage": "prospecting",
+        "last_modified": "1743228723787"
+      },
+      {
+        "id": "9680f4b7-b47a-4683-a06b-508f491b9298",
+        "name": "Weyland-Yutani - Software Bundle",
+        "amount": 275562,
+        "close_date": "2025-07-02",
+        "pipeline": "default",
+        "stage": "proposal",
+        "last_modified": "1743055923787"
+      },
+      {
+        "id": "113f82ee-23f6-413b-b130-d6ecdc8623c6",
+        "name": "Acme Technologies - Custom Development",
+        "amount": 77231,
+        "close_date": "2025-04-21",
+        "pipeline": "default",
+        "stage": "prospecting",
+        "last_modified": "1743055923787"
+      },
+      {
+        "id": "898396fb-8bee-4320-9919-3ae085295d49",
+        "name": "Weyland-Yutani - Training Program",
+        "amount": 89167,
+        "close_date": "2025-02-14",
+        "pipeline": "default",
+        "stage": "closed_won",
+        "last_modified": "1738822323787"
+      },
+      {
+        "id": "9343312f-82f4-46ca-8d1a-547ec3d9d3ac",
+        "name": "Oceanic Airlines - Annual Renewal",
+        "amount": 161736,
+        "close_date": "2025-07-16",
+        "pipeline": "default",
+        "stage": "prospecting",
+        "last_modified": "1742710323787"
+      },
+      {
+        "id": "a7647379-f06e-4774-953c-c550540e0c7b",
+        "name": "Stark Industries - Strategic Alliance",
+        "amount": 76122,
+        "close_date": "2025-06-13",
+        "pipeline": "default",
+        "stage": "prospecting",
+        "last_modified": "1743055923787"
+      },
+      {
+        "id": "a292adef-3d87-4019-93bd-b1821b294fc9",
+        "name": "Tyrell Corporation - Support Package",
+        "amount": 24602,
+        "close_date": "2025-06-18",
+        "pipeline": "default",
+        "stage": "proposal",
+        "last_modified": "1743574323787"
+      },
+      {
+        "id": "8ece4fc1-9f5b-411b-bd53-f7174aa287af",
+        "name": "Xanatos Enterprises - Training Program",
+        "amount": 115674,
+        "close_date": "2025-07-29",
+        "pipeline": "default",
+        "stage": "prospecting",
+        "last_modified": "1743401523787"
+      },
+      {
+        "id": "eb71ddd1-84c3-42ff-9782-b857ccc3b222",
+        "name": "Cyberdyne Systems - Support Package",
+        "amount": 138286,
+        "close_date": "2025-02-26",
+        "pipeline": "default",
+        "stage": "closed_won",
+        "last_modified": "1742623923787"
+      },
+      {
+        "id": "55d0bf23-7660-4e9b-b241-da197edaa07b",
+        "name": "Tyrell Corporation - Product Expansion",
+        "amount": 70704,
+        "close_date": "2025-04-17",
+        "pipeline": "default",
+        "stage": "qualification",
+        "last_modified": "1742969523787"
+      },
+      {
+        "id": "d73bf78c-0968-46d0-8e84-52d9eb11c783",
+        "name": "Wayne Enterprises - Annual Renewal",
+        "amount": 193844,
+        "close_date": "2025-06-03",
+        "pipeline": "default",
+        "stage": "qualification",
+        "last_modified": "1743487923787"
+      },
+      {
+        "id": "10a74966-baa3-417b-a41e-77c103ecb978",
+        "name": "Cyberdyne Systems - Annual Renewal",
+        "amount": 89363,
+        "close_date": "2025-05-13",
+        "pipeline": "default",
+        "stage": "prospecting",
+        "last_modified": "1743315123787"
+      },
+      {
+        "id": "142bcabd-95e1-45ae-8546-6e42a4cbac55",
+        "name": "Oceanic Airlines - Product Expansion",
+        "amount": 29385,
+        "close_date": "2025-07-05",
+        "pipeline": "default",
+        "stage": "qualification",
+        "last_modified": "1742969523787"
+      },
+      {
+        "id": "af48affd-9ddb-4a3e-ad8f-8b3a129aa4b9",
+        "name": "Globex Corporation - Consulting Services",
+        "amount": 113608,
+        "close_date": "2025-06-17",
+        "pipeline": "default",
+        "stage": "negotiation",
+        "last_modified": "1743574323787"
+      },
+      {
+        "id": "66591692-cb84-4ae8-8967-5c29794c4f30",
+        "name": "Bluth Company - Enterprise License",
+        "amount": 178178,
+        "close_date": "2025-05-25",
+        "pipeline": "default",
+        "stage": "proposal",
+        "last_modified": "1743487923787"
+      },
+      {
+        "id": "b3d09f48-4119-44a8-a48f-f7eed9c6b79f",
+        "name": "Dunder Mifflin - Multi-Year Agreement",
+        "amount": 191196,
+        "close_date": "2025-07-30",
+        "pipeline": "default",
+        "stage": "proposal",
+        "last_modified": "1743228723787"
+      },
+      {
+        "id": "c3cb55b7-8a25-4b42-bde9-7bbed2e335bb",
+        "name": "Tyrell Corporation - Strategic Alliance",
+        "amount": 137333,
+        "close_date": "2025-07-13",
+        "pipeline": "default",
+        "stage": "qualification",
+        "last_modified": "1743055923787"
+      },
+      {
+        "id": "8434c315-e17d-48cf-82f5-bfa86fd638d9",
+        "name": "Tyrell Corporation - Platform Migration",
+        "amount": 88682,
+        "close_date": "2025-07-25",
+        "pipeline": "default",
+        "stage": "proposal",
+        "last_modified": "1742710323787"
+      },
+      {
+        "id": "aa534666-9047-479c-8c72-310162dfba46",
+        "name": "Tyrell Corporation - Support Package",
+        "amount": 461841,
+        "close_date": "2025-04-25",
+        "pipeline": "default",
+        "stage": "negotiation",
+        "last_modified": "1742796723787"
+      }
+    ],
+    "contacts": [
+      {
+        "id": "a87145c2-8b34-4523-99d2-842e1b1b79cb",
+        "first_name": "Charles",
+        "last_name": "Moore",
+        "email": "charles.moore@umbrellacorp.com",
+        "phone": "+17670310074",
+        "company": "Umbrella Corp",
+        "lead_status": "open",
+        "lifecycle_stage": "opportunity"
+      },
+      {
+        "id": "f59dbbdd-d69c-4d0d-9044-53827ccb1335",
+        "first_name": "William",
+        "last_name": "Lee",
+        "email": "william.lee@soylentgreen.com",
+        "phone": "+17495633587",
+        "company": "Soylent Green",
+        "lead_status": "in progress",
+        "lifecycle_stage": "opportunity"
+      },
+      {
+        "id": "84bd17ee-94b5-479f-8d9c-debe120e5bc3",
+        "first_name": "Robert",
+        "last_name": "Johnson",
+        "email": "robert.johnson@initechsystems.com",
+        "phone": "+14331618052",
+        "company": "Initech Systems",
+        "lead_status": "in progress",
+        "lifecycle_stage": "customer"
+      },
+      {
+        "id": "a3b6b90a-fb4f-4957-a677-90f608656b8f",
+        "first_name": "Elizabeth",
+        "last_name": "White",
+        "email": "elizabeth.white@spacelysprockets.com",
+        "phone": "+13598539812",
+        "company": "Spacely Sprockets",
+        "lead_status": "qualified",
+        "lifecycle_stage": "sales qualified lead"
+      },
+      {
+        "id": "f4c220cf-3fc1-40c5-acf6-419683b50cbb",
+        "first_name": "James",
+        "last_name": "Robinson",
+        "email": "james.robinson@initechsystems.com",
+        "phone": "+16431244733",
+        "company": "Initech Systems",
+        "lead_status": "new",
+        "lifecycle_stage": "lead"
+      },
+      {
+        "id": "cd0c56ea-3234-4dcd-a4ff-94383d483c2e",
+        "first_name": "Linda",
+        "last_name": "Clark",
+        "email": "linda.clark@cyberdynesystems.com",
+        "phone": "+12728357321",
+        "company": "Cyberdyne Systems",
+        "lead_status": "open",
+        "lifecycle_stage": "marketing qualified lead"
+      },
+      {
+        "id": "684a0939-2b4c-474a-9936-4fbd9a2585d2",
+        "first_name": "Christopher",
+        "last_name": "Jones",
+        "email": "christopher.jones@cogswellcogs.com",
+        "phone": "+12742168931",
+        "company": "Cogswell Cogs",
+        "lead_status": "in progress",
+        "lifecycle_stage": "opportunity"
+      },
+      {
+        "id": "4b47ed97-5997-4766-98dd-98fcc3ce8374",
+        "first_name": "Thomas",
+        "last_name": "Lewis",
+        "email": "thomas.lewis@cogswellcogs.com",
+        "phone": "+14199667698",
+        "company": "Cogswell Cogs",
+        "lead_status": "qualified",
+        "lifecycle_stage": "lead"
+      },
+      {
+        "id": "2554eb60-6d7b-4000-a9af-3b2291e48408",
+        "first_name": "Christopher",
+        "last_name": "Wilson",
+        "email": "christopher.wilson@umbrellacorp.com",
+        "phone": "+18402129767",
+        "company": "Umbrella Corp",
+        "lead_status": "qualified",
+        "lifecycle_stage": "opportunity"
+      },
+      {
+        "id": "fdb330bc-ecc3-4507-ad41-4f294cafe98d",
+        "first_name": "Sarah",
+        "last_name": "Davis",
+        "email": "sarah.davis@oceanicairlines.com",
+        "phone": "+13010362488",
+        "company": "Oceanic Airlines",
+        "lead_status": "in progress",
+        "lifecycle_stage": "opportunity"
+      },
+      {
+        "id": "2c02d67b-2f15-4ded-97a6-2b3e4de0883b",
+        "first_name": "Joseph",
+        "last_name": "Martin",
+        "email": "joseph.martin@cyberdynesystems.com",
+        "phone": "+15105894604",
+        "company": "Cyberdyne Systems",
+        "lead_status": "open",
+        "lifecycle_stage": "customer"
+      },
+      {
+        "id": "0096bd55-241e-432c-8daa-8fa1aba03fd1",
+        "first_name": "Margaret",
+        "last_name": "Thomas",
+        "email": "margaret.thomas@starkindustries.com",
+        "phone": "+13350295443",
+        "company": "Stark Industries",
+        "lead_status": "new",
+        "lifecycle_stage": "marketing qualified lead"
+      },
+      {
+        "id": "6e1a3894-5b21-468f-8037-4fc14b94c631",
+        "first_name": "Michael",
+        "last_name": "Brown",
+        "email": "michael.brown@xanatosenterprises.com",
+        "phone": "+19257142971",
+        "company": "Xanatos Enterprises",
+        "lead_status": "new",
+        "lifecycle_stage": "opportunity"
+      },
+      {
+        "id": "8e3a9e85-9acb-4d45-a9ad-80405e3261ea",
+        "first_name": "David",
+        "last_name": "Robinson",
+        "email": "david.robinson@massivedynamic.com",
+        "phone": "+14048998708",
+        "company": "Massive Dynamic",
+        "lead_status": "open",
+        "lifecycle_stage": "subscriber"
+      },
+      {
+        "id": "e9662218-5660-4720-ad93-b2ea85988b99",
+        "first_name": "John",
+        "last_name": "Lee",
+        "email": "john.lee@wonkaindustries.com",
+        "phone": "+16747182453",
+        "company": "Wonka Industries",
+        "lead_status": "unqualified",
+        "lifecycle_stage": "lead"
+      },
+      {
+        "id": "1cbf64a3-d090-4d6a-9e65-05c1176e455b",
+        "first_name": "Patricia",
+        "last_name": "White",
+        "email": "patricia.white@weyland-yutani.com",
+        "phone": "+15963587795",
+        "company": "Weyland-Yutani",
+        "lead_status": "unqualified",
+        "lifecycle_stage": "lead"
+      },
+      {
+        "id": "43c3f6d7-fda8-4003-9476-ae09e5acf9c5",
+        "first_name": "Linda",
+        "last_name": "Clark",
+        "email": "linda.clark@aperturescience.com",
+        "phone": "+18719133944",
+        "company": "Aperture Science",
+        "lead_status": "new",
+        "lifecycle_stage": "marketing qualified lead"
+      },
+      {
+        "id": "5d95f9c5-e6b8-40b1-845d-9021fbdd6c22",
+        "first_name": "Joseph",
+        "last_name": "Jackson",
+        "email": "joseph.jackson@dundermifflin.com",
+        "phone": "+12930569697",
+        "company": "Dunder Mifflin",
+        "lead_status": "new",
+        "lifecycle_stage": "customer"
+      },
+      {
+        "id": "15e55ed6-f2e9-4fe1-af12-e1e5bfb2be22",
+        "first_name": "Charles",
+        "last_name": "Jones",
+        "email": "charles.jones@xanatosenterprises.com",
+        "phone": "+14293473989",
+        "company": "Xanatos Enterprises",
+        "lead_status": "in progress",
+        "lifecycle_stage": "marketing qualified lead"
+      },
+      {
+        "id": "71ea3d75-173f-4660-9847-124e77b8edec",
+        "first_name": "Jennifer",
+        "last_name": "Rodriguez",
+        "email": "jennifer.rodriguez@tyrellcorporation.com",
+        "phone": "+13581123214",
+        "company": "Tyrell Corporation",
+        "lead_status": "in progress",
+        "lifecycle_stage": "marketing qualified lead"
+      },
+      {
+        "id": "a32c34eb-daf1-4f7a-aebd-3c654f8525ca",
+        "first_name": "Robert",
+        "last_name": "Brown",
+        "email": "robert.brown@nakatomitradingcorp.com",
+        "phone": "+19710562143",
+        "company": "Nakatomi Trading Corp",
+        "lead_status": "qualified",
+        "lifecycle_stage": "marketing qualified lead"
+      },
+      {
+        "id": "97715b0d-d998-41fd-b281-faa4bf1ca724",
+        "first_name": "James",
+        "last_name": "Thomas",
+        "email": "james.thomas@tyrellcorporation.com",
+        "phone": "+12671571086",
+        "company": "Tyrell Corporation",
+        "lead_status": "new",
+        "lifecycle_stage": "sales qualified lead"
+      },
+      {
+        "id": "2dea19eb-ce49-4893-8c9a-4f28a9a363ff",
+        "first_name": "Patricia",
+        "last_name": "Robinson",
+        "email": "patricia.robinson@dundermifflin.com",
+        "phone": "+12972732072",
+        "company": "Dunder Mifflin",
+        "lead_status": "new",
+        "lifecycle_stage": "lead"
+      },
+      {
+        "id": "6791275d-1b09-48d5-9488-fae2ae9901a0",
+        "first_name": "James",
+        "last_name": "Anderson",
+        "email": "james.anderson@aperturescience.com",
+        "phone": "+17287008206",
+        "company": "Aperture Science",
+        "lead_status": "qualified",
+        "lifecycle_stage": "opportunity"
+      },
+      {
+        "id": "e1b362d9-1660-4517-a6c7-78db19b05231",
+        "first_name": "Linda",
+        "last_name": "Davis",
+        "email": "linda.davis@xanatosenterprises.com",
+        "phone": "+13784283068",
+        "company": "Xanatos Enterprises",
+        "lead_status": "open",
+        "lifecycle_stage": "lead"
+      },
+      {
+        "id": "d91a5bd5-2a25-4522-ac17-4a36d8a1843b",
+        "first_name": "Thomas",
+        "last_name": "Moore",
+        "email": "thomas.moore@umbrellacorp.com",
+        "phone": "+14440189635",
+        "company": "Umbrella Corp",
+        "lead_status": "open",
+        "lifecycle_stage": "lead"
+      },
+      {
+        "id": "9de5e93d-4696-45c4-98b1-8ad3237e66ff",
+        "first_name": "Jennifer",
+        "last_name": "Harris",
+        "email": "jennifer.harris@wonkaindustries.com",
+        "phone": "+19843472379",
+        "company": "Wonka Industries",
+        "lead_status": "unqualified",
+        "lifecycle_stage": "subscriber"
+      },
+      {
+        "id": "f0db191d-00d7-4a0b-97ee-35f16e79945d",
+        "first_name": "James",
+        "last_name": "Harris",
+        "email": "james.harris@oceanicairlines.com",
+        "phone": "+17549328721",
+        "company": "Oceanic Airlines",
+        "lead_status": "qualified",
+        "lifecycle_stage": "marketing qualified lead"
+      },
+      {
+        "id": "2fd914d5-7a7d-4369-8acc-e8cb534931ad",
+        "first_name": "James",
+        "last_name": "Brown",
+        "email": "james.brown@aperturescience.com",
+        "phone": "+19645006483",
+        "company": "Aperture Science",
+        "lead_status": "in progress",
+        "lifecycle_stage": "opportunity"
+      },
+      {
+        "id": "98b1c13a-8de7-4fe1-aba2-41af040237d9",
+        "first_name": "Charles",
+        "last_name": "Thompson",
+        "email": "charles.thompson@dundermifflin.com",
+        "phone": "+13088663953",
+        "company": "Dunder Mifflin",
+        "lead_status": "open",
+        "lifecycle_stage": "opportunity"
+      },
+      {
+        "id": "688341ab-f813-4e66-8877-a96fbdb070ab",
+        "first_name": "Patricia",
+        "last_name": "Lee",
+        "email": "patricia.lee@wonkaindustries.com",
+        "phone": "+14773066003",
+        "company": "Wonka Industries",
+        "lead_status": "new",
+        "lifecycle_stage": "sales qualified lead"
+      },
+      {
+        "id": "96de1011-a1be-4c64-afee-e21d7bf46e24",
+        "first_name": "Mary",
+        "last_name": "Thomas",
+        "email": "mary.thomas@acmetechnologies.com",
+        "phone": "+14187992613",
+        "company": "Acme Technologies",
+        "lead_status": "qualified",
+        "lifecycle_stage": "subscriber"
+      },
+      {
+        "id": "458844ee-fcf0-41c3-a9ff-9a8a86e6f774",
+        "first_name": "Susan",
+        "last_name": "Rodriguez",
+        "email": "susan.rodriguez@cyberdynesystems.com",
+        "phone": "+12574164194",
+        "company": "Cyberdyne Systems",
+        "lead_status": "open",
+        "lifecycle_stage": "marketing qualified lead"
+      },
+      {
+        "id": "e29de5c4-214f-4c27-8808-03c17fb15703",
+        "first_name": "Jennifer",
+        "last_name": "Martin",
+        "email": "jennifer.martin@dundermifflin.com",
+        "phone": "+19119983411",
+        "company": "Dunder Mifflin",
+        "lead_status": "unqualified",
+        "lifecycle_stage": "customer"
+      },
+      {
+        "id": "6ad24ad2-27ac-44fe-ac21-fdc2fd44f42d",
+        "first_name": "Joseph",
+        "last_name": "Miller",
+        "email": "joseph.miller@umbrellacorp.com",
+        "phone": "+14806920318",
+        "company": "Umbrella Corp",
+        "lead_status": "open",
+        "lifecycle_stage": "sales qualified lead"
+      },
+      {
+        "id": "63a12b1f-c798-44bf-83a9-67b1442879b8",
+        "first_name": "Christopher",
+        "last_name": "Davis",
+        "email": "christopher.davis@initechsystems.com",
+        "phone": "+18536270808",
+        "company": "Initech Systems",
+        "lead_status": "unqualified",
+        "lifecycle_stage": "lead"
+      },
+      {
+        "id": "b9f63871-9396-4274-855b-da8c6a95bf0c",
+        "first_name": "Karen",
+        "last_name": "Martinez",
+        "email": "karen.martinez@initechsystems.com",
+        "phone": "+19345825217",
+        "company": "Initech Systems",
+        "lead_status": "qualified",
+        "lifecycle_stage": "subscriber"
+      },
+      {
+        "id": "54055b7c-3f77-4ce1-ab86-3c293347e0c1",
+        "first_name": "Margaret",
+        "last_name": "Lee",
+        "email": "margaret.lee@bluthcompany.com",
+        "phone": "+13487096507",
+        "company": "Bluth Company",
+        "lead_status": "qualified",
+        "lifecycle_stage": "marketing qualified lead"
+      },
+      {
+        "id": "e84a9d28-9f23-494c-902b-56cdc787b2de",
+        "first_name": "John",
+        "last_name": "Brown",
+        "email": "john.brown@massivedynamic.com",
+        "phone": "+19603065812",
+        "company": "Massive Dynamic",
+        "lead_status": "new",
+        "lifecycle_stage": "customer"
+      },
+      {
+        "id": "a1e3c83a-997f-4ab5-ac01-2329b73a7eab",
+        "first_name": "Sarah",
+        "last_name": "Jackson",
+        "email": "sarah.jackson@umbrellacorp.com",
+        "phone": "+13944693924",
+        "company": "Umbrella Corp",
+        "lead_status": "in progress",
+        "lifecycle_stage": "customer"
+      },
+      {
+        "id": "012b7c8b-6c2d-40f3-bd45-ec45322e9830",
+        "first_name": "Daniel",
+        "last_name": "Harris",
+        "email": "daniel.harris@wayneenterprises.com",
+        "phone": "+17884631171",
+        "company": "Wayne Enterprises",
+        "lead_status": "unqualified",
+        "lifecycle_stage": "opportunity"
+      },
+      {
+        "id": "38b10d6d-4c36-4415-8ba7-651aa52beff1",
+        "first_name": "Patricia",
+        "last_name": "Thompson",
+        "email": "patricia.thompson@massivedynamic.com",
+        "phone": "+19788847532",
+        "company": "Massive Dynamic",
+        "lead_status": "unqualified",
+        "lifecycle_stage": "marketing qualified lead"
+      },
+      {
+        "id": "c5d1e811-f8a3-4bb3-b954-cda05d19abe3",
+        "first_name": "James",
+        "last_name": "Smith",
+        "email": "james.smith@starkindustries.com",
+        "phone": "+14679400668",
+        "company": "Stark Industries",
+        "lead_status": "unqualified",
+        "lifecycle_stage": "marketing qualified lead"
+      },
+      {
+        "id": "b9118400-2078-462c-b32a-4bbbcf7aff4f",
+        "first_name": "John",
+        "last_name": "Wilson",
+        "email": "john.wilson@massivedynamic.com",
+        "phone": "+19893396418",
+        "company": "Massive Dynamic",
+        "lead_status": "qualified",
+        "lifecycle_stage": "lead"
+      },
+      {
+        "id": "ed39fefd-ec15-4e3b-954f-75c8abfac3bc",
+        "first_name": "James",
+        "last_name": "Thompson",
+        "email": "james.thompson@oceanicairlines.com",
+        "phone": "+12182842939",
+        "company": "Oceanic Airlines",
+        "lead_status": "unqualified",
+        "lifecycle_stage": "lead"
+      },
+      {
+        "id": "9b2e8ddf-c6ee-4744-9037-b61c82129d2d",
+        "first_name": "Margaret",
+        "last_name": "Brown",
+        "email": "margaret.brown@bluthcompany.com",
+        "phone": "+19415428917",
+        "company": "Bluth Company",
+        "lead_status": "open",
+        "lifecycle_stage": "subscriber"
+      },
+      {
+        "id": "6fc769dc-a9aa-45d2-9e5d-4dba894bf307",
+        "first_name": "Susan",
+        "last_name": "Martinez",
+        "email": "susan.martinez@tyrellcorporation.com",
+        "phone": "+14009254663",
+        "company": "Tyrell Corporation",
+        "lead_status": "unqualified",
+        "lifecycle_stage": "lead"
+      },
+      {
+        "id": "c5efe2b9-b4c5-489d-8f99-b38fd5c93bf3",
+        "first_name": "William",
+        "last_name": "Jackson",
+        "email": "william.jackson@bluthcompany.com",
+        "phone": "+13359116035",
+        "company": "Bluth Company",
+        "lead_status": "qualified",
+        "lifecycle_stage": "sales qualified lead"
+      },
+      {
+        "id": "f97faddb-9b6f-4d3c-8583-0b1e6770bf8d",
+        "first_name": "Michael",
+        "last_name": "Lee",
+        "email": "michael.lee@spacelysprockets.com",
+        "phone": "+13929520200",
+        "company": "Spacely Sprockets",
+        "lead_status": "in progress",
+        "lifecycle_stage": "customer"
+      },
+      {
+        "id": "e0711138-66d7-41c4-9605-54159323a06b",
+        "first_name": "John",
+        "last_name": "Johnson",
+        "email": "john.johnson@spacelysprockets.com",
+        "phone": "+15592044054",
+        "company": "Spacely Sprockets",
+        "lead_status": "in progress",
+        "lifecycle_stage": "marketing qualified lead"
+      },
+      {
+        "id": "aacc3d50-1568-4f15-90f7-c1ebf86fed81",
+        "first_name": "David",
+        "last_name": "Lewis",
+        "email": "david.lewis@weyland-yutani.com",
+        "phone": "+19158344948",
+        "company": "Weyland-Yutani",
+        "lead_status": "unqualified",
+        "lifecycle_stage": "lead"
+      },
+      {
+        "id": "40b5e9ec-c9f1-4885-a022-2c77771132d5",
+        "first_name": "Karen",
+        "last_name": "Lee",
+        "email": "karen.lee@umbrellacorp.com",
+        "phone": "+13401565550",
+        "company": "Umbrella Corp",
+        "lead_status": "in progress",
+        "lifecycle_stage": "opportunity"
+      },
+      {
+        "id": "ee1cd17b-93f9-49b0-afd1-a1323132d497",
+        "first_name": "Michael",
+        "last_name": "Clark",
+        "email": "michael.clark@starkindustries.com",
+        "phone": "+18453105627",
+        "company": "Stark Industries",
+        "lead_status": "qualified",
+        "lifecycle_stage": "lead"
+      },
+      {
+        "id": "459bd42a-b31e-415f-af61-88514f4ae6a4",
+        "first_name": "Jennifer",
+        "last_name": "Rodriguez",
+        "email": "jennifer.rodriguez@nakatomitradingcorp.com",
+        "phone": "+13391565998",
+        "company": "Nakatomi Trading Corp",
+        "lead_status": "open",
+        "lifecycle_stage": "lead"
+      },
+      {
+        "id": "b1e9a114-ea9a-4462-a087-c693659ab688",
+        "first_name": "Jessica",
+        "last_name": "Davis",
+        "email": "jessica.davis@globexcorporation.com",
+        "phone": "+12714884096",
+        "company": "Globex Corporation",
+        "lead_status": "new",
+        "lifecycle_stage": "customer"
+      },
+      {
+        "id": "1025c2da-4965-4718-ad40-154462dfe492",
+        "first_name": "David",
+        "last_name": "Taylor",
+        "email": "david.taylor@dundermifflin.com",
+        "phone": "+18617866859",
+        "company": "Dunder Mifflin",
+        "lead_status": "in progress",
+        "lifecycle_stage": "customer"
+      },
+      {
+        "id": "267e032e-06e3-4489-abdf-81b58780f871",
+        "first_name": "Robert",
+        "last_name": "Taylor",
+        "email": "robert.taylor@soylentgreen.com",
+        "phone": "+13628899996",
+        "company": "Soylent Green",
+        "lead_status": "qualified",
+        "lifecycle_stage": "customer"
+      },
+      {
+        "id": "32afbfd7-92e6-46af-85d3-6eb98ead5bba",
+        "first_name": "Nancy",
+        "last_name": "Robinson",
+        "email": "nancy.robinson@massivedynamic.com",
+        "phone": "+15764824967",
+        "company": "Massive Dynamic",
+        "lead_status": "qualified",
+        "lifecycle_stage": "customer"
+      },
+      {
+        "id": "512f6b15-93e3-4839-b35e-ca44a82d6ce1",
+        "first_name": "Michael",
+        "last_name": "Davis",
+        "email": "michael.davis@cyberdynesystems.com",
+        "phone": "+17166239210",
+        "company": "Cyberdyne Systems",
+        "lead_status": "new",
+        "lifecycle_stage": "subscriber"
+      },
+      {
+        "id": "8c841a52-c142-445f-94fe-0725e5b20297",
+        "first_name": "David",
+        "last_name": "Taylor",
+        "email": "david.taylor@initechsystems.com",
+        "phone": "+14313376731",
+        "company": "Initech Systems",
+        "lead_status": "new",
+        "lifecycle_stage": "customer"
+      },
+      {
+        "id": "a9df8837-9064-4e40-8e54-12a15bfcb415",
+        "first_name": "David",
+        "last_name": "Harris",
+        "email": "david.harris@aperturescience.com",
+        "phone": "+13540212944",
+        "company": "Aperture Science",
+        "lead_status": "qualified",
+        "lifecycle_stage": "opportunity"
+      },
+      {
+        "id": "25a265eb-2a4c-47d5-8699-6021f1ef0f9d",
+        "first_name": "Lisa",
+        "last_name": "Clark",
+        "email": "lisa.clark@wayneenterprises.com",
+        "phone": "+19344392399",
+        "company": "Wayne Enterprises",
+        "lead_status": "in progress",
+        "lifecycle_stage": "customer"
+      },
+      {
+        "id": "17abefbc-4607-48c8-9108-6e380a8f36c1",
+        "first_name": "David",
+        "last_name": "Anderson",
+        "email": "david.anderson@cogswellcogs.com",
+        "phone": "+15257840775",
+        "company": "Cogswell Cogs",
+        "lead_status": "new",
+        "lifecycle_stage": "sales qualified lead"
+      },
+      {
+        "id": "759a4b83-c3f6-4cc4-a153-4640cd31c1ab",
+        "first_name": "Elizabeth",
+        "last_name": "Jackson",
+        "email": "elizabeth.jackson@nakatomitradingcorp.com",
+        "phone": "+18061242773",
+        "company": "Nakatomi Trading Corp",
+        "lead_status": "qualified",
+        "lifecycle_stage": "opportunity"
+      },
+      {
+        "id": "cdec2f1d-b91a-4592-b896-54683173b699",
+        "first_name": "Nancy",
+        "last_name": "Lee",
+        "email": "nancy.lee@oceanicairlines.com",
+        "phone": "+17312914002",
+        "company": "Oceanic Airlines",
+        "lead_status": "new",
+        "lifecycle_stage": "sales qualified lead"
+      },
+      {
+        "id": "17185bc4-9a36-40ec-ad65-3a22cc0aa488",
+        "first_name": "Robert",
+        "last_name": "Moore",
+        "email": "robert.moore@nakatomitradingcorp.com",
+        "phone": "+13513724122",
+        "company": "Nakatomi Trading Corp",
+        "lead_status": "open",
+        "lifecycle_stage": "marketing qualified lead"
+      },
+      {
+        "id": "c695f10f-81d9-436b-bb22-51a9426b5ae2",
+        "first_name": "Robert",
+        "last_name": "Jackson",
+        "email": "robert.jackson@massivedynamic.com",
+        "phone": "+17005843475",
+        "company": "Massive Dynamic",
+        "lead_status": "qualified",
+        "lifecycle_stage": "lead"
+      },
+      {
+        "id": "146e723e-7fe7-4422-8817-9d5b2f94e7cd",
+        "first_name": "Karen",
+        "last_name": "Garcia",
+        "email": "karen.garcia@globexcorporation.com",
+        "phone": "+18246916024",
+        "company": "Globex Corporation",
+        "lead_status": "in progress",
+        "lifecycle_stage": "subscriber"
+      },
+      {
+        "id": "d7b0c45c-4095-4a3d-bb16-a2c797ce58b3",
+        "first_name": "Joseph",
+        "last_name": "Smith",
+        "email": "joseph.smith@cyberdynesystems.com",
+        "phone": "+17582677799",
+        "company": "Cyberdyne Systems",
+        "lead_status": "in progress",
+        "lifecycle_stage": "subscriber"
+      },
+      {
+        "id": "8369b19c-07d9-49fd-bbfa-a1ba6f673215",
+        "first_name": "Nancy",
+        "last_name": "Smith",
+        "email": "nancy.smith@initechsystems.com",
+        "phone": "+14356615044",
+        "company": "Initech Systems",
+        "lead_status": "in progress",
+        "lifecycle_stage": "marketing qualified lead"
+      },
+      {
+        "id": "dff6f282-169d-4b93-9bde-c32308155732",
+        "first_name": "Richard",
+        "last_name": "Williams",
+        "email": "richard.williams@spacelysprockets.com",
+        "phone": "+16703668620",
+        "company": "Spacely Sprockets",
+        "lead_status": "open",
+        "lifecycle_stage": "subscriber"
+      },
+      {
+        "id": "9b6a0f8b-b110-4d8d-876f-38fc06b77dbb",
+        "first_name": "James",
+        "last_name": "Martinez",
+        "email": "james.martinez@tyrellcorporation.com",
+        "phone": "+12684575720",
+        "company": "Tyrell Corporation",
+        "lead_status": "in progress",
+        "lifecycle_stage": "opportunity"
+      },
+      {
+        "id": "a4057162-5593-4a27-a386-afdf99afb208",
+        "first_name": "Thomas",
+        "last_name": "Davis",
+        "email": "thomas.davis@nakatomitradingcorp.com",
+        "phone": "+16534752624",
+        "company": "Nakatomi Trading Corp",
+        "lead_status": "open",
+        "lifecycle_stage": "opportunity"
+      },
+      {
+        "id": "02e06afb-9e64-4937-9f76-dcbfc23a6c85",
+        "first_name": "Mary",
+        "last_name": "Jones",
+        "email": "mary.jones@starkindustries.com",
+        "phone": "+17513671662",
+        "company": "Stark Industries",
+        "lead_status": "open",
+        "lifecycle_stage": "opportunity"
+      },
+      {
+        "id": "9aef2817-6a0c-4c08-90c6-d6c6e5cbb183",
+        "first_name": "Richard",
+        "last_name": "Robinson",
+        "email": "richard.robinson@wonkaindustries.com",
+        "phone": "+17689965295",
+        "company": "Wonka Industries",
+        "lead_status": "in progress",
+        "lifecycle_stage": "sales qualified lead"
+      },
+      {
+        "id": "550fa7eb-aee1-4233-bad3-dba5aac96cfd",
+        "first_name": "Linda",
+        "last_name": "Robinson",
+        "email": "linda.robinson@dundermifflin.com",
+        "phone": "+14513671354",
+        "company": "Dunder Mifflin",
+        "lead_status": "new",
+        "lifecycle_stage": "sales qualified lead"
+      },
+      {
+        "id": "c6a97698-e116-49ed-b38e-d7ebd68e6a3b",
+        "first_name": "Daniel",
+        "last_name": "Harris",
+        "email": "daniel.harris@tyrellcorporation.com",
+        "phone": "+18970205576",
+        "company": "Tyrell Corporation",
+        "lead_status": "qualified",
+        "lifecycle_stage": "sales qualified lead"
+      },
+      {
+        "id": "e78e3a44-80d1-4a63-930e-dafdd674c871",
+        "first_name": "Jennifer",
+        "last_name": "Johnson",
+        "email": "jennifer.johnson@soylentgreen.com",
+        "phone": "+17213775935",
+        "company": "Soylent Green",
+        "lead_status": "in progress",
+        "lifecycle_stage": "lead"
+      },
+      {
+        "id": "ee964c95-d5e3-4376-9dc6-56053dca1319",
+        "first_name": "John",
+        "last_name": "Jackson",
+        "email": "john.jackson@soylentgreen.com",
+        "phone": "+12976020869",
+        "company": "Soylent Green",
+        "lead_status": "unqualified",
+        "lifecycle_stage": "sales qualified lead"
+      },
+      {
+        "id": "819024f8-fb17-4ed2-aee8-6f7d61e7f8ef",
+        "first_name": "James",
+        "last_name": "Jackson",
+        "email": "james.jackson@dundermifflin.com",
+        "phone": "+15397705580",
+        "company": "Dunder Mifflin",
+        "lead_status": "unqualified",
+        "lifecycle_stage": "opportunity"
+      },
+      {
+        "id": "c123d61f-afd6-43ea-88f6-37f4e29d20af",
+        "first_name": "Richard",
+        "last_name": "Garcia",
+        "email": "richard.garcia@cyberdynesystems.com",
+        "phone": "+16144730771",
+        "company": "Cyberdyne Systems",
+        "lead_status": "in progress",
+        "lifecycle_stage": "opportunity"
+      },
+      {
+        "id": "cba69206-d8b0-4f89-a0a0-4f946e22d6c2",
+        "first_name": "Michael",
+        "last_name": "Anderson",
+        "email": "michael.anderson@nakatomitradingcorp.com",
+        "phone": "+16141484693",
+        "company": "Nakatomi Trading Corp",
+        "lead_status": "in progress",
+        "lifecycle_stage": "lead"
+      },
+      {
+        "id": "2bf23932-0abc-4be1-9d0c-6e8904e7bea8",
+        "first_name": "Robert",
+        "last_name": "Taylor",
+        "email": "robert.taylor@wayneenterprises.com",
+        "phone": "+16613776892",
+        "company": "Wayne Enterprises",
+        "lead_status": "unqualified",
+        "lifecycle_stage": "subscriber"
+      },
+      {
+        "id": "3d10ae20-36b7-49bc-9bcc-8a676c366b78",
+        "first_name": "William",
+        "last_name": "Davis",
+        "email": "william.davis@soylentgreen.com",
+        "phone": "+16554186484",
+        "company": "Soylent Green",
+        "lead_status": "qualified",
+        "lifecycle_stage": "opportunity"
+      },
+      {
+        "id": "03772096-b33e-4192-93f2-5597fa05260d",
+        "first_name": "Margaret",
+        "last_name": "Robinson",
+        "email": "margaret.robinson@weyland-yutani.com",
+        "phone": "+19150483664",
+        "company": "Weyland-Yutani",
+        "lead_status": "in progress",
+        "lifecycle_stage": "subscriber"
+      },
+      {
+        "id": "7d8a39fd-e907-4b4e-94fb-0eed9a96b2b3",
+        "first_name": "Susan",
+        "last_name": "Robinson",
+        "email": "susan.robinson@cogswellcogs.com",
+        "phone": "+15119138824",
+        "company": "Cogswell Cogs",
+        "lead_status": "qualified",
+        "lifecycle_stage": "opportunity"
+      },
+      {
+        "id": "65b2001e-d949-4d97-a026-cf6630e2c45e",
+        "first_name": "Susan",
+        "last_name": "Harris",
+        "email": "susan.harris@nakatomitradingcorp.com",
+        "phone": "+18124288132",
+        "company": "Nakatomi Trading Corp",
+        "lead_status": "open",
+        "lifecycle_stage": "lead"
+      },
+      {
+        "id": "28b33a88-d849-4cca-92be-2362d9ef7892",
+        "first_name": "Mary",
+        "last_name": "Harris",
+        "email": "mary.harris@bluthcompany.com",
+        "phone": "+13303718326",
+        "company": "Bluth Company",
+        "lead_status": "open",
+        "lifecycle_stage": "sales qualified lead"
+      }
+    ],
+    "activities": [
+      {
+        "id": "a3c7eed8-3564-4d00-82e4-ec7e39f77fa1",
+        "type": "call",
+        "timestamp": 1743315123788,
+        "title": "Call with Robert Robinson",
+        "description": "Discussed next steps"
+      },
+      {
+        "id": "a78887c4-2f9b-429d-a6bf-eee6919969f5",
+        "type": "note",
+        "timestamp": 1742537523788,
+        "title": "Note: Spacely Sprockets",
+        "description": "Internal note about follow-up tasks"
+      },
+      {
+        "id": "4015e0c5-7a8b-460e-ac69-4986c76e7de1",
+        "type": "note",
+        "timestamp": 1743401523788,
+        "title": "Note: Umbrella Corp",
+        "description": "Internal note about deal strategy"
+      },
+      {
+        "id": "39e88e82-8adb-4e8c-b534-ca241f81e2e8",
+        "type": "email",
+        "timestamp": 1743228723788,
+        "title": "Email to David Taylor",
+        "description": "Sent information about product features"
+      },
+      {
+        "id": "8a643f1e-8522-4b5a-930e-3faf3ee33009",
+        "type": "email",
+        "timestamp": 1742451123788,
+        "title": "Email to Michael Martin",
+        "description": "Sent information about upcoming meeting"
+      },
+      {
+        "id": "ade4589e-dbe5-493e-ab84-49556af5f087",
+        "type": "meeting",
+        "timestamp": 1742451123788,
+        "title": "Meeting with Massive Dynamic",
+        "description": "Met with client to discuss roadmap"
+      },
+      {
+        "id": "827bf663-6960-4e9c-b7c9-b3f067b19c61",
+        "type": "call",
+        "timestamp": 1742364723788,
+        "title": "Call with Richard Martinez",
+        "description": "Discussed pricing"
+      },
+      {
+        "id": "2edb339a-4374-4761-81ce-674b019bd427",
+        "type": "note",
+        "timestamp": 1743315123788,
+        "title": "Note: Soylent Green",
+        "description": "Internal note about client feedback"
+      },
+      {
+        "id": "82ba1254-14ff-4b20-9d0b-95fb82a14eca",
+        "type": "meeting",
+        "timestamp": 1742883123788,
+        "title": "Meeting with Soylent Green",
+        "description": "Met with client to discuss issues"
+      },
+      {
+        "id": "cb2ed1b6-9c8a-4804-b524-23fd6d2e33a3",
+        "type": "call",
+        "timestamp": 1743487923788,
+        "title": "Call with Susan Taylor",
+        "description": "Discussed next steps"
+      },
+      {
+        "id": "9c9767b1-3d7a-4bc3-ac2b-019abce43007",
+        "type": "call",
+        "timestamp": 1742710323788,
+        "title": "Call with Daniel Smith",
+        "description": "Discussed contract renewal"
+      },
+      {
+        "id": "2f085c13-a7d9-4dd3-b567-eaff796adfd8",
+        "type": "meeting",
+        "timestamp": 1742883123788,
+        "title": "Meeting with Weyland-Yutani",
+        "description": "Met with client to discuss strategy"
+      },
+      {
+        "id": "782edbb2-9151-4f50-b5a0-464357d69b7e",
+        "type": "call",
+        "timestamp": 1743487923788,
+        "title": "Call with William Jackson",
+        "description": "Discussed contract renewal"
+      },
+      {
+        "id": "c54cc122-3d53-464b-a29e-44a9f19bcf99",
+        "type": "call",
+        "timestamp": 1742969523788,
+        "title": "Call with Joseph Clark",
+        "description": "Discussed implementation details"
+      },
+      {
+        "id": "565c003c-0977-47ce-ad8c-c78b60ab099d",
+        "type": "task",
+        "timestamp": 1742796723788,
+        "title": "Task: Globex Corporation",
+        "description": "Internal task about deal strategy"
+      },
+      {
+        "id": "5d966e9a-45c3-42d4-b21d-e13437382fcb",
+        "type": "note",
+        "timestamp": 1742537523788,
+        "title": "Note: Wonka Industries",
+        "description": "Internal note about action items"
+      },
+      {
+        "id": "52002d12-03bc-4224-bf71-c1a4cffbc68e",
+        "type": "note",
+        "timestamp": 1742623923788,
+        "title": "Note: Acme Technologies",
+        "description": "Internal note about deal strategy"
+      },
+      {
+        "id": "ec5af298-df2d-4f27-95b8-1ff31c82bc12",
+        "type": "call",
+        "timestamp": 1743228723788,
+        "title": "Call with Karen Lee",
+        "description": "Discussed implementation details"
+      },
+      {
+        "id": "cf54edc3-ea8b-4d11-b2fd-4c72a49b89c7",
+        "type": "meeting",
+        "timestamp": 1742710323788,
+        "title": "Meeting with Cogswell Cogs",
+        "description": "Met with client to discuss project progress"
+      },
+      {
+        "id": "3b7ad0c5-2cf7-4640-a502-38969ad8869e",
+        "type": "note",
+        "timestamp": 1743401523788,
+        "title": "Note: Nakatomi Trading Corp",
+        "description": "Internal note about client feedback"
+      },
+      {
+        "id": "81a6ec75-0d10-42ff-9106-40803ac9bbd5",
+        "type": "task",
+        "timestamp": 1743228723788,
+        "title": "Task: Oceanic Airlines",
+        "description": "Internal task about action items"
+      },
+      {
+        "id": "5fa0ad06-2cfd-4904-aabc-d1402bc09c65",
+        "type": "email",
+        "timestamp": 1743315123788,
+        "title": "Email to Lisa Anderson",
+        "description": "Sent information about pricing"
+      },
+      {
+        "id": "1377ebad-3e14-45fb-b35e-eed108e01097",
+        "type": "task",
+        "timestamp": 1743401523788,
+        "title": "Task: Aperture Science",
+        "description": "Internal task about follow-up tasks"
+      },
+      {
+        "id": "1145ee4f-c35e-4e7b-8551-5037887dafb5",
+        "type": "email",
+        "timestamp": 1742537523788,
+        "title": "Email to Patricia Clark",
+        "description": "Sent information about contract details"
+      },
+      {
+        "id": "1fea7f73-41c6-4d3e-b741-c10e5c6a59b9",
+        "type": "email",
+        "timestamp": 1742796723788,
+        "title": "Email to Margaret Wilson",
+        "description": "Sent information about contract details"
+      },
+      {
+        "id": "8d591a9e-5dbe-4595-9645-9968e2bd39dd",
+        "type": "meeting",
+        "timestamp": 1743142323788,
+        "title": "Meeting with Acme Technologies",
+        "description": "Met with client to discuss issues"
+      },
+      {
+        "id": "772eaed4-72be-4193-ae9d-f8cd370465ec",
+        "type": "email",
+        "timestamp": 1742883123788,
+        "title": "Email to Christopher Brown",
+        "description": "Sent information about pricing"
+      },
+      {
+        "id": "da7f19d4-cc0f-48d9-b71b-0e9be90a71ee",
+        "type": "email",
+        "timestamp": 1742623923788,
+        "title": "Email to Nancy Brown",
+        "description": "Sent information about follow-up"
+      },
+      {
+        "id": "4bb663af-ed32-4529-a81b-70d98ab3450b",
+        "type": "meeting",
+        "timestamp": 1743142323788,
+        "title": "Meeting with Cyberdyne Systems",
+        "description": "Met with client to discuss roadmap"
+      },
+      {
+        "id": "55f0bad8-086a-4bfe-af1f-f0b330191a76",
+        "type": "email",
+        "timestamp": 1742364723788,
+        "title": "Email to Robert Jones",
+        "description": "Sent information about pricing"
+      }
+    ],
+    "pipelines": [
+      {
+        "id": "default",
+        "label": "Sales Pipeline",
+        "stages": [
+          {
+            "id": "prospecting",
+            "label": "Prospecting"
+          },
+          {
+            "id": "qualification",
+            "label": "Qualification"
+          },
+          {
+            "id": "proposal",
+            "label": "Proposal"
+          },
+          {
+            "id": "negotiation",
+            "label": "Negotiation"
+          },
+          {
+            "id": "closed_won",
+            "label": "Closed Won"
+          },
+          {
+            "id": "closed_lost",
+            "label": "Closed Lost"
+          }
+        ]
+      }
+    ],
+    "metrics": {
+      "total_deal_value": 7186133,
+      "deals_by_stage": {
+        "prospecting": 12,
+        "qualification": 12,
+        "proposal": 13,
+        "negotiation": 6,
+        "closed_won": 4
+      },
+      "recent_deals_count": 30,
+      "contacts_count": 88
+    }
+  },
+  "chargebee": {
+    "subscriptions": [
+      {
+        "id": "sub_c1d5eeed38",
+        "customer_id": "cust_0f420eba",
+        "plan_id": "Plus_plan",
+        "status": "cancelled",
+        "amount": 2457,
+        "billing_period": 12,
+        "billing_period_unit": "month",
+        "created_at": "2023-10-20",
+        "current_term_start": "2025-03-13",
+        "current_term_end": "2025-04-12",
+        "next_billing": null
+      },
+      {
+        "id": "sub_e8ad02725b",
+        "customer_id": "cust_1a4e26c3",
+        "plan_id": "Business_plan",
+        "status": "active",
+        "amount": 4855,
+        "billing_period": 1,
+        "billing_period_unit": "month",
+        "created_at": "2025-01-28",
+        "current_term_start": "2025-03-29",
+        "current_term_end": "2025-04-28",
+        "next_billing": "2025-04-28"
+      },
+      {
+        "id": "sub_676ed3eb72",
+        "customer_id": "cust_b454b87f",
+        "plan_id": "Plus_plan",
+        "status": "active",
+        "amount": 3577,
+        "billing_period": 12,
+        "billing_period_unit": "month",
+        "created_at": "2024-03-26",
+        "current_term_start": "2025-03-21",
+        "current_term_end": "2025-04-20",
+        "next_billing": "2025-04-20"
+      },
+      {
+        "id": "sub_4c43c955d3",
+        "customer_id": "cust_ecde7c8c",
+        "plan_id": "Professional_plan",
+        "status": "active",
+        "amount": 471,
+        "billing_period": 3,
+        "billing_period_unit": "month",
+        "created_at": "2023-11-16",
+        "current_term_start": "2025-03-10",
+        "current_term_end": "2025-04-09",
+        "next_billing": "2025-04-09"
+      },
+      {
+        "id": "sub_ec279fe959",
+        "customer_id": "cust_0c9e86fd",
+        "plan_id": "Business_plan",
+        "status": "cancelled",
+        "amount": 4911,
+        "billing_period": 6,
+        "billing_period_unit": "month",
+        "created_at": "2024-10-23",
+        "current_term_start": "2025-03-22",
+        "current_term_end": "2025-04-21",
+        "next_billing": null
+      },
+      {
+        "id": "sub_46e5081f5c",
+        "customer_id": "cust_66a55b25",
+        "plan_id": "Business_plan",
+        "status": "cancelled",
+        "amount": 1650,
+        "billing_period": 12,
+        "billing_period_unit": "month",
+        "created_at": "2025-01-09",
+        "current_term_start": "2025-03-10",
+        "current_term_end": "2025-04-09",
+        "next_billing": null
+      },
+      {
+        "id": "sub_7518e59fb2",
+        "customer_id": "cust_635cce5a",
+        "plan_id": "Standard_plan",
+        "status": "active",
+        "amount": 402,
+        "billing_period": 12,
+        "billing_period_unit": "month",
+        "created_at": "2024-09-24",
+        "current_term_start": "2025-03-23",
+        "current_term_end": "2025-04-22",
+        "next_billing": "2025-04-22"
+      },
+      {
+        "id": "sub_398b3e35bb",
+        "customer_id": "cust_17456d0f",
+        "plan_id": "Starter_plan",
+        "status": "cancelled",
+        "amount": 100,
+        "billing_period": 12,
+        "billing_period_unit": "month",
+        "created_at": "2023-09-18",
+        "current_term_start": "2025-03-11",
+        "current_term_end": "2025-04-10",
+        "next_billing": null
+      },
+      {
+        "id": "sub_610eb8a94c",
+        "customer_id": "cust_97f94994",
+        "plan_id": "Starter_plan",
+        "status": "active",
+        "amount": 74,
+        "billing_period": 6,
+        "billing_period_unit": "month",
+        "created_at": "2024-06-18",
+        "current_term_start": "2025-03-15",
+        "current_term_end": "2025-04-14",
+        "next_billing": "2025-04-14"
+      },
+      {
+        "id": "sub_9da485d608",
+        "customer_id": "cust_c97aa22d",
+        "plan_id": "Plus_plan",
+        "status": "active",
+        "amount": 4849,
+        "billing_period": 12,
+        "billing_period_unit": "month",
+        "created_at": "2023-07-25",
+        "current_term_start": "2025-03-16",
+        "current_term_end": "2025-04-15",
+        "next_billing": "2025-04-15"
+      },
+      {
+        "id": "sub_75c79d3db4",
+        "customer_id": "cust_dc181534",
+        "plan_id": "Basic_plan",
+        "status": "cancelled",
+        "amount": 45,
+        "billing_period": 1,
+        "billing_period_unit": "month",
+        "created_at": "2023-04-10",
+        "current_term_start": "2025-03-30",
+        "current_term_end": "2025-04-29",
+        "next_billing": null
+      },
+      {
+        "id": "sub_4c327fd48a",
+        "customer_id": "cust_9ad72e98",
+        "plan_id": "Essential_plan",
+        "status": "active",
+        "amount": 90,
+        "billing_period": 12,
+        "billing_period_unit": "month",
+        "created_at": "2023-09-21",
+        "current_term_start": "2025-03-14",
+        "current_term_end": "2025-04-13",
+        "next_billing": "2025-04-13"
+      },
+      {
+        "id": "sub_814adf62bc",
+        "customer_id": "cust_68deb6f2",
+        "plan_id": "Standard_plan",
+        "status": "active",
+        "amount": 499,
+        "billing_period": 12,
+        "billing_period_unit": "month",
+        "created_at": "2024-12-07",
+        "current_term_start": "2025-03-07",
+        "current_term_end": "2025-04-06",
+        "next_billing": "2025-04-06"
+      },
+      {
+        "id": "sub_e874d4c89b",
+        "customer_id": "cust_bd5454dc",
+        "plan_id": "Premium_plan",
+        "status": "active",
+        "amount": 1054,
+        "billing_period": 3,
+        "billing_period_unit": "month",
+        "created_at": "2023-06-21",
+        "current_term_start": "2025-03-12",
+        "current_term_end": "2025-04-11",
+        "next_billing": "2025-04-11"
+      },
+      {
+        "id": "sub_89891e4c58",
+        "customer_id": "cust_9d422cba",
+        "plan_id": "Basic_plan",
+        "status": "non_renewing",
+        "amount": 37,
+        "billing_period": 6,
+        "billing_period_unit": "month",
+        "created_at": "2023-04-26",
+        "current_term_start": "2025-03-16",
+        "current_term_end": "2025-04-15",
+        "next_billing": "2025-04-15"
+      },
+      {
+        "id": "sub_0b63e28c9b",
+        "customer_id": "cust_d93b9ca6",
+        "plan_id": "Enterprise_plan",
+        "status": "cancelled",
+        "amount": 1685,
+        "billing_period": 12,
+        "billing_period_unit": "month",
+        "created_at": "2023-04-07",
+        "current_term_start": "2025-03-27",
+        "current_term_end": "2025-04-26",
+        "next_billing": null
+      },
+      {
+        "id": "sub_25f55de741",
+        "customer_id": "cust_1bc79d05",
+        "plan_id": "Essential_plan",
+        "status": "active",
+        "amount": 78,
+        "billing_period": 1,
+        "billing_period_unit": "month",
+        "created_at": "2024-02-07",
+        "current_term_start": "2025-04-02",
+        "current_term_end": "2025-05-02",
+        "next_billing": "2025-05-02"
+      },
+      {
+        "id": "sub_26b0b1daac",
+        "customer_id": "cust_441876d4",
+        "plan_id": "Team_plan",
+        "status": "active",
+        "amount": 360,
+        "billing_period": 1,
+        "billing_period_unit": "month",
+        "created_at": "2025-01-02",
+        "current_term_start": "2025-04-02",
+        "current_term_end": "2025-05-02",
+        "next_billing": "2025-05-02"
+      },
+      {
+        "id": "sub_3a44eb80cb",
+        "customer_id": "cust_a0d47078",
+        "plan_id": "Team_plan",
+        "status": "active",
+        "amount": 120,
+        "billing_period": 1,
+        "billing_period_unit": "month",
+        "created_at": "2023-08-09",
+        "current_term_start": "2025-03-31",
+        "current_term_end": "2025-04-30",
+        "next_billing": "2025-04-30"
+      },
+      {
+        "id": "sub_9b3f0a4203",
+        "customer_id": "cust_cc2e3bda",
+        "plan_id": "Essential_plan",
+        "status": "active",
+        "amount": 38,
+        "billing_period": 6,
+        "billing_period_unit": "month",
+        "created_at": "2024-10-27",
+        "current_term_start": "2025-03-26",
+        "current_term_end": "2025-04-25",
+        "next_billing": "2025-04-25"
+      },
+      {
+        "id": "sub_a86c6bd56e",
+        "customer_id": "cust_80307e59",
+        "plan_id": "Corporate_plan",
+        "status": "cancelled",
+        "amount": 2402,
+        "billing_period": 6,
+        "billing_period_unit": "month",
+        "created_at": "2025-01-11",
+        "current_term_start": "2025-03-12",
+        "current_term_end": "2025-04-11",
+        "next_billing": null
+      },
+      {
+        "id": "sub_36a76b97fb",
+        "customer_id": "cust_80a34b49",
+        "plan_id": "Starter_plan",
+        "status": "active",
+        "amount": 39,
+        "billing_period": 3,
+        "billing_period_unit": "month",
+        "created_at": "2023-08-07",
+        "current_term_start": "2025-03-29",
+        "current_term_end": "2025-04-28",
+        "next_billing": "2025-04-28"
+      },
+      {
+        "id": "sub_cb5a531350",
+        "customer_id": "cust_9612e3d4",
+        "plan_id": "Corporate_plan",
+        "status": "active",
+        "amount": 4783,
+        "billing_period": 1,
+        "billing_period_unit": "month",
+        "created_at": "2024-02-24",
+        "current_term_start": "2025-03-20",
+        "current_term_end": "2025-04-19",
+        "next_billing": "2025-04-19"
+      },
+      {
+        "id": "sub_9d7a784c1e",
+        "customer_id": "cust_fb27aabe",
+        "plan_id": "Basic_plan",
+        "status": "active",
+        "amount": 78,
+        "billing_period": 3,
+        "billing_period_unit": "month",
+        "created_at": "2024-09-19",
+        "current_term_start": "2025-03-18",
+        "current_term_end": "2025-04-17",
+        "next_billing": "2025-04-17"
+      },
+      {
+        "id": "sub_4479e31f8a",
+        "customer_id": "cust_4738e63e",
+        "plan_id": "Standard_plan",
+        "status": "active",
+        "amount": 393,
+        "billing_period": 1,
+        "billing_period_unit": "month",
+        "created_at": "2024-09-13",
+        "current_term_start": "2025-03-12",
+        "current_term_end": "2025-04-11",
+        "next_billing": "2025-04-11"
+      },
+      {
+        "id": "sub_0d64e3996c",
+        "customer_id": "cust_d1d486dd",
+        "plan_id": "Basic_plan",
+        "status": "active",
+        "amount": 66,
+        "billing_period": 6,
+        "billing_period_unit": "month",
+        "created_at": "2023-10-07",
+        "current_term_start": "2025-03-30",
+        "current_term_end": "2025-04-29",
+        "next_billing": "2025-04-29"
+      },
+      {
+        "id": "sub_a6e42242c0",
+        "customer_id": "cust_5a1451df",
+        "plan_id": "Professional_plan",
+        "status": "cancelled",
+        "amount": 412,
+        "billing_period": 12,
+        "billing_period_unit": "month",
+        "created_at": "2024-06-21",
+        "current_term_start": "2025-03-18",
+        "current_term_end": "2025-04-17",
+        "next_billing": null
+      },
+      {
+        "id": "sub_faa6785bed",
+        "customer_id": "cust_fd103d7b",
+        "plan_id": "Plus_plan",
+        "status": "non_renewing",
+        "amount": 623,
+        "billing_period": 6,
+        "billing_period_unit": "month",
+        "created_at": "2025-02-18",
+        "current_term_start": "2025-03-20",
+        "current_term_end": "2025-04-19",
+        "next_billing": "2025-04-19"
+      },
+      {
+        "id": "sub_c1ff205d52",
+        "customer_id": "cust_35045a74",
+        "plan_id": "Essential_plan",
+        "status": "active",
+        "amount": 41,
+        "billing_period": 6,
+        "billing_period_unit": "month",
+        "created_at": "2023-06-08",
+        "current_term_start": "2025-03-29",
+        "current_term_end": "2025-04-28",
+        "next_billing": "2025-04-28"
+      },
+      {
+        "id": "sub_76811c7b6c",
+        "customer_id": "cust_01bca64d",
+        "plan_id": "Enterprise_plan",
+        "status": "active",
+        "amount": 4339,
+        "billing_period": 6,
+        "billing_period_unit": "month",
+        "created_at": "2023-11-24",
+        "current_term_start": "2025-03-18",
+        "current_term_end": "2025-04-17",
+        "next_billing": "2025-04-17"
+      },
+      {
+        "id": "sub_5e9dfabe8e",
+        "customer_id": "cust_d85cb227",
+        "plan_id": "Corporate_plan",
+        "status": "active",
+        "amount": 4783,
+        "billing_period": 1,
+        "billing_period_unit": "month",
+        "created_at": "2023-09-29",
+        "current_term_start": "2025-03-22",
+        "current_term_end": "2025-04-21",
+        "next_billing": "2025-04-21"
+      },
+      {
+        "id": "sub_fbf5a9d630",
+        "customer_id": "cust_f257ae72",
+        "plan_id": "Corporate_plan",
+        "status": "active",
+        "amount": 3555,
+        "billing_period": 3,
+        "billing_period_unit": "month",
+        "created_at": "2024-12-13",
+        "current_term_start": "2025-03-13",
+        "current_term_end": "2025-04-12",
+        "next_billing": "2025-04-12"
+      },
+      {
+        "id": "sub_209164138e",
+        "customer_id": "cust_9fafbfae",
+        "plan_id": "Essential_plan",
+        "status": "active",
+        "amount": 86,
+        "billing_period": 1,
+        "billing_period_unit": "month",
+        "created_at": "2024-07-30",
+        "current_term_start": "2025-03-27",
+        "current_term_end": "2025-04-26",
+        "next_billing": "2025-04-26"
+      },
+      {
+        "id": "sub_5027797db2",
+        "customer_id": "cust_fa629f9e",
+        "plan_id": "Business_plan",
+        "status": "active",
+        "amount": 4925,
+        "billing_period": 12,
+        "billing_period_unit": "month",
+        "created_at": "2024-05-24",
+        "current_term_start": "2025-03-20",
+        "current_term_end": "2025-04-19",
+        "next_billing": "2025-04-19"
+      },
+      {
+        "id": "sub_4dd35db986",
+        "customer_id": "cust_4b0251d0",
+        "plan_id": "Team_plan",
+        "status": "active",
+        "amount": 349,
+        "billing_period": 3,
+        "billing_period_unit": "month",
+        "created_at": "2024-03-08",
+        "current_term_start": "2025-04-02",
+        "current_term_end": "2025-05-02",
+        "next_billing": "2025-05-02"
+      },
+      {
+        "id": "sub_b9b87261fe",
+        "customer_id": "cust_07ccfe6c",
+        "plan_id": "Standard_plan",
+        "status": "non_renewing",
+        "amount": 359,
+        "billing_period": 1,
+        "billing_period_unit": "month",
+        "created_at": "2023-06-10",
+        "current_term_start": "2025-03-31",
+        "current_term_end": "2025-04-30",
+        "next_billing": "2025-04-30"
+      },
+      {
+        "id": "sub_72d69cdfdb",
+        "customer_id": "cust_2bd59031",
+        "plan_id": "Starter_plan",
+        "status": "cancelled",
+        "amount": 49,
+        "billing_period": 1,
+        "billing_period_unit": "month",
+        "created_at": "2024-04-16",
+        "current_term_start": "2025-03-12",
+        "current_term_end": "2025-04-11",
+        "next_billing": null
+      },
+      {
+        "id": "sub_bb473bcc30",
+        "customer_id": "cust_fd00eff1",
+        "plan_id": "Enterprise_plan",
+        "status": "active",
+        "amount": 2047,
+        "billing_period": 6,
+        "billing_period_unit": "month",
+        "created_at": "2023-05-30",
+        "current_term_start": "2025-03-20",
+        "current_term_end": "2025-04-19",
+        "next_billing": "2025-04-19"
+      },
+      {
+        "id": "sub_adf36e6ffa",
+        "customer_id": "cust_368d26d9",
+        "plan_id": "Enterprise_plan",
+        "status": "non_renewing",
+        "amount": 4733,
+        "billing_period": 6,
+        "billing_period_unit": "month",
+        "created_at": "2024-05-08",
+        "current_term_start": "2025-03-04",
+        "current_term_end": "2025-04-03",
+        "next_billing": "2025-04-03"
+      },
+      {
+        "id": "sub_7b0be3a1e7",
+        "customer_id": "cust_0213dfc1",
+        "plan_id": "Enterprise_plan",
+        "status": "active",
+        "amount": 2435,
+        "billing_period": 12,
+        "billing_period_unit": "month",
+        "created_at": "2024-09-03",
+        "current_term_start": "2025-04-01",
+        "current_term_end": "2025-05-01",
+        "next_billing": "2025-05-01"
+      },
+      {
+        "id": "sub_208cc6fe14",
+        "customer_id": "cust_9c1dd77a",
+        "plan_id": "Standard_plan",
+        "status": "active",
+        "amount": 360,
+        "billing_period": 12,
+        "billing_period_unit": "month",
+        "created_at": "2024-06-11",
+        "current_term_start": "2025-03-08",
+        "current_term_end": "2025-04-07",
+        "next_billing": "2025-04-07"
+      },
+      {
+        "id": "sub_8a26a5e562",
+        "customer_id": "cust_23be7583",
+        "plan_id": "Team_plan",
+        "status": "active",
+        "amount": 272,
+        "billing_period": 6,
+        "billing_period_unit": "month",
+        "created_at": "2024-05-01",
+        "current_term_start": "2025-03-27",
+        "current_term_end": "2025-04-26",
+        "next_billing": "2025-04-26"
+      },
+      {
+        "id": "sub_e8e9120618",
+        "customer_id": "cust_25bf9bb4",
+        "plan_id": "Standard_plan",
+        "status": "active",
+        "amount": 209,
+        "billing_period": 1,
+        "billing_period_unit": "month",
+        "created_at": "2023-04-05",
+        "current_term_start": "2025-03-25",
+        "current_term_end": "2025-04-24",
+        "next_billing": "2025-04-24"
+      },
+      {
+        "id": "sub_381e254a5b",
+        "customer_id": "cust_8f1c4e2d",
+        "plan_id": "Enterprise_plan",
+        "status": "active",
+        "amount": 2831,
+        "billing_period": 6,
+        "billing_period_unit": "month",
+        "created_at": "2024-09-02",
+        "current_term_start": "2025-03-31",
+        "current_term_end": "2025-04-30",
+        "next_billing": "2025-04-30"
+      },
+      {
+        "id": "sub_0806f66dc1",
+        "customer_id": "cust_ce267e4f",
+        "plan_id": "Corporate_plan",
+        "status": "active",
+        "amount": 4449,
+        "billing_period": 12,
+        "billing_period_unit": "month",
+        "created_at": "2024-08-01",
+        "current_term_start": "2025-03-29",
+        "current_term_end": "2025-04-28",
+        "next_billing": "2025-04-28"
+      }
+    ],
+    "customers": [
+      {
+        "id": "cust_0f420eba",
+        "first_name": "Mary",
+        "last_name": "Lewis",
+        "email": "mary.lewis@globexcorporation.com",
+        "company": "Globex Corporation",
+        "created_at": "2023-08-02"
+      },
+      {
+        "id": "cust_1a4e26c3",
+        "first_name": "Daniel",
+        "last_name": "Jones",
+        "email": "daniel.jones@acmetechnologies.com",
+        "company": "Acme Technologies",
+        "created_at": "2023-09-25"
+      },
+      {
+        "id": "cust_b454b87f",
+        "first_name": "Lisa",
+        "last_name": "Martin",
+        "email": "lisa.martin@spacelysprockets.com",
+        "company": "Spacely Sprockets",
+        "created_at": "2024-02-03"
+      },
+      {
+        "id": "cust_ecde7c8c",
+        "first_name": "Michael",
+        "last_name": "Jones",
+        "email": "michael.jones@soylentgreen.com",
+        "company": "Soylent Green",
+        "created_at": "2023-09-03"
+      },
+      {
+        "id": "cust_0c9e86fd",
+        "first_name": "Elizabeth",
+        "last_name": "Jackson",
+        "email": "elizabeth.jackson@starkindustries.com",
+        "company": "Stark Industries",
+        "created_at": "2024-03-08"
+      },
+      {
+        "id": "cust_66a55b25",
+        "first_name": "Sarah",
+        "last_name": "Miller",
+        "email": "sarah.miller@xanatosenterprises.com",
+        "company": "Xanatos Enterprises",
+        "created_at": "2023-11-06"
+      },
+      {
+        "id": "cust_635cce5a",
+        "first_name": "Sarah",
+        "last_name": "Moore",
+        "email": "sarah.moore@tyrellcorporation.com",
+        "company": "Tyrell Corporation",
+        "created_at": "2025-01-24"
+      },
+      {
+        "id": "cust_17456d0f",
+        "first_name": "Patricia",
+        "last_name": "Brown",
+        "email": "patricia.brown@bluthcompany.com",
+        "company": "Bluth Company",
+        "created_at": "2024-06-26"
+      },
+      {
+        "id": "cust_97f94994",
+        "first_name": "Jennifer",
+        "last_name": "Moore",
+        "email": "jennifer.moore@dundermifflin.com",
+        "company": "Dunder Mifflin",
+        "created_at": "2024-12-30"
+      },
+      {
+        "id": "cust_c97aa22d",
+        "first_name": "David",
+        "last_name": "Brown",
+        "email": "david.brown@massivedynamic.com",
+        "company": "Massive Dynamic",
+        "created_at": "2024-07-01"
+      },
+      {
+        "id": "cust_dc181534",
+        "first_name": "Robert",
+        "last_name": "Rodriguez",
+        "email": "robert.rodriguez@weyland-yutani.com",
+        "company": "Weyland-Yutani",
+        "created_at": "2023-08-31"
+      },
+      {
+        "id": "cust_9ad72e98",
+        "first_name": "Elizabeth",
+        "last_name": "Taylor",
+        "email": "elizabeth.taylor@initechsystems.com",
+        "company": "Initech Systems",
+        "created_at": "2024-03-13"
+      },
+      {
+        "id": "cust_68deb6f2",
+        "first_name": "Richard",
+        "last_name": "Miller",
+        "email": "richard.miller@cogswellcogs.com",
+        "company": "Cogswell Cogs",
+        "created_at": "2024-05-14"
+      },
+      {
+        "id": "cust_bd5454dc",
+        "first_name": "Michael",
+        "last_name": "Brown",
+        "email": "michael.brown@wonkaindustries.com",
+        "company": "Wonka Industries",
+        "created_at": "2024-05-26"
+      },
+      {
+        "id": "cust_9d422cba",
+        "first_name": "Richard",
+        "last_name": "Anderson",
+        "email": "richard.anderson@cyberdynesystems.com",
+        "company": "Cyberdyne Systems",
+        "created_at": "2023-05-12"
+      },
+      {
+        "id": "cust_d93b9ca6",
+        "first_name": "Michael",
+        "last_name": "Anderson",
+        "email": "michael.anderson@aperturescience.com",
+        "company": "Aperture Science",
+        "created_at": "2024-05-16"
+      },
+      {
+        "id": "cust_1bc79d05",
+        "first_name": "Nancy",
+        "last_name": "Wilson",
+        "email": "nancy.wilson@oceanicairlines.com",
+        "company": "Oceanic Airlines",
+        "created_at": "2023-08-31"
+      },
+      {
+        "id": "cust_441876d4",
+        "first_name": "Linda",
+        "last_name": "Miller",
+        "email": "linda.miller@nakatomitradingcorp.com",
+        "company": "Nakatomi Trading Corp",
+        "created_at": "2024-06-16"
+      },
+      {
+        "id": "cust_a0d47078",
+        "first_name": "Nancy",
+        "last_name": "Jones",
+        "email": "nancy.jones@wayneenterprises.com",
+        "company": "Wayne Enterprises",
+        "created_at": "2025-01-14"
+      },
+      {
+        "id": "cust_cc2e3bda",
+        "first_name": "Robert",
+        "last_name": "Martin",
+        "email": "robert.martin@umbrellacorp.com",
+        "company": "Umbrella Corp",
+        "created_at": "2024-08-19"
+      },
+      {
+        "id": "cust_80307e59",
+        "first_name": "William",
+        "last_name": "Thomas",
+        "email": "william.thomas@bluthcompany.com",
+        "company": "Bluth Company",
+        "created_at": "2024-07-16"
+      },
+      {
+        "id": "cust_80a34b49",
+        "first_name": "Richard",
+        "last_name": "Miller",
+        "email": "richard.miller@massivedynamic.com",
+        "company": "Massive Dynamic",
+        "created_at": "2024-05-08"
+      },
+      {
+        "id": "cust_9612e3d4",
+        "first_name": "Nancy",
+        "last_name": "Williams",
+        "email": "nancy.williams@wayneenterprises.com",
+        "company": "Wayne Enterprises",
+        "created_at": "2023-04-21"
+      },
+      {
+        "id": "cust_fb27aabe",
+        "first_name": "Linda",
+        "last_name": "Garcia",
+        "email": "linda.garcia@wonkaindustries.com",
+        "company": "Wonka Industries",
+        "created_at": "2023-10-21"
+      },
+      {
+        "id": "cust_4738e63e",
+        "first_name": "Patricia",
+        "last_name": "Thomas",
+        "email": "patricia.thomas@acmetechnologies.com",
+        "company": "Acme Technologies",
+        "created_at": "2024-01-11"
+      },
+      {
+        "id": "cust_d1d486dd",
+        "first_name": "Sarah",
+        "last_name": "Williams",
+        "email": "sarah.williams@wayneenterprises.com",
+        "company": "Wayne Enterprises",
+        "created_at": "2024-07-27"
+      },
+      {
+        "id": "cust_5a1451df",
+        "first_name": "Margaret",
+        "last_name": "Robinson",
+        "email": "margaret.robinson@starkindustries.com",
+        "company": "Stark Industries",
+        "created_at": "2024-10-14"
+      },
+      {
+        "id": "cust_fd103d7b",
+        "first_name": "Elizabeth",
+        "last_name": "White",
+        "email": "elizabeth.white@cyberdynesystems.com",
+        "company": "Cyberdyne Systems",
+        "created_at": "2024-07-01"
+      },
+      {
+        "id": "cust_35045a74",
+        "first_name": "Nancy",
+        "last_name": "Lewis",
+        "email": "nancy.lewis@weyland-yutani.com",
+        "company": "Weyland-Yutani",
+        "created_at": "2023-09-08"
+      },
+      {
+        "id": "cust_01bca64d",
+        "first_name": "Michael",
+        "last_name": "Johnson",
+        "email": "michael.johnson@wayneenterprises.com",
+        "company": "Wayne Enterprises",
+        "created_at": "2024-10-30"
+      },
+      {
+        "id": "cust_d85cb227",
+        "first_name": "Linda",
+        "last_name": "Robinson",
+        "email": "linda.robinson@cogswellcogs.com",
+        "company": "Cogswell Cogs",
+        "created_at": "2023-10-19"
+      },
+      {
+        "id": "cust_f257ae72",
+        "first_name": "Mary",
+        "last_name": "Davis",
+        "email": "mary.davis@xanatosenterprises.com",
+        "company": "Xanatos Enterprises",
+        "created_at": "2024-07-17"
+      },
+      {
+        "id": "cust_9fafbfae",
+        "first_name": "Susan",
+        "last_name": "Rodriguez",
+        "email": "susan.rodriguez@nakatomitradingcorp.com",
+        "company": "Nakatomi Trading Corp",
+        "created_at": "2024-01-01"
+      },
+      {
+        "id": "cust_fa629f9e",
+        "first_name": "David",
+        "last_name": "Williams",
+        "email": "david.williams@tyrellcorporation.com",
+        "company": "Tyrell Corporation",
+        "created_at": "2024-12-17"
+      },
+      {
+        "id": "cust_4b0251d0",
+        "first_name": "Charles",
+        "last_name": "Harris",
+        "email": "charles.harris@cogswellcogs.com",
+        "company": "Cogswell Cogs",
+        "created_at": "2024-03-08"
+      },
+      {
+        "id": "cust_07ccfe6c",
+        "first_name": "Mary",
+        "last_name": "Smith",
+        "email": "mary.smith@xanatosenterprises.com",
+        "company": "Xanatos Enterprises",
+        "created_at": "2024-10-06"
+      },
+      {
+        "id": "cust_2bd59031",
+        "first_name": "Lisa",
+        "last_name": "White",
+        "email": "lisa.white@massivedynamic.com",
+        "company": "Massive Dynamic",
+        "created_at": "2023-08-18"
+      },
+      {
+        "id": "cust_fd00eff1",
+        "first_name": "Daniel",
+        "last_name": "Jones",
+        "email": "daniel.jones@nakatomitradingcorp.com",
+        "company": "Nakatomi Trading Corp",
+        "created_at": "2024-08-29"
+      },
+      {
+        "id": "cust_368d26d9",
+        "first_name": "William",
+        "last_name": "Jackson",
+        "email": "william.jackson@bluthcompany.com",
+        "company": "Bluth Company",
+        "created_at": "2023-12-15"
+      },
+      {
+        "id": "cust_0213dfc1",
+        "first_name": "Jennifer",
+        "last_name": "Garcia",
+        "email": "jennifer.garcia@spacelysprockets.com",
+        "company": "Spacely Sprockets",
+        "created_at": "2023-11-08"
+      },
+      {
+        "id": "cust_9c1dd77a",
+        "first_name": "Daniel",
+        "last_name": "Moore",
+        "email": "daniel.moore@starkindustries.com",
+        "company": "Stark Industries",
+        "created_at": "2023-05-26"
+      },
+      {
+        "id": "cust_23be7583",
+        "first_name": "Joseph",
+        "last_name": "Garcia",
+        "email": "joseph.garcia@weyland-yutani.com",
+        "company": "Weyland-Yutani",
+        "created_at": "2023-05-15"
+      },
+      {
+        "id": "cust_25bf9bb4",
+        "first_name": "Susan",
+        "last_name": "Lewis",
+        "email": "susan.lewis@globexcorporation.com",
+        "company": "Globex Corporation",
+        "created_at": "2024-05-23"
+      },
+      {
+        "id": "cust_8f1c4e2d",
+        "first_name": "Mary",
+        "last_name": "Thomas",
+        "email": "mary.thomas@bluthcompany.com",
+        "company": "Bluth Company",
+        "created_at": "2024-11-22"
+      },
+      {
+        "id": "cust_ce267e4f",
+        "first_name": "Margaret",
+        "last_name": "Robinson",
+        "email": "margaret.robinson@xanatosenterprises.com",
+        "company": "Xanatos Enterprises",
+        "created_at": "2024-02-01"
+      }
+    ],
+    "invoices": [
+      {
+        "id": "inv_98d191149b",
+        "subscription_id": "sub_e8ad02725b",
+        "customer_id": "cust_1a4e26c3",
+        "date": "2025-02-09",
+        "amount": 6251,
+        "status": "payment_due",
+        "paid_at": null
+      },
+      {
+        "id": "inv_7f53a6bcf1",
+        "subscription_id": "sub_e8ad02725b",
+        "customer_id": "cust_1a4e26c3",
+        "date": "2025-01-18",
+        "amount": 7015,
+        "status": "paid",
+        "paid_at": "2025-01-19"
+      },
+      {
+        "id": "inv_9e800a8038",
+        "subscription_id": "sub_e8ad02725b",
+        "customer_id": "cust_1a4e26c3",
+        "date": "2025-03-18",
+        "amount": 6917,
+        "status": "paid",
+        "paid_at": "2025-03-18"
+      },
+      {
+        "id": "inv_1dc7d949eb",
+        "subscription_id": "sub_e8ad02725b",
+        "customer_id": "cust_1a4e26c3",
+        "date": "2024-11-14",
+        "amount": 4855,
+        "status": "payment_due",
+        "paid_at": null
+      },
+      {
+        "id": "inv_fbce27f3a8",
+        "subscription_id": "sub_e8ad02725b",
+        "customer_id": "cust_1a4e26c3",
+        "date": "2025-03-26",
+        "amount": 5590,
+        "status": "paid",
+        "paid_at": "2025-03-27"
+      },
+      {
+        "id": "inv_20f840ece6",
+        "subscription_id": "sub_e8ad02725b",
+        "customer_id": "cust_1a4e26c3",
+        "date": "2024-10-23",
+        "amount": 4855,
+        "status": "paid",
+        "paid_at": "2024-10-30"
+      },
+      {
+        "id": "inv_df622e64ef",
+        "subscription_id": "sub_676ed3eb72",
+        "customer_id": "cust_b454b87f",
+        "date": "2025-02-15",
+        "amount": 3577,
+        "status": "paid",
+        "paid_at": "2025-02-20"
+      },
+      {
+        "id": "inv_035f426865",
+        "subscription_id": "sub_676ed3eb72",
+        "customer_id": "cust_b454b87f",
+        "date": "2025-01-07",
+        "amount": 3577,
+        "status": "payment_due",
+        "paid_at": null
+      },
+      {
+        "id": "inv_6e3ef09e61",
+        "subscription_id": "sub_4c43c955d3",
+        "customer_id": "cust_ecde7c8c",
+        "date": "2025-01-13",
+        "amount": 471,
+        "status": "payment_due",
+        "paid_at": null
+      },
+      {
+        "id": "inv_1f53f58cb3",
+        "subscription_id": "sub_7518e59fb2",
+        "customer_id": "cust_635cce5a",
+        "date": "2024-12-09",
+        "amount": 402,
+        "status": "paid",
+        "paid_at": "2024-12-12"
+      },
+      {
+        "id": "inv_eae070f640",
+        "subscription_id": "sub_7518e59fb2",
+        "customer_id": "cust_635cce5a",
+        "date": "2024-10-13",
+        "amount": 402,
+        "status": "paid",
+        "paid_at": "2024-10-23"
+      },
+      {
+        "id": "inv_ae6f753838",
+        "subscription_id": "sub_7518e59fb2",
+        "customer_id": "cust_635cce5a",
+        "date": "2025-01-03",
+        "amount": 402,
+        "status": "paid",
+        "paid_at": "2025-01-13"
+      },
+      {
+        "id": "inv_7963606244",
+        "subscription_id": "sub_7518e59fb2",
+        "customer_id": "cust_635cce5a",
+        "date": "2025-03-23",
+        "amount": 495,
+        "status": "paid",
+        "paid_at": "2025-04-02"
+      },
+      {
+        "id": "inv_ba5cb8ccdd",
+        "subscription_id": "sub_7518e59fb2",
+        "customer_id": "cust_635cce5a",
+        "date": "2025-02-03",
+        "amount": 402,
+        "status": "paid",
+        "paid_at": "2025-02-12"
+      },
+      {
+        "id": "inv_90c5311e1d",
+        "subscription_id": "sub_610eb8a94c",
+        "customer_id": "cust_97f94994",
+        "date": "2024-12-23",
+        "amount": 74,
+        "status": "paid",
+        "paid_at": "2024-12-24"
+      },
+      {
+        "id": "inv_3ed6abadbb",
+        "subscription_id": "sub_610eb8a94c",
+        "customer_id": "cust_97f94994",
+        "date": "2025-03-21",
+        "amount": 74,
+        "status": "paid",
+        "paid_at": "2025-03-22"
+      },
+      {
+        "id": "inv_7297d74b41",
+        "subscription_id": "sub_610eb8a94c",
+        "customer_id": "cust_97f94994",
+        "date": "2024-10-04",
+        "amount": 87,
+        "status": "paid",
+        "paid_at": "2024-10-13"
+      },
+      {
+        "id": "inv_c41fdc9d58",
+        "subscription_id": "sub_610eb8a94c",
+        "customer_id": "cust_97f94994",
+        "date": "2025-01-01",
+        "amount": 74,
+        "status": "paid",
+        "paid_at": "2025-01-11"
+      },
+      {
+        "id": "inv_0c0697093f",
+        "subscription_id": "sub_610eb8a94c",
+        "customer_id": "cust_97f94994",
+        "date": "2025-02-26",
+        "amount": 101,
+        "status": "paid",
+        "paid_at": "2025-03-01"
+      },
+      {
+        "id": "inv_409b506825",
+        "subscription_id": "sub_610eb8a94c",
+        "customer_id": "cust_97f94994",
+        "date": "2024-12-16",
+        "amount": 74,
+        "status": "paid",
+        "paid_at": "2024-12-21"
+      },
+      {
+        "id": "inv_1ed301c155",
+        "subscription_id": "sub_9da485d608",
+        "customer_id": "cust_c97aa22d",
+        "date": "2024-12-10",
+        "amount": 4849,
+        "status": "paid",
+        "paid_at": "2024-12-12"
+      },
+      {
+        "id": "inv_0c17757668",
+        "subscription_id": "sub_9da485d608",
+        "customer_id": "cust_c97aa22d",
+        "date": "2024-12-24",
+        "amount": 4849,
+        "status": "paid",
+        "paid_at": "2025-01-01"
+      },
+      {
+        "id": "inv_2d3a49e19a",
+        "subscription_id": "sub_4c327fd48a",
+        "customer_id": "cust_9ad72e98",
+        "date": "2025-03-28",
+        "amount": 90,
+        "status": "paid",
+        "paid_at": "2025-03-31"
+      },
+      {
+        "id": "inv_7e58f73540",
+        "subscription_id": "sub_4c327fd48a",
+        "customer_id": "cust_9ad72e98",
+        "date": "2024-11-07",
+        "amount": 117,
+        "status": "paid",
+        "paid_at": "2024-11-09"
+      },
+      {
+        "id": "inv_97108d5318",
+        "subscription_id": "sub_4c327fd48a",
+        "customer_id": "cust_9ad72e98",
+        "date": "2024-10-13",
+        "amount": 90,
+        "status": "paid",
+        "paid_at": "2024-10-20"
+      },
+      {
+        "id": "inv_4698a8700a",
+        "subscription_id": "sub_814adf62bc",
+        "customer_id": "cust_68deb6f2",
+        "date": "2025-01-11",
+        "amount": 499,
+        "status": "paid",
+        "paid_at": "2025-01-17"
+      },
+      {
+        "id": "inv_721c13512d",
+        "subscription_id": "sub_814adf62bc",
+        "customer_id": "cust_68deb6f2",
+        "date": "2024-12-12",
+        "amount": 524,
+        "status": "paid",
+        "paid_at": "2024-12-17"
+      },
+      {
+        "id": "inv_486e6fe328",
+        "subscription_id": "sub_814adf62bc",
+        "customer_id": "cust_68deb6f2",
+        "date": "2025-01-15",
+        "amount": 499,
+        "status": "paid",
+        "paid_at": "2025-01-18"
+      },
+      {
+        "id": "inv_66ad265e70",
+        "subscription_id": "sub_814adf62bc",
+        "customer_id": "cust_68deb6f2",
+        "date": "2024-10-23",
+        "amount": 499,
+        "status": "paid",
+        "paid_at": "2024-10-26"
+      },
+      {
+        "id": "inv_380ba264bb",
+        "subscription_id": "sub_814adf62bc",
+        "customer_id": "cust_68deb6f2",
+        "date": "2024-12-11",
+        "amount": 509,
+        "status": "paid",
+        "paid_at": "2024-12-21"
+      },
+      {
+        "id": "inv_0906cee640",
+        "subscription_id": "sub_814adf62bc",
+        "customer_id": "cust_68deb6f2",
+        "date": "2025-03-15",
+        "amount": 499,
+        "status": "paid",
+        "paid_at": "2025-03-22"
+      },
+      {
+        "id": "inv_dc82f92476",
+        "subscription_id": "sub_e874d4c89b",
+        "customer_id": "cust_bd5454dc",
+        "date": "2025-02-06",
+        "amount": 1561,
+        "status": "payment_due",
+        "paid_at": null
+      },
+      {
+        "id": "inv_0f76cc8f73",
+        "subscription_id": "sub_e874d4c89b",
+        "customer_id": "cust_bd5454dc",
+        "date": "2024-11-24",
+        "amount": 1054,
+        "status": "paid",
+        "paid_at": "2024-12-04"
+      },
+      {
+        "id": "inv_1bf8034bbe",
+        "subscription_id": "sub_e874d4c89b",
+        "customer_id": "cust_bd5454dc",
+        "date": "2025-03-21",
+        "amount": 1054,
+        "status": "paid",
+        "paid_at": "2025-03-24"
+      },
+      {
+        "id": "inv_7d819ec15f",
+        "subscription_id": "sub_e874d4c89b",
+        "customer_id": "cust_bd5454dc",
+        "date": "2024-11-21",
+        "amount": 1054,
+        "status": "payment_due",
+        "paid_at": null
+      },
+      {
+        "id": "inv_ce33c9b79f",
+        "subscription_id": "sub_e874d4c89b",
+        "customer_id": "cust_bd5454dc",
+        "date": "2024-11-01",
+        "amount": 1054,
+        "status": "paid",
+        "paid_at": "2024-11-04"
+      },
+      {
+        "id": "inv_2f9c5429ae",
+        "subscription_id": "sub_e874d4c89b",
+        "customer_id": "cust_bd5454dc",
+        "date": "2025-01-05",
+        "amount": 1054,
+        "status": "paid",
+        "paid_at": "2025-01-08"
+      },
+      {
+        "id": "inv_ad36332b0c",
+        "subscription_id": "sub_25f55de741",
+        "customer_id": "cust_1bc79d05",
+        "date": "2024-10-11",
+        "amount": 78,
+        "status": "paid",
+        "paid_at": "2024-10-14"
+      },
+      {
+        "id": "inv_1028eb20fd",
+        "subscription_id": "sub_25f55de741",
+        "customer_id": "cust_1bc79d05",
+        "date": "2024-11-26",
+        "amount": 78,
+        "status": "paid",
+        "paid_at": "2024-12-03"
+      },
+      {
+        "id": "inv_b65258d0ab",
+        "subscription_id": "sub_25f55de741",
+        "customer_id": "cust_1bc79d05",
+        "date": "2024-12-17",
+        "amount": 78,
+        "status": "paid",
+        "paid_at": "2024-12-25"
+      },
+      {
+        "id": "inv_5eb15ed046",
+        "subscription_id": "sub_25f55de741",
+        "customer_id": "cust_1bc79d05",
+        "date": "2025-02-18",
+        "amount": 78,
+        "status": "paid",
+        "paid_at": "2025-02-26"
+      },
+      {
+        "id": "inv_13c2e74a2d",
+        "subscription_id": "sub_25f55de741",
+        "customer_id": "cust_1bc79d05",
+        "date": "2025-03-24",
+        "amount": 78,
+        "status": "paid",
+        "paid_at": "2025-03-31"
+      },
+      {
+        "id": "inv_32636dbe27",
+        "subscription_id": "sub_26b0b1daac",
+        "customer_id": "cust_441876d4",
+        "date": "2024-12-22",
+        "amount": 360,
+        "status": "paid",
+        "paid_at": "2025-01-01"
+      },
+      {
+        "id": "inv_7fc1f7a916",
+        "subscription_id": "sub_26b0b1daac",
+        "customer_id": "cust_441876d4",
+        "date": "2024-10-13",
+        "amount": 488,
+        "status": "paid",
+        "paid_at": "2024-10-18"
+      },
+      {
+        "id": "inv_4466d94f66",
+        "subscription_id": "sub_26b0b1daac",
+        "customer_id": "cust_441876d4",
+        "date": "2024-12-18",
+        "amount": 486,
+        "status": "paid",
+        "paid_at": "2024-12-22"
+      },
+      {
+        "id": "inv_510525f417",
+        "subscription_id": "sub_3a44eb80cb",
+        "customer_id": "cust_a0d47078",
+        "date": "2024-10-05",
+        "amount": 120,
+        "status": "paid",
+        "paid_at": "2024-10-10"
+      },
+      {
+        "id": "inv_630f2a9db8",
+        "subscription_id": "sub_3a44eb80cb",
+        "customer_id": "cust_a0d47078",
+        "date": "2024-12-19",
+        "amount": 120,
+        "status": "paid",
+        "paid_at": "2024-12-26"
+      },
+      {
+        "id": "inv_df6034f4e3",
+        "subscription_id": "sub_3a44eb80cb",
+        "customer_id": "cust_a0d47078",
+        "date": "2025-03-02",
+        "amount": 120,
+        "status": "paid",
+        "paid_at": "2025-03-08"
+      },
+      {
+        "id": "inv_c60c14dd60",
+        "subscription_id": "sub_3a44eb80cb",
+        "customer_id": "cust_a0d47078",
+        "date": "2025-03-18",
+        "amount": 150,
+        "status": "paid",
+        "paid_at": "2025-03-23"
+      },
+      {
+        "id": "inv_ed17e00a1e",
+        "subscription_id": "sub_9b3f0a4203",
+        "customer_id": "cust_cc2e3bda",
+        "date": "2025-02-10",
+        "amount": 38,
+        "status": "paid",
+        "paid_at": "2025-02-12"
+      },
+      {
+        "id": "inv_399c11fdf0",
+        "subscription_id": "sub_9b3f0a4203",
+        "customer_id": "cust_cc2e3bda",
+        "date": "2024-11-05",
+        "amount": 38,
+        "status": "paid",
+        "paid_at": "2024-11-09"
+      },
+      {
+        "id": "inv_53a581eaa1",
+        "subscription_id": "sub_9b3f0a4203",
+        "customer_id": "cust_cc2e3bda",
+        "date": "2025-01-18",
+        "amount": 38,
+        "status": "paid",
+        "paid_at": "2025-01-27"
+      },
+      {
+        "id": "inv_d81a6cd974",
+        "subscription_id": "sub_9b3f0a4203",
+        "customer_id": "cust_cc2e3bda",
+        "date": "2025-03-29",
+        "amount": 38,
+        "status": "paid",
+        "paid_at": "2025-04-05"
+      },
+      {
+        "id": "inv_d3f92b68f2",
+        "subscription_id": "sub_36a76b97fb",
+        "customer_id": "cust_80a34b49",
+        "date": "2025-02-28",
+        "amount": 56,
+        "status": "payment_due",
+        "paid_at": null
+      },
+      {
+        "id": "inv_9239cce9fc",
+        "subscription_id": "sub_36a76b97fb",
+        "customer_id": "cust_80a34b49",
+        "date": "2025-03-03",
+        "amount": 39,
+        "status": "paid",
+        "paid_at": "2025-03-08"
+      },
+      {
+        "id": "inv_5712a019e7",
+        "subscription_id": "sub_36a76b97fb",
+        "customer_id": "cust_80a34b49",
+        "date": "2025-03-26",
+        "amount": 39,
+        "status": "paid",
+        "paid_at": "2025-03-30"
+      },
+      {
+        "id": "inv_c38f0e49aa",
+        "subscription_id": "sub_36a76b97fb",
+        "customer_id": "cust_80a34b49",
+        "date": "2024-10-22",
+        "amount": 39,
+        "status": "paid",
+        "paid_at": "2024-10-22"
+      },
+      {
+        "id": "inv_b9b82eea8f",
+        "subscription_id": "sub_cb5a531350",
+        "customer_id": "cust_9612e3d4",
+        "date": "2025-01-04",
+        "amount": 7103,
+        "status": "paid",
+        "paid_at": "2025-01-14"
+      },
+      {
+        "id": "inv_6a845dec98",
+        "subscription_id": "sub_cb5a531350",
+        "customer_id": "cust_9612e3d4",
+        "date": "2025-03-02",
+        "amount": 4783,
+        "status": "paid",
+        "paid_at": "2025-03-04"
+      },
+      {
+        "id": "inv_03215cbbe9",
+        "subscription_id": "sub_cb5a531350",
+        "customer_id": "cust_9612e3d4",
+        "date": "2025-01-10",
+        "amount": 6495,
+        "status": "paid",
+        "paid_at": "2025-01-13"
+      },
+      {
+        "id": "inv_ab9a58ca4f",
+        "subscription_id": "sub_cb5a531350",
+        "customer_id": "cust_9612e3d4",
+        "date": "2024-11-11",
+        "amount": 4783,
+        "status": "paid",
+        "paid_at": "2024-11-14"
+      },
+      {
+        "id": "inv_35ff0a3ce3",
+        "subscription_id": "sub_cb5a531350",
+        "customer_id": "cust_9612e3d4",
+        "date": "2024-10-13",
+        "amount": 4783,
+        "status": "paid",
+        "paid_at": "2024-10-14"
+      },
+      {
+        "id": "inv_95332bbcb4",
+        "subscription_id": "sub_cb5a531350",
+        "customer_id": "cust_9612e3d4",
+        "date": "2024-12-17",
+        "amount": 4783,
+        "status": "paid",
+        "paid_at": "2024-12-24"
+      },
+      {
+        "id": "inv_dc6e9550ef",
+        "subscription_id": "sub_9d7a784c1e",
+        "customer_id": "cust_fb27aabe",
+        "date": "2024-10-05",
+        "amount": 88,
+        "status": "paid",
+        "paid_at": "2024-10-06"
+      },
+      {
+        "id": "inv_b9a851d3a9",
+        "subscription_id": "sub_9d7a784c1e",
+        "customer_id": "cust_fb27aabe",
+        "date": "2024-12-27",
+        "amount": 78,
+        "status": "paid",
+        "paid_at": "2024-12-27"
+      },
+      {
+        "id": "inv_4823104eb7",
+        "subscription_id": "sub_9d7a784c1e",
+        "customer_id": "cust_fb27aabe",
+        "date": "2025-02-04",
+        "amount": 102,
+        "status": "paid",
+        "paid_at": "2025-02-05"
+      },
+      {
+        "id": "inv_b37870d986",
+        "subscription_id": "sub_9d7a784c1e",
+        "customer_id": "cust_fb27aabe",
+        "date": "2025-03-28",
+        "amount": 112,
+        "status": "payment_due",
+        "paid_at": null
+      },
+      {
+        "id": "inv_58e36a3875",
+        "subscription_id": "sub_9d7a784c1e",
+        "customer_id": "cust_fb27aabe",
+        "date": "2024-10-18",
+        "amount": 78,
+        "status": "paid",
+        "paid_at": "2024-10-22"
+      },
+      {
+        "id": "inv_6a88715e04",
+        "subscription_id": "sub_4479e31f8a",
+        "customer_id": "cust_4738e63e",
+        "date": "2024-12-17",
+        "amount": 455,
+        "status": "paid",
+        "paid_at": "2024-12-26"
+      },
+      {
+        "id": "inv_8c19dda58e",
+        "subscription_id": "sub_4479e31f8a",
+        "customer_id": "cust_4738e63e",
+        "date": "2025-03-10",
+        "amount": 535,
+        "status": "paid",
+        "paid_at": "2025-03-12"
+      },
+      {
+        "id": "inv_1105d31226",
+        "subscription_id": "sub_4479e31f8a",
+        "customer_id": "cust_4738e63e",
+        "date": "2024-10-19",
+        "amount": 546,
+        "status": "payment_due",
+        "paid_at": null
+      },
+      {
+        "id": "inv_f5d092df89",
+        "subscription_id": "sub_4479e31f8a",
+        "customer_id": "cust_4738e63e",
+        "date": "2024-12-19",
+        "amount": 393,
+        "status": "paid",
+        "paid_at": "2024-12-29"
+      },
+      {
+        "id": "inv_a0aae0a070",
+        "subscription_id": "sub_4479e31f8a",
+        "customer_id": "cust_4738e63e",
+        "date": "2025-01-16",
+        "amount": 393,
+        "status": "payment_due",
+        "paid_at": null
+      },
+      {
+        "id": "inv_8024d33a0a",
+        "subscription_id": "sub_4479e31f8a",
+        "customer_id": "cust_4738e63e",
+        "date": "2025-03-31",
+        "amount": 393,
+        "status": "paid",
+        "paid_at": "2025-04-04"
+      },
+      {
+        "id": "inv_96218a320a",
+        "subscription_id": "sub_0d64e3996c",
+        "customer_id": "cust_d1d486dd",
+        "date": "2024-12-25",
+        "amount": 82,
+        "status": "paid",
+        "paid_at": "2024-12-25"
+      },
+      {
+        "id": "inv_89c27c2427",
+        "subscription_id": "sub_0d64e3996c",
+        "customer_id": "cust_d1d486dd",
+        "date": "2025-02-01",
+        "amount": 66,
+        "status": "paid",
+        "paid_at": "2025-02-01"
+      },
+      {
+        "id": "inv_e7dc6f6922",
+        "subscription_id": "sub_0d64e3996c",
+        "customer_id": "cust_d1d486dd",
+        "date": "2024-10-11",
+        "amount": 66,
+        "status": "paid",
+        "paid_at": "2024-10-19"
+      },
+      {
+        "id": "inv_5ae00b2dbc",
+        "subscription_id": "sub_0d64e3996c",
+        "customer_id": "cust_d1d486dd",
+        "date": "2024-10-14",
+        "amount": 66,
+        "status": "paid",
+        "paid_at": "2024-10-16"
+      },
+      {
+        "id": "inv_65a694cb73",
+        "subscription_id": "sub_0d64e3996c",
+        "customer_id": "cust_d1d486dd",
+        "date": "2025-01-26",
+        "amount": 77,
+        "status": "paid",
+        "paid_at": "2025-02-05"
+      },
+      {
+        "id": "inv_a9dd6ae90d",
+        "subscription_id": "sub_0d64e3996c",
+        "customer_id": "cust_d1d486dd",
+        "date": "2024-11-24",
+        "amount": 66,
+        "status": "paid",
+        "paid_at": "2024-12-02"
+      },
+      {
+        "id": "inv_d8172ecb87",
+        "subscription_id": "sub_c1ff205d52",
+        "customer_id": "cust_35045a74",
+        "date": "2025-01-22",
+        "amount": 41,
+        "status": "paid",
+        "paid_at": "2025-01-27"
+      },
+      {
+        "id": "inv_ee673a22b1",
+        "subscription_id": "sub_c1ff205d52",
+        "customer_id": "cust_35045a74",
+        "date": "2025-01-04",
+        "amount": 53,
+        "status": "paid",
+        "paid_at": "2025-01-10"
+      },
+      {
+        "id": "inv_e0bf8da85a",
+        "subscription_id": "sub_c1ff205d52",
+        "customer_id": "cust_35045a74",
+        "date": "2024-11-17",
+        "amount": 41,
+        "status": "paid",
+        "paid_at": "2024-11-26"
+      },
+      {
+        "id": "inv_1576b4d88c",
+        "subscription_id": "sub_c1ff205d52",
+        "customer_id": "cust_35045a74",
+        "date": "2024-10-17",
+        "amount": 41,
+        "status": "paid",
+        "paid_at": "2024-10-21"
+      },
+      {
+        "id": "inv_29a98cefaa",
+        "subscription_id": "sub_76811c7b6c",
+        "customer_id": "cust_01bca64d",
+        "date": "2025-03-25",
+        "amount": 4339,
+        "status": "paid",
+        "paid_at": "2025-04-01"
+      },
+      {
+        "id": "inv_7f3a5c45fe",
+        "subscription_id": "sub_76811c7b6c",
+        "customer_id": "cust_01bca64d",
+        "date": "2024-12-16",
+        "amount": 5924,
+        "status": "paid",
+        "paid_at": "2024-12-26"
+      },
+      {
+        "id": "inv_6bbcb4ab37",
+        "subscription_id": "sub_5e9dfabe8e",
+        "customer_id": "cust_d85cb227",
+        "date": "2025-01-14",
+        "amount": 5286,
+        "status": "paid",
+        "paid_at": "2025-01-23"
+      },
+      {
+        "id": "inv_7be9a340cb",
+        "subscription_id": "sub_5e9dfabe8e",
+        "customer_id": "cust_d85cb227",
+        "date": "2024-11-17",
+        "amount": 4783,
+        "status": "paid",
+        "paid_at": "2024-11-20"
+      },
+      {
+        "id": "inv_f4f294d303",
+        "subscription_id": "sub_5e9dfabe8e",
+        "customer_id": "cust_d85cb227",
+        "date": "2024-10-14",
+        "amount": 4783,
+        "status": "paid",
+        "paid_at": "2024-10-15"
+      },
+      {
+        "id": "inv_e118b86e9a",
+        "subscription_id": "sub_5e9dfabe8e",
+        "customer_id": "cust_d85cb227",
+        "date": "2025-02-16",
+        "amount": 4783,
+        "status": "paid",
+        "paid_at": "2025-02-25"
+      },
+      {
+        "id": "inv_d15bf521c2",
+        "subscription_id": "sub_5e9dfabe8e",
+        "customer_id": "cust_d85cb227",
+        "date": "2025-02-15",
+        "amount": 4783,
+        "status": "paid",
+        "paid_at": "2025-02-21"
+      },
+      {
+        "id": "inv_45e8ee6654",
+        "subscription_id": "sub_5e9dfabe8e",
+        "customer_id": "cust_d85cb227",
+        "date": "2024-11-21",
+        "amount": 4823,
+        "status": "paid",
+        "paid_at": "2024-11-29"
+      },
+      {
+        "id": "inv_7d3f14fe07",
+        "subscription_id": "sub_fbf5a9d630",
+        "customer_id": "cust_f257ae72",
+        "date": "2024-11-07",
+        "amount": 3555,
+        "status": "paid",
+        "paid_at": "2024-11-14"
+      },
+      {
+        "id": "inv_dc5423af5d",
+        "subscription_id": "sub_fbf5a9d630",
+        "customer_id": "cust_f257ae72",
+        "date": "2024-12-08",
+        "amount": 3555,
+        "status": "paid",
+        "paid_at": "2024-12-11"
+      },
+      {
+        "id": "inv_bb0aa29e19",
+        "subscription_id": "sub_209164138e",
+        "customer_id": "cust_9fafbfae",
+        "date": "2024-12-26",
+        "amount": 86,
+        "status": "paid",
+        "paid_at": "2025-01-01"
+      },
+      {
+        "id": "inv_3b7792e02c",
+        "subscription_id": "sub_209164138e",
+        "customer_id": "cust_9fafbfae",
+        "date": "2025-02-23",
+        "amount": 86,
+        "status": "paid",
+        "paid_at": "2025-02-24"
+      },
+      {
+        "id": "inv_75bac61f9f",
+        "subscription_id": "sub_209164138e",
+        "customer_id": "cust_9fafbfae",
+        "date": "2024-10-11",
+        "amount": 119,
+        "status": "paid",
+        "paid_at": "2024-10-20"
+      },
+      {
+        "id": "inv_dfad6a4ba3",
+        "subscription_id": "sub_209164138e",
+        "customer_id": "cust_9fafbfae",
+        "date": "2025-01-26",
+        "amount": 86,
+        "status": "paid",
+        "paid_at": "2025-02-05"
+      },
+      {
+        "id": "inv_03b4581ee3",
+        "subscription_id": "sub_209164138e",
+        "customer_id": "cust_9fafbfae",
+        "date": "2025-01-13",
+        "amount": 112,
+        "status": "paid",
+        "paid_at": "2025-01-18"
+      },
+      {
+        "id": "inv_8d0270e3d1",
+        "subscription_id": "sub_209164138e",
+        "customer_id": "cust_9fafbfae",
+        "date": "2025-01-02",
+        "amount": 86,
+        "status": "paid",
+        "paid_at": "2025-01-12"
+      },
+      {
+        "id": "inv_616748e945",
+        "subscription_id": "sub_5027797db2",
+        "customer_id": "cust_fa629f9e",
+        "date": "2024-11-19",
+        "amount": 5688,
+        "status": "payment_due",
+        "paid_at": null
+      },
+      {
+        "id": "inv_0195959918",
+        "subscription_id": "sub_5027797db2",
+        "customer_id": "cust_fa629f9e",
+        "date": "2025-03-27",
+        "amount": 6939,
+        "status": "paid",
+        "paid_at": "2025-04-01"
+      },
+      {
+        "id": "inv_a782a19052",
+        "subscription_id": "sub_5027797db2",
+        "customer_id": "cust_fa629f9e",
+        "date": "2025-03-28",
+        "amount": 4925,
+        "status": "paid",
+        "paid_at": "2025-04-01"
+      },
+      {
+        "id": "inv_5b3b28f02c",
+        "subscription_id": "sub_5027797db2",
+        "customer_id": "cust_fa629f9e",
+        "date": "2025-01-31",
+        "amount": 4925,
+        "status": "paid",
+        "paid_at": "2025-02-08"
+      },
+      {
+        "id": "inv_ceec718bc9",
+        "subscription_id": "sub_4dd35db986",
+        "customer_id": "cust_4b0251d0",
+        "date": "2024-12-04",
+        "amount": 490,
+        "status": "paid",
+        "paid_at": "2024-12-12"
+      },
+      {
+        "id": "inv_fe19892f23",
+        "subscription_id": "sub_4dd35db986",
+        "customer_id": "cust_4b0251d0",
+        "date": "2025-02-02",
+        "amount": 349,
+        "status": "paid",
+        "paid_at": "2025-02-02"
+      },
+      {
+        "id": "inv_8970dae4f2",
+        "subscription_id": "sub_4dd35db986",
+        "customer_id": "cust_4b0251d0",
+        "date": "2025-03-05",
+        "amount": 433,
+        "status": "paid",
+        "paid_at": "2025-03-15"
+      },
+      {
+        "id": "inv_3aa17d9be1",
+        "subscription_id": "sub_bb473bcc30",
+        "customer_id": "cust_fd00eff1",
+        "date": "2025-03-25",
+        "amount": 2047,
+        "status": "paid",
+        "paid_at": "2025-03-31"
+      },
+      {
+        "id": "inv_976729a9fd",
+        "subscription_id": "sub_bb473bcc30",
+        "customer_id": "cust_fd00eff1",
+        "date": "2024-11-18",
+        "amount": 2047,
+        "status": "paid",
+        "paid_at": "2024-11-22"
+      },
+      {
+        "id": "inv_b55aa99fa9",
+        "subscription_id": "sub_bb473bcc30",
+        "customer_id": "cust_fd00eff1",
+        "date": "2025-03-15",
+        "amount": 2047,
+        "status": "paid",
+        "paid_at": "2025-03-16"
+      },
+      {
+        "id": "inv_0e2ca63f85",
+        "subscription_id": "sub_bb473bcc30",
+        "customer_id": "cust_fd00eff1",
+        "date": "2024-12-23",
+        "amount": 2047,
+        "status": "paid",
+        "paid_at": "2024-12-25"
+      },
+      {
+        "id": "inv_187c9287c8",
+        "subscription_id": "sub_bb473bcc30",
+        "customer_id": "cust_fd00eff1",
+        "date": "2024-12-22",
+        "amount": 2047,
+        "status": "paid",
+        "paid_at": "2025-01-01"
+      },
+      {
+        "id": "inv_e33314bddd",
+        "subscription_id": "sub_bb473bcc30",
+        "customer_id": "cust_fd00eff1",
+        "date": "2025-01-01",
+        "amount": 2047,
+        "status": "paid",
+        "paid_at": "2025-01-09"
+      },
+      {
+        "id": "inv_6d73fc4278",
+        "subscription_id": "sub_7b0be3a1e7",
+        "customer_id": "cust_0213dfc1",
+        "date": "2024-11-21",
+        "amount": 3605,
+        "status": "payment_due",
+        "paid_at": null
+      },
+      {
+        "id": "inv_985e8f5d3f",
+        "subscription_id": "sub_7b0be3a1e7",
+        "customer_id": "cust_0213dfc1",
+        "date": "2025-02-06",
+        "amount": 2435,
+        "status": "paid",
+        "paid_at": "2025-02-14"
+      },
+      {
+        "id": "inv_05c1aab47a",
+        "subscription_id": "sub_7b0be3a1e7",
+        "customer_id": "cust_0213dfc1",
+        "date": "2024-10-15",
+        "amount": 3216,
+        "status": "paid",
+        "paid_at": "2024-10-21"
+      },
+      {
+        "id": "inv_023bd545b1",
+        "subscription_id": "sub_7b0be3a1e7",
+        "customer_id": "cust_0213dfc1",
+        "date": "2024-11-09",
+        "amount": 2435,
+        "status": "paid",
+        "paid_at": "2024-11-16"
+      },
+      {
+        "id": "inv_20283bc745",
+        "subscription_id": "sub_7b0be3a1e7",
+        "customer_id": "cust_0213dfc1",
+        "date": "2025-01-03",
+        "amount": 2435,
+        "status": "paid",
+        "paid_at": "2025-01-06"
+      },
+      {
+        "id": "inv_e67cdebf9a",
+        "subscription_id": "sub_7b0be3a1e7",
+        "customer_id": "cust_0213dfc1",
+        "date": "2025-03-11",
+        "amount": 3240,
+        "status": "paid",
+        "paid_at": "2025-03-18"
+      },
+      {
+        "id": "inv_6f9b083fd8",
+        "subscription_id": "sub_208cc6fe14",
+        "customer_id": "cust_9c1dd77a",
+        "date": "2025-01-30",
+        "amount": 360,
+        "status": "paid",
+        "paid_at": "2025-02-05"
+      },
+      {
+        "id": "inv_759260fed3",
+        "subscription_id": "sub_208cc6fe14",
+        "customer_id": "cust_9c1dd77a",
+        "date": "2025-03-12",
+        "amount": 414,
+        "status": "paid",
+        "paid_at": "2025-03-13"
+      },
+      {
+        "id": "inv_5d2857943a",
+        "subscription_id": "sub_208cc6fe14",
+        "customer_id": "cust_9c1dd77a",
+        "date": "2024-12-06",
+        "amount": 512,
+        "status": "paid",
+        "paid_at": "2024-12-14"
+      },
+      {
+        "id": "inv_f1d3408109",
+        "subscription_id": "sub_208cc6fe14",
+        "customer_id": "cust_9c1dd77a",
+        "date": "2024-11-23",
+        "amount": 360,
+        "status": "paid",
+        "paid_at": "2024-11-30"
+      },
+      {
+        "id": "inv_6fc2a50f40",
+        "subscription_id": "sub_208cc6fe14",
+        "customer_id": "cust_9c1dd77a",
+        "date": "2024-11-18",
+        "amount": 360,
+        "status": "paid",
+        "paid_at": "2024-11-24"
+      },
+      {
+        "id": "inv_fd7b6dfc68",
+        "subscription_id": "sub_8a26a5e562",
+        "customer_id": "cust_23be7583",
+        "date": "2025-01-25",
+        "amount": 272,
+        "status": "paid",
+        "paid_at": "2025-01-28"
+      },
+      {
+        "id": "inv_fe655507ed",
+        "subscription_id": "sub_8a26a5e562",
+        "customer_id": "cust_23be7583",
+        "date": "2024-12-24",
+        "amount": 370,
+        "status": "paid",
+        "paid_at": "2025-01-01"
+      },
+      {
+        "id": "inv_c2345a411c",
+        "subscription_id": "sub_8a26a5e562",
+        "customer_id": "cust_23be7583",
+        "date": "2025-03-25",
+        "amount": 272,
+        "status": "paid",
+        "paid_at": "2025-03-30"
+      },
+      {
+        "id": "inv_8ffe7d37c9",
+        "subscription_id": "sub_8a26a5e562",
+        "customer_id": "cust_23be7583",
+        "date": "2024-11-02",
+        "amount": 272,
+        "status": "paid",
+        "paid_at": "2024-11-11"
+      },
+      {
+        "id": "inv_8be0105527",
+        "subscription_id": "sub_8a26a5e562",
+        "customer_id": "cust_23be7583",
+        "date": "2025-01-29",
+        "amount": 373,
+        "status": "paid",
+        "paid_at": "2025-02-05"
+      },
+      {
+        "id": "inv_4e38d160fe",
+        "subscription_id": "sub_e8e9120618",
+        "customer_id": "cust_25bf9bb4",
+        "date": "2024-12-14",
+        "amount": 248,
+        "status": "paid",
+        "paid_at": "2024-12-19"
+      },
+      {
+        "id": "inv_7aea1eb91a",
+        "subscription_id": "sub_e8e9120618",
+        "customer_id": "cust_25bf9bb4",
+        "date": "2025-01-02",
+        "amount": 209,
+        "status": "paid",
+        "paid_at": "2025-01-05"
+      },
+      {
+        "id": "inv_7dc16a6a0c",
+        "subscription_id": "sub_e8e9120618",
+        "customer_id": "cust_25bf9bb4",
+        "date": "2024-12-20",
+        "amount": 209,
+        "status": "paid",
+        "paid_at": "2024-12-27"
+      },
+      {
+        "id": "inv_7effe155e5",
+        "subscription_id": "sub_e8e9120618",
+        "customer_id": "cust_25bf9bb4",
+        "date": "2024-11-24",
+        "amount": 209,
+        "status": "paid",
+        "paid_at": "2024-11-30"
+      },
+      {
+        "id": "inv_cce43ff8a8",
+        "subscription_id": "sub_e8e9120618",
+        "customer_id": "cust_25bf9bb4",
+        "date": "2025-03-09",
+        "amount": 209,
+        "status": "paid",
+        "paid_at": "2025-03-18"
+      },
+      {
+        "id": "inv_d3a9a32f3a",
+        "subscription_id": "sub_381e254a5b",
+        "customer_id": "cust_8f1c4e2d",
+        "date": "2024-12-24",
+        "amount": 2831,
+        "status": "payment_due",
+        "paid_at": null
+      },
+      {
+        "id": "inv_2fe6d95ea6",
+        "subscription_id": "sub_381e254a5b",
+        "customer_id": "cust_8f1c4e2d",
+        "date": "2024-11-03",
+        "amount": 2831,
+        "status": "paid",
+        "paid_at": "2024-11-11"
+      },
+      {
+        "id": "inv_83b562d661",
+        "subscription_id": "sub_381e254a5b",
+        "customer_id": "cust_8f1c4e2d",
+        "date": "2024-10-24",
+        "amount": 3633,
+        "status": "paid",
+        "paid_at": "2024-10-28"
+      },
+      {
+        "id": "inv_1e9c5f685a",
+        "subscription_id": "sub_381e254a5b",
+        "customer_id": "cust_8f1c4e2d",
+        "date": "2024-12-12",
+        "amount": 2831,
+        "status": "paid",
+        "paid_at": "2024-12-13"
+      },
+      {
+        "id": "inv_1bb578a679",
+        "subscription_id": "sub_381e254a5b",
+        "customer_id": "cust_8f1c4e2d",
+        "date": "2025-01-14",
+        "amount": 3836,
+        "status": "paid",
+        "paid_at": "2025-01-23"
+      },
+      {
+        "id": "inv_5acd65ddbd",
+        "subscription_id": "sub_0806f66dc1",
+        "customer_id": "cust_ce267e4f",
+        "date": "2024-10-26",
+        "amount": 4449,
+        "status": "paid",
+        "paid_at": "2024-10-31"
+      },
+      {
+        "id": "inv_ffbe4aadeb",
+        "subscription_id": "sub_0806f66dc1",
+        "customer_id": "cust_ce267e4f",
+        "date": "2025-03-12",
+        "amount": 4449,
+        "status": "paid",
+        "paid_at": "2025-03-21"
+      },
+      {
+        "id": "inv_c7fe3eef67",
+        "subscription_id": "sub_0806f66dc1",
+        "customer_id": "cust_ce267e4f",
+        "date": "2025-03-24",
+        "amount": 4449,
+        "status": "paid",
+        "paid_at": "2025-03-30"
+      }
+    ],
+    "mrr": 52507,
+    "metrics": {
+      "active_subscriptions_count": 32,
+      "canceled_subscriptions_count": 9,
+      "recent_invoices_count": 27,
+      "recent_revenue": 49866
+    }
+  },
+  "ooti": {
+    "projects": [
+      {
+        "id": "proj_57376170",
+        "name": "Operational Excellence",
+        "client": "Cogswell Cogs",
+        "status": "on_hold",
+        "start_date": "2024-11-23",
+        "end_date": "2025-11-05",
+        "actual_end_date": null,
+        "budget": 219020,
+        "spent": 52180.547299333026,
+        "completion_percentage": 33.634663418761534
+      },
+      {
+        "id": "proj_f8fcf9f2",
+        "name": "Mobile Application",
+        "client": "Bluth Company",
+        "status": "at_risk",
+        "start_date": "2024-09-21",
+        "end_date": "2024-12-04",
+        "actual_end_date": null,
+        "budget": 460532,
+        "spent": 417391.6615603889,
+        "completion_percentage": 89.01500659658788
+      },
+      {
+        "id": "proj_29e0acc3",
+        "name": "Alpha Development",
+        "client": "Xanatos Enterprises",
+        "status": "at_risk",
+        "start_date": "2024-12-23",
+        "end_date": "2025-09-11",
+        "actual_end_date": null,
+        "budget": 298215,
+        "spent": 124516.1636741995,
+        "completion_percentage": 46.704521762087005
+      },
+      {
+        "id": "proj_a1b34fc7",
+        "name": "Jupyter Integration",
+        "client": "Oceanic Airlines",
+        "status": "active",
+        "start_date": "2024-08-14",
+        "end_date": "2025-06-25",
+        "actual_end_date": null,
+        "budget": 301260,
+        "spent": 47685.22343155647,
+        "completion_percentage": 25.776095198541853
+      },
+      {
+        "id": "proj_5e1c7e3b",
+        "name": "Global Expansion",
+        "client": "Wayne Enterprises",
+        "status": "active",
+        "start_date": "2024-12-20",
+        "end_date": "2025-11-16",
+        "actual_end_date": null,
+        "budget": 196355,
+        "spent": 91767.85871680795,
+        "completion_percentage": 40.875378982089536
+      },
+      {
+        "id": "proj_6bca5354",
+        "name": "Operational Excellence",
+        "client": "Nakatomi Trading Corp",
+        "status": "active",
+        "start_date": "2024-04-10",
+        "end_date": "2024-12-30",
+        "actual_end_date": null,
+        "budget": 439471,
+        "spent": 90408.18952212915,
+        "completion_percentage": 19.726188750728575
+      },
+      {
+        "id": "proj_7fe24f10",
+        "name": "Data Migration",
+        "client": "Wonka Industries",
+        "status": "active",
+        "start_date": "2024-07-08",
+        "end_date": "2025-05-09",
+        "actual_end_date": null,
+        "budget": 187308,
+        "spent": 92092.91445801756,
+        "completion_percentage": 48.77562468177789
+      },
+      {
+        "id": "proj_723ecb88",
+        "name": "Health Dashboard",
+        "client": "Aperture Science",
+        "status": "on_hold",
+        "start_date": "2024-11-09",
+        "end_date": "2025-11-07",
+        "actual_end_date": null,
+        "budget": 343646,
+        "spent": 149703.6987589396,
+        "completion_percentage": 48.639702460806205
+      },
+      {
+        "id": "proj_7ec1c3ff",
+        "name": "Field Service Module",
+        "client": "Dunder Mifflin",
+        "status": "completed",
+        "start_date": "2024-08-09",
+        "end_date": "2024-10-23",
+        "actual_end_date": "2024-11-18",
+        "budget": 183495,
+        "spent": 183495,
+        "completion_percentage": 100
+      },
+      {
+        "id": "proj_8d329902",
+        "name": "Jupyter Integration",
+        "client": "Massive Dynamic",
+        "status": "active",
+        "start_date": "2024-07-26",
+        "end_date": "2025-03-14",
+        "actual_end_date": null,
+        "budget": 85915,
+        "spent": 33526.76592864155,
+        "completion_percentage": 33.531184303152784
+      },
+      {
+        "id": "proj_125a97b8",
+        "name": "Process Automation",
+        "client": "Xanatos Enterprises",
+        "status": "active",
+        "start_date": "2025-02-28",
+        "end_date": "2025-07-19",
+        "actual_end_date": null,
+        "budget": 421090,
+        "spent": 336355.4154270153,
+        "completion_percentage": 86.82269226209633
+      },
+      {
+        "id": "proj_513f9ff4",
+        "name": "Legacy System Migration",
+        "client": "Soylent Green",
+        "status": "active",
+        "start_date": "2024-05-06",
+        "end_date": "2024-09-30",
+        "actual_end_date": null,
+        "budget": 237747,
+        "spent": 149847.18043141867,
+        "completion_percentage": 55.034450427577426
+      },
+      {
+        "id": "proj_9788f770",
+        "name": "Infrastructure Upgrade",
+        "client": "Wayne Enterprises",
+        "status": "completed",
+        "start_date": "2024-10-24",
+        "end_date": "2025-01-20",
+        "actual_end_date": "2025-02-04",
+        "budget": 364723,
+        "spent": 308727.18321494415,
+        "completion_percentage": 100
+      },
+      {
+        "id": "proj_bb9c7902",
+        "name": "Infrastructure Upgrade",
+        "client": "Wayne Enterprises",
+        "status": "at_risk",
+        "start_date": "2024-07-16",
+        "end_date": "2024-12-06",
+        "actual_end_date": null,
+        "budget": 296888,
+        "spent": 195788.2959199721,
+        "completion_percentage": 67.95278126862688
+      },
+      {
+        "id": "proj_8e919d4c",
+        "name": "Enterprise Integration",
+        "client": "Weyland-Yutani",
+        "status": "on_hold",
+        "start_date": "2024-07-19",
+        "end_date": "2024-11-05",
+        "actual_end_date": null,
+        "budget": 354160,
+        "spent": 106218.54223430113,
+        "completion_percentage": 34.91919707424137
+      },
+      {
+        "id": "proj_4ba13d6c",
+        "name": "Network Overhaul",
+        "client": "Massive Dynamic",
+        "status": "active",
+        "start_date": "2024-06-11",
+        "end_date": "2025-03-09",
+        "actual_end_date": null,
+        "budget": 80310,
+        "spent": 29082.24049130315,
+        "completion_percentage": 35.826659500675525
+      },
+      {
+        "id": "proj_058f9e47",
+        "name": "Alpha Development",
+        "client": "Massive Dynamic",
+        "status": "on_hold",
+        "start_date": "2024-04-05",
+        "end_date": "2024-08-13",
+        "actual_end_date": null,
+        "budget": 140220,
+        "spent": 53602.96671954304,
+        "completion_percentage": 40.60147161681748
+      },
+      {
+        "id": "proj_a70da430",
+        "name": "Beta Release",
+        "client": "Aperture Science",
+        "status": "active",
+        "start_date": "2024-08-16",
+        "end_date": "2024-12-12",
+        "actual_end_date": null,
+        "budget": 448851,
+        "spent": 45459.94583405466,
+        "completion_percentage": 18.4300350804855
+      },
+      {
+        "id": "proj_22676091",
+        "name": "Enterprise Integration",
+        "client": "Cogswell Cogs",
+        "status": "active",
+        "start_date": "2024-05-31",
+        "end_date": "2024-08-07",
+        "actual_end_date": null,
+        "budget": 130930,
+        "spent": 86426.5234410254,
+        "completion_percentage": 71.10634626023926
+      }
+    ],
+    "resources": [
+      {
+        "department": "Engineering",
+        "total_staff": 21,
+        "allocated": 17,
+        "available": 4,
+        "billable_hours": 2720,
+        "utilization": 101.19047619047619
+      },
+      {
+        "department": "Design",
+        "total_staff": 8,
+        "allocated": 5,
+        "available": 3,
+        "billable_hours": 800,
+        "utilization": 78.125
+      },
+      {
+        "department": "Product",
+        "total_staff": 8,
+        "allocated": 6,
+        "available": 2,
+        "billable_hours": 960,
+        "utilization": 93.75
+      },
+      {
+        "department": "QA",
+        "total_staff": 10,
+        "allocated": 7,
+        "available": 3,
+        "billable_hours": 1120,
+        "utilization": 87.5
+      },
+      {
+        "department": "DevOps",
+        "total_staff": 3,
+        "allocated": 2,
+        "available": 1,
+        "billable_hours": 320,
+        "utilization": 83.33333333333334
+      },
+      {
+        "department": "Implementation",
+        "total_staff": 13,
+        "allocated": 11,
+        "available": 2,
+        "billable_hours": 1760,
+        "utilization": 105.76923076923077
+      }
+    ],
+    "finance_summary": {
+      "monthly_revenue": 728024.199373852,
+      "monthly_costs": 504000.0,
+      "cash_flow": 224024.199373852,
+      "accounts_receivable": 1844523.6211634697,
+      "profit_margin": 30.771531985684998
+    },
+    "indicators": {
+      "delivery_on_time": 91,
+      "client_satisfaction": 84,
+      "employee_satisfaction": 76,
+      "project_profitability": 29,
+      "resource_utilization": 91.61134004884006,
+      "sales_pipeline_value": 2496105,
+      "win_rate": 27,
+      "average_deal_size": 299509,
+      "budget_adherence": 95,
+      "project_success_rate": 91
+    },
+    "metrics": {
+      "active_projects_count": 10,
+      "at_risk_projects_count": 3,
+      "total_budget": 5190136,
+      "total_spent": 2594276.3170635914,
+      "total_remaining": 2595859.6829364086,
+      "budget_utilization": 49.9847463932273,
+      "overall_resource_utilization": 91.61134004884006
+    }
+  },
+  "timestamp": "2025-04-02T06:12:03.801880",
+  "errors": null
+}

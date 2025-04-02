@@ -26,6 +26,8 @@
                 <i data-feather="grid" class="sidebar-icon"></i>
                 <span>Dashboard</span>
             </a>
+            
+            {% if current_user.is_authenticated %}
             <a href="{{ url_for('digests') }}" class="sidebar-link {% if request.path == url_for('digests') %}active{% endif %}">
                 <i data-feather="file-text" class="sidebar-icon"></i>
                 <span>Daily Digests</span>
@@ -77,9 +79,21 @@
                 <i data-feather="settings" class="sidebar-icon"></i>
                 <span>Settings</span>
             </a>
+            {% endif %}
         </div>
         
         <div class="mt-auto px-3 py-3">
+            {% if current_user.is_authenticated %}
+            <div class="text-center mb-3">
+                {% if current_user.picture %}
+                <img src="{{ current_user.picture }}" alt="{{ current_user.name }}" class="rounded-circle mb-2" width="50" height="50">
+                {% endif %}
+                <div class="mb-2">{{ current_user.name }}</div>
+                <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-danger btn-sm mb-3">
+                    <i data-feather="log-out" class="me-1" style="width: 16px; height: 16px;"></i> Logout
+                </a>
+            </div>
+            
             <form action="{{ url_for('generate_digest') }}" method="post">
                 <button type="submit" class="btn btn-primary w-100 d-flex align-items-center justify-content-center">
                     <i data-feather="refresh-cw" class="me-2"></i> Generate Digest
@@ -91,6 +105,14 @@
                     <i data-feather="refresh-cw" class="me-2"></i> Refresh Data
                 </button>
             </form>
+            {% else %}
+            <div class="text-center">
+                <p>You are not logged in</p>
+                <a href="{{ url_for('auth.login') }}" class="btn btn-primary">
+                    <i data-feather="log-in" class="me-2"></i> Login with Google
+                </a>
+            </div>
+            {% endif %}
         </div>
     </div>
     

@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, jso
 from datetime import datetime, timedelta
 import json
 from pathlib import Path
+from flask_login import LoginManager, current_user, login_required
 
 import config
 from services.daily_digest import generate_daily_digest
@@ -12,6 +13,7 @@ from api.slack_integration import post_message
 from utils.insights_generator import generate_insights, generate_action_items
 from utils.data_processor import consolidate_data
 from api.ooti import OOTIAPI
+from models.user import User
 
 # Import Google services if enabled
 gmail_integration = None
@@ -82,6 +84,22 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 app.secret_key = os.environ.get("SESSION_SECRET")
 
+# Initialize Flask-Login
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "auth.login"
+login_manager.login_message = "Please log in to access this page."
+login_manager.login_message_category = "info"
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
+
+# Register authentication blueprint
+from auth import auth, check_authentication
+app.register_blueprint(auth, url_prefix='')
+check_authentication()  # Print authentication status and setup instructions
+
 # Check required API keys
 missing_keys = []
 if not config.HUBSPOT_API_KEY:
@@ -96,6 +114,10 @@ if not config.SLACK_BOT_TOKEN and config.ENABLE_SLACK_NOTIFICATIONS:
     missing_keys.append("SLACK_BOT_TOKEN")
 if not config.SLACK_CHANNEL_ID and config.ENABLE_SLACK_NOTIFICATIONS:
     missing_keys.append("SLACK_CHANNEL_ID")
+if not os.environ.get("GOOGLE_OAUTH_CLIENT_ID"):
+    missing_keys.append("GOOGLE_OAUTH_CLIENT_ID")
+if not os.environ.get("GOOGLE_OAUTH_CLIENT_SECRET"):
+    missing_keys.append("GOOGLE_OAUTH_CLIENT_SECRET")
 
 # Cache for platform data
 data_cache = {
@@ -162,6 +184,7 @@ def index():
         return render_template('dashboard.html', error=True)
 
 @app.route('/integrations')
+@login_required
 def integrations():
     """Shows the status of various integrations"""
     integration_status = {
@@ -178,6 +201,7 @@ def integrations():
     return render_template('integrations.html', integration_status=integration_status)
 
 @app.route('/digests')
+@login_required
 def digests():
     """View all generated daily digests"""
     digest_files = sorted(config.DIGESTS_DIR.glob("*.json"), 
@@ -197,6 +221,7 @@ def digests():
     return render_template('digests.html', digests=digests)
 
 @app.route('/digest/<filename>')
+@login_required
 def view_digest(filename):
     """View a specific digest"""
     digest_path = config.DIGESTS_DIR / filename

@@ -1,0 +1,28 @@
+{
+  "date": "2025-04-02",
+  "timestamp": "2025-04-02T06:12:03.802222",
+  "executive_summary": "Unable to generate summary: OpenAI client not initialized.",
+  "key_metrics": {
+    "Error": "OpenAI client not initialized"
+  },
+  "action_items": [
+    "Unable to generate action items: OpenAI client not initialized."
+  ],
+  "platform_stats": {
+    "hubspot": {
+      "deals_count": 47,
+      "contacts_count": 88,
+      "total_deal_value": 7186133
+    },
+    "chargebee": {
+      "active_subscriptions": 32,
+      "mrr": 52507,
+      "recent_invoices": 142
+    },
+    "ooti": {
+      "active_projects": 10,
+      "at_risk_projects": 3,
+      "resource_utilization": 91.61134004884006
+    }
+  }
+}
