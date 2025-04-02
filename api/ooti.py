@@ -2,6 +2,7 @@ import requests
 import logging
 from datetime import datetime, timedelta
 import config
+from api.mock_data import generate_ooti_mock_data
 
 logger = logging.getLogger(__name__)
 
@@ -9,10 +10,16 @@ class OOTIAPI:
     def __init__(self, api_key=None, base_url=None):
         self.api_key = api_key or config.OOTI_API_KEY
         self.base_url = base_url or config.OOTI_BASE_URL
-        self.headers = {
-            'Authorization': f'Bearer {self.api_key}',
-            'Content-Type': 'application/json'
-        }
+        self.use_mock = not self.api_key
+        
+        if not self.use_mock:
+            self.headers = {
+                'Authorization': f'Bearer {self.api_key}',
+                'Content-Type': 'application/json'
+            }
+        else:
+            logger.info("No OOTI API key provided. Using mock data.")
+            self.headers = {}
     
     def _make_request(self, endpoint, method='GET', params=None, data=None):
         """Make a request to the OOTI API"""
@@ -30,8 +37,7 @@ class OOTIAPI:
             return response.json()
         except requests.exceptions.RequestException as e:
             logger.error(f"OOTI API error: {str(e)}")
-            if hasattr(e, 'response') and hasattr(e.response, 'text'):
-                logger.error(f"Response: {e.response.text}")
+            # Just log the error without trying to access response details
             raise
     
     def get_projects(self):
@@ -177,6 +183,12 @@ class OOTIAPI:
     def get_all_ooti_data(self):
         """Get all relevant OOTI data for the dashboard"""
         try:
+            # If using mock data, return generated mock data
+            if self.use_mock:
+                logger.info("Using mock OOTI data")
+                return generate_ooti_mock_data()
+            
+            # Otherwise, use the real API
             projects = self.get_projects()
             finances = self.get_finances()
             resources = self.get_resources()

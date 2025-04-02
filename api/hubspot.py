@@ -3,6 +3,7 @@ import logging
 from datetime import datetime, timedelta
 import time
 import config
+from api.mock_data import generate_hubspot_mock_data
 
 logger = logging.getLogger(__name__)
 
@@ -10,10 +11,16 @@ class HubSpotAPI:
     def __init__(self, api_key=None):
         self.api_key = api_key or config.HUBSPOT_API_KEY
         self.base_url = config.HUBSPOT_BASE_URL
-        self.headers = {
-            'Authorization': f'Bearer {self.api_key}',
-            'Content-Type': 'application/json'
-        }
+        self.use_mock = not self.api_key
+        
+        if not self.use_mock:
+            self.headers = {
+                'Authorization': f'Bearer {self.api_key}',
+                'Content-Type': 'application/json'
+            }
+        else:
+            logger.info("No HubSpot API key provided. Using mock data.")
+            self.headers = {}
         
     def _make_request(self, endpoint, method='GET', params=None, data=None):
         """Make a request to the HubSpot API"""
@@ -31,8 +38,7 @@ class HubSpotAPI:
             return response.json()
         except requests.exceptions.RequestException as e:
             logger.error(f"HubSpot API error: {str(e)}")
-            if hasattr(e.response, 'text'):
-                logger.error(f"Response: {e.response.text}")
+            # Just log the error without trying to access response details
             raise
     
     def get_deals(self, limit=100, after=0):
@@ -172,6 +178,12 @@ class HubSpotAPI:
     def get_all_hubspot_data(self):
         """Get all relevant HubSpot data for the dashboard"""
         try:
+            # If using mock data, return generated mock data
+            if self.use_mock:
+                logger.info("Using mock HubSpot data")
+                return generate_hubspot_mock_data()
+            
+            # Otherwise, use the real API
             deals = self.get_deals()
             contacts = self.get_contacts()
             activities = self.get_activities()

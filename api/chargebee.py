@@ -3,6 +3,7 @@ import logging
 import base64
 from datetime import datetime, timedelta
 import config
+from api.mock_data import generate_chargebee_mock_data
 
 logger = logging.getLogger(__name__)
 
@@ -10,12 +11,19 @@ class ChargebeeAPI:
     def __init__(self, api_key=None, site=None):
         self.api_key = api_key or config.CHARGEBEE_API_KEY
         self.site = site or config.CHARGEBEE_SITE
-        self.base_url = f"https://{self.site}.chargebee.com/api/v2"
-        self.auth = base64.b64encode(f"{self.api_key}:".encode()).decode()
-        self.headers = {
-            'Authorization': f'Basic {self.auth}',
-            'Content-Type': 'application/json'
-        }
+        self.use_mock = not (self.api_key and self.site)
+        
+        if not self.use_mock:
+            self.base_url = f"https://{self.site}.chargebee.com/api/v2"
+            self.auth = base64.b64encode(f"{self.api_key}:".encode()).decode()
+            self.headers = {
+                'Authorization': f'Basic {self.auth}',
+                'Content-Type': 'application/json'
+            }
+        else:
+            logger.info("No Chargebee API key or site provided. Using mock data.")
+            self.base_url = ""
+            self.headers = {}
     
     def _make_request(self, endpoint, method='GET', params=None, data=None):
         """Make a request to the Chargebee API"""
@@ -33,8 +41,7 @@ class ChargebeeAPI:
             return response.json()
         except requests.exceptions.RequestException as e:
             logger.error(f"Chargebee API error: {str(e)}")
-            if hasattr(e, 'response') and hasattr(e.response, 'text'):
-                logger.error(f"Response: {e.response.text}")
+            # Just log the error without trying to access response details
             raise
     
     def get_subscriptions(self, limit=100, offset="start"):
@@ -202,6 +209,12 @@ class ChargebeeAPI:
     def get_all_chargebee_data(self):
         """Get all relevant Chargebee data for the dashboard"""
         try:
+            # If using mock data, return generated mock data
+            if self.use_mock:
+                logger.info("Using mock Chargebee data")
+                return generate_chargebee_mock_data()
+                
+            # Otherwise, use the real API
             subscriptions = self.get_subscriptions()
             customers = self.get_customers()
             invoices = self.get_invoices()
