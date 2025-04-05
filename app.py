@@ -2,6 +2,11 @@ import os
 import logging
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session
 from datetime import datetime, timedelta
+
+# Configure logging first, before any imports that use it
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
 import json
 from pathlib import Path
 from flask_login import LoginManager, current_user, login_required
@@ -17,6 +22,15 @@ from utils.insights_generator import generate_insights, generate_action_items
 from utils.data_processor import consolidate_data
 from api.ooti import OOTIAPI
 from models.user import User
+
+
+# Initialize Flask app - IMPORTANT: This must be defined before using app
+app = Flask(__name__)
+app.secret_key = os.environ.get("SESSION_SECRET")
+
+# Add CSRF protection
+csrf = CSRFProtect(app)
+
 
 # Import Google services if enabled
 gmail_integration = None
@@ -82,12 +96,6 @@ if config.PENNYLANE_ENABLED:
 # Configure logging
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
-
-# Initialize Flask app
-app = Flask(__name__)
-app.secret_key = os.environ.get("SESSION_SECRET")
-
-# Add CSRF protection
 csrf = CSRFProtect(app)
 
 # Configure rate limiting
