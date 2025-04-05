@@ -111,8 +111,8 @@ def add_security_headers(response):
 # Initialize Flask-Login
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = "auth.login"
-login_manager.login_message = "Please log in to access this page."
+login_manager.login_view = "login_page"
+login_manager.login_message = "Please sign in to access this page."
 login_manager.login_message_category = "info"
 
 @login_manager.user_loader
@@ -171,41 +171,46 @@ def get_cached_data():
 
 @app.route('/')
 def index():
-    """Main dashboard page"""
-    # Check for missing API keys
-    if missing_keys:
-        return render_template('dashboard.html', 
-                              missing_keys=missing_keys,
-                              error_message="Missing required API keys")
-    
-    try:
-        platform_data = get_cached_data()
-        if not platform_data:
-            flash("Could not retrieve platform data. Please check your API credentials.", "danger")
+    """Main dashboard page or simple landing page"""
+    # If already authenticated, show the dashboard
+    if current_user.is_authenticated:
+        # Check for missing API keys
+        if missing_keys:
+            return render_template('dashboard.html', 
+                                missing_keys=missing_keys,
+                                error_message="Missing required API keys")
+        
+        try:
+            platform_data = get_cached_data()
+            if not platform_data:
+                flash("Could not retrieve platform data. Please check your API credentials.", "danger")
+                return render_template('dashboard.html', error=True)
+            
+            # Generate insights from the data
+            insights = generate_insights(platform_data)
+            action_items = generate_action_items(platform_data)
+            
+            # Get latest digest if it exists
+            latest_digest = None
+            digest_files = list(config.DIGESTS_DIR.glob("*.json"))
+            if digest_files:
+                latest_digest_file = max(digest_files, key=lambda x: x.stat().st_mtime)
+                with open(latest_digest_file, 'r') as f:
+                    latest_digest = json.load(f)
+            
+            return render_template('dashboard.html', 
+                                insights=insights,
+                                action_items=action_items,
+                                platform_data=platform_data,
+                                latest_digest=latest_digest,
+                                last_updated=data_cache["last_updated"])
+        except Exception as e:
+            logger.error(f"Error in dashboard: {str(e)}")
+            flash(f"An error occurred: {str(e)}", "danger")
             return render_template('dashboard.html', error=True)
-        
-        # Generate insights from the data
-        insights = generate_insights(platform_data)
-        action_items = generate_action_items(platform_data)
-        
-        # Get latest digest if it exists
-        latest_digest = None
-        digest_files = list(config.DIGESTS_DIR.glob("*.json"))
-        if digest_files:
-            latest_digest_file = max(digest_files, key=lambda x: x.stat().st_mtime)
-            with open(latest_digest_file, 'r') as f:
-                latest_digest = json.load(f)
-        
-        return render_template('dashboard.html', 
-                              insights=insights,
-                              action_items=action_items,
-                              platform_data=platform_data,
-                              latest_digest=latest_digest,
-                              last_updated=data_cache["last_updated"])
-    except Exception as e:
-        logger.error(f"Error in dashboard: {str(e)}")
-        flash(f"An error occurred: {str(e)}", "danger")
-        return render_template('dashboard.html', error=True)
+    else:
+        # Not authenticated, show the landing page
+        return render_template('landing.html')
 
 @app.route('/integrations')
 @login_required
@@ -955,8 +960,11 @@ def send_slack_message():
 os.makedirs(config.DATA_DIR, exist_ok=True)
 os.makedirs(config.DIGESTS_DIR, exist_ok=True)
 
-# Apply rate limits to specific endpoints
+# Create a new route for an anonymous landing page that auto-redirects to Google
 @app.route('/login')
-@limiter.limit("10 per minute")
 def login_page():
+    """Landing page that automatically redirects to Google OAuth"""
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    # Directly redirect to Google authentication
     return redirect(url_for('auth.login'))
