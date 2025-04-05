@@ -21,7 +21,7 @@ GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_OAUTH_CLIENT_SECRET")
 GOOGLE_DISCOVERY_URL = "https://accounts.google.com/.well-known/openid-configuration"
 
 # Redirect URL - use localhost for development
-DEV_REDIRECT_URL = 'http://localhost:5001/google_login/callback'
+DEV_REDIRECT_URL = os.environ.get('RENDER_EXTERNAL_URL', 'http://localhost:5001') + '/google_login/callback'
 
 # User database
 users_db = {}
