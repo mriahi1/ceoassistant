@@ -6,7 +6,7 @@ import logging
 
 import requests
 from flask import Blueprint, redirect, request, url_for, session, current_app, abort
-from flask_login import login_required, login_user, logout_user
+from flask_login import login_required, login_user, logout_user, current_user
 from oauthlib.oauth2 import WebApplicationClient
 
 from models.user import User
