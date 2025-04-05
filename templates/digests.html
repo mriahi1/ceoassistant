@@ -10,6 +10,7 @@
                 <p class="text-muted">AI-generated daily summaries and insights</p>
             </div>
             <form action="{{ url_for('generate_digest') }}" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <button type="submit" class="btn btn-primary">
                     <i data-feather="plus" class="me-2"></i> Generate New Digest
                 </button>
@@ -90,6 +91,7 @@
                         <h4>No Digests Generated Yet</h4>
                         <p class="text-muted">Generate your first digest to see AI-powered insights about your business.</p>
                         <form action="{{ url_for('generate_digest') }}" method="post">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                             <button type="submit" class="btn btn-primary mt-3">
                                 <i data-feather="plus" class="me-2"></i> Generate Your First Digest
                             </button>

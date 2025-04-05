@@ -339,10 +339,11 @@
                 </div>
                 <div class="card-body dashboard-card-body">
                     <p>Test your integrations or refresh connections if you've updated API keys or settings.</p>
-                    <div class="d-flex gap-3">
+                    <div class="mt-3">
                         <form action="{{ url_for('refresh_data') }}" method="post">
-                            <button type="submit" class="btn btn-primary">
-                                <i data-feather="refresh-cw" class="me-2"></i> Refresh All Connections
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="btn btn-outline-primary">
+                                <i data-feather="refresh-cw" class="me-2"></i> Refresh All Data
                             </button>
                         </form>
                     </div>

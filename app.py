@@ -5,6 +5,9 @@ from datetime import datetime, timedelta
 import json
 from pathlib import Path
 from flask_login import LoginManager, current_user, login_required
+from flask_wtf.csrf import CSRFProtect
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 import config
 from services.daily_digest import generate_daily_digest
@@ -84,6 +87,17 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 app.secret_key = os.environ.get("SESSION_SECRET")
 
+# Add CSRF protection
+csrf = CSRFProtect(app)
+
+# Configure rate limiting
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    default_limits=["200 per day", "50 per hour"],
+    storage_uri="memory://",
+)
+
 # Add security headers
 @app.after_request
 def add_security_headers(response):
@@ -91,6 +105,7 @@ def add_security_headers(response):
     response.headers['X-Content-Type-Options'] = 'nosniff'
     response.headers['X-Frame-Options'] = 'SAMEORIGIN'
     response.headers['X-XSS-Protection'] = '1; mode=block'
+    response.headers['Content-Security-Policy'] = "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' https://cdn.jsdelivr.net; img-src 'self' data: https:; font-src 'self' https://cdn.jsdelivr.net;"
     return response
 
 # Initialize Flask-Login
@@ -249,6 +264,8 @@ def view_digest(filename):
         return redirect(url_for('digests'))
 
 @app.route('/generate_digest', methods=['POST'])
+@login_required
+@limiter.limit("5 per hour")
 def generate_digest():
     """Generate a new daily digest"""
     try:
@@ -291,6 +308,7 @@ def generate_digest():
         return redirect(url_for('index'))
 
 @app.route('/settings')
+@login_required
 def settings():
     """Settings page"""
     integration_status = {
@@ -307,6 +325,7 @@ def settings():
     return render_template('settings.html', integration_status=integration_status)
 
 @app.route('/refresh_data', methods=['POST'])
+@login_required
 def refresh_data():
     """Force refresh the cached data"""
     try:
@@ -321,6 +340,8 @@ def refresh_data():
     return redirect(url_for('index'))
 
 @app.route('/api/platform_summary')
+@login_required
+@limiter.limit("60 per hour")
 def platform_summary_api():
     """API endpoint to get platform summary data"""
     try:
@@ -361,8 +382,27 @@ def server_error(e):
     logger.error(f"Server error: {str(e)}")
     return render_template('500.html'), 500
 
+@app.errorhandler(403)
+def forbidden(e):
+    logger.warning(f"Forbidden access attempt: {str(e)}")
+    return render_template('403.html', error_message="You don't have permission to access this resource."), 403
+
+@app.errorhandler(429)
+def ratelimit_handler(e):
+    logger.warning(f"Rate limit exceeded: {str(e)}")
+    return render_template('429.html', error_message="Rate limit exceeded. Please try again later."), 429
+
+# Register CSRF error handler
+@app.errorhandler(400)
+def csrf_error(e):
+    if 'CSRF' in str(e):
+        logger.warning(f"CSRF error: {str(e)}")
+        return render_template('403.html', error_message="CSRF token validation failed. Please try again."), 403
+    return e
+
 # Gmail routes
 @app.route('/gmail')
+@login_required
 def gmail_inbox():
     """Gmail inbox view"""
     if not config.GMAIL_ENABLED or 'get_unread_emails' not in globals():
@@ -385,6 +425,7 @@ def gmail_inbox():
         return redirect(url_for('index'))
 
 @app.route('/gmail/email/<email_id>')
+@login_required
 def view_email(email_id):
     """View a specific email"""
     if not config.GMAIL_ENABLED or 'get_email' not in globals():
@@ -415,6 +456,7 @@ def view_email(email_id):
         return redirect(url_for('gmail_inbox'))
 
 @app.route('/gmail/search', methods=['GET', 'POST'])
+@login_required
 def search_gmail():
     """Search Gmail"""
     if not config.GMAIL_ENABLED or 'search_emails' not in globals():
@@ -441,6 +483,7 @@ def search_gmail():
                               results=[])
 
 @app.route('/gmail/compose', methods=['GET', 'POST'])
+@login_required
 def compose_email():
     """Compose a new email"""
     if not config.GMAIL_ENABLED or 'send_email' not in globals():
@@ -511,6 +554,7 @@ def compose_email():
 
 # Google Drive routes
 @app.route('/drive')
+@login_required
 def drive_files():
     """Google Drive files view"""
     if not config.GDRIVE_ENABLED or 'list_files' not in globals():
@@ -537,6 +581,7 @@ def drive_files():
         return redirect(url_for('index'))
 
 @app.route('/drive/search', methods=['GET', 'POST'])
+@login_required
 def search_drive():
     """Search Google Drive"""
     if not config.GDRIVE_ENABLED or 'search_files' not in globals():
@@ -563,6 +608,7 @@ def search_drive():
                               results=[])
 
 @app.route('/drive/file/<file_id>')
+@login_required
 def view_drive_file(file_id):
     """View a specific Google Drive file"""
     if not config.GDRIVE_ENABLED or 'get_file' not in globals():
@@ -588,6 +634,7 @@ def view_drive_file(file_id):
         return redirect(url_for('drive_files'))
 
 @app.route('/drive/create_folder', methods=['GET', 'POST'])
+@login_required
 def create_drive_folder():
     """Create a new folder in Google Drive"""
     if not config.GDRIVE_ENABLED or 'create_folder' not in globals():
@@ -624,6 +671,7 @@ def create_drive_folder():
         return render_template('folder_create.html', parent_id=parent_id)
 
 @app.route('/drive/upload', methods=['GET', 'POST'])
+@login_required
 def upload_to_drive():
     """Upload a file to Google Drive"""
     if not config.GDRIVE_ENABLED or 'upload_file' not in globals():
@@ -672,6 +720,7 @@ def upload_to_drive():
         return render_template('file_upload.html', parent_id=parent_id)
 
 @app.route('/drive/share/<file_id>', methods=['GET', 'POST'])
+@login_required
 def share_drive_file(file_id):
     """Share a Google Drive file with someone"""
     if not config.GDRIVE_ENABLED or 'share_file' not in globals():
@@ -716,6 +765,7 @@ def share_drive_file(file_id):
         return redirect(url_for('drive_files'))
 
 @app.route('/digest/upload_to_drive/<filename>', methods=['POST'])
+@login_required
 def upload_digest_to_drive_route(filename):
     """Upload a digest to Google Drive"""
     if not config.GDRIVE_ENABLED or 'upload_digest_to_drive' not in globals():
@@ -748,6 +798,7 @@ def upload_digest_to_drive_route(filename):
 
 # Calendar routes
 @app.route('/calendar')
+@login_required
 def calendar_view():
     """Google Calendar overview page"""
     if not config.CALENDAR_ENABLED or 'get_all_calendar_data' not in globals():
@@ -766,6 +817,7 @@ def calendar_view():
 
 # Pennylane routes
 @app.route('/financials')
+@login_required
 def financials_view():
     """Pennylane financial overview page"""
     if not config.PENNYLANE_ENABLED or 'get_all_pennylane_data' not in globals():
@@ -784,6 +836,7 @@ def financials_view():
 
 # OOTI Scorecard route
 @app.route('/scorecard')
+@login_required
 def scorecard_view():
     """OOTI KPI scorecard page"""
     if not config.OOTI_API_KEY:
@@ -805,6 +858,7 @@ def scorecard_view():
 
 # Slack routes
 @app.route('/slack')
+@login_required
 def slack_channel():
     """Slack channel view"""
     if not config.ENABLE_SLACK_NOTIFICATIONS or not config.SLACK_BOT_TOKEN or not config.SLACK_CHANNEL_ID:
@@ -869,6 +923,7 @@ def slack_channel():
         return redirect(url_for('index'))
 
 @app.route('/slack/send_message', methods=['POST'])
+@login_required
 def send_slack_message():
     """Send a Slack message"""
     if not config.ENABLE_SLACK_NOTIFICATIONS or not config.SLACK_BOT_TOKEN or not config.SLACK_CHANNEL_ID:
@@ -899,3 +954,9 @@ def send_slack_message():
 # Create necessary directories
 os.makedirs(config.DATA_DIR, exist_ok=True)
 os.makedirs(config.DIGESTS_DIR, exist_ok=True)
+
+# Apply rate limits to specific endpoints
+@app.route('/login')
+@limiter.limit("10 per minute")
+def login_page():
+    return redirect(url_for('auth.login'))
