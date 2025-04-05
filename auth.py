@@ -2,6 +2,7 @@ import json
 import os
 import secrets
 import hashlib
+import logging
 
 import requests
 from flask import Blueprint, redirect, request, url_for, session, current_app, abort
@@ -9,6 +10,10 @@ from flask_login import login_required, login_user, logout_user
 from oauthlib.oauth2 import WebApplicationClient
 
 from models.user import User
+
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 # Google OAuth configuration
 GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_OAUTH_CLIENT_ID")
