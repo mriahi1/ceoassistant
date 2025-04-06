@@ -1,0 +1,46 @@
+/* Metric Cards */
+.metric-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.metric-label {
+    color: #5a5a5a;
+    font-weight: 600;
+}
+
+.metric-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.metric-description {
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.feather-sm {
+    width: 14px;
+    height: 14px;
+}
+
+/* Digest list metrics display */
+.digest-metrics {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+}
+
+.digest-metrics .badge {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.65rem;
+} 

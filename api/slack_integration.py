@@ -3,6 +3,7 @@ import logging
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 import config
+from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
@@ -145,15 +146,50 @@ def format_digest_for_slack(digest):
 
 def post_digest_to_slack(digest):
     """
-    [DISABLED - READ ONLY MODE] Post a digest to Slack
-    
-    This function is currently disabled as the application is running in read-only mode.
+    Post a digest to Slack
     
     Args:
         digest (dict): The digest to post
     
     Returns:
-        bool: Always returns False (disabled)
+        bool: True if successful, False otherwise
     """
-    logger.warning("Slack posting is disabled in read-only mode")
-    return False
+    try:
+        # Create a simplified version of the digest for Slack
+        now = datetime.now().strftime("%Y-%m-%d")
+        text = f"*Daily Digest for {digest.get('date', now)}*\n\n"
+        
+        # Add executive summary section
+        text += "*Executive Summary:*\n"
+        text += f"{digest.get('executive_summary', 'No summary available.')}\n\n"
+        
+        # Add key metrics section
+        text += "*Key Metrics:*\n"
+        key_metrics = digest.get('key_metrics', [])
+        if key_metrics:
+            for metric in key_metrics:
+                trend_icon = ""
+                if metric.get('trend') == 'up':
+                    trend_icon = "📈 "
+                elif metric.get('trend') == 'down':
+                    trend_icon = "📉 "
+                
+                text += f"• {trend_icon}*{metric.get('name')}*: {metric.get('value')}\n"
+        else:
+            text += "No metrics available.\n"
+        
+        text += "\n"
+        
+        # Add action items section
+        text += "*Action Items:*\n"
+        for i, item in enumerate(digest.get('action_items', []), 1):
+            text += f"{i}. {item}\n"
+        
+        if not digest.get('action_items'):
+            text += "No action items available.\n"
+            
+        # Post to Slack
+        return post_message(text, config.SLACK_CHANNEL_ID)
+    except Exception as e:
+        logger.error(f"Error posting digest to Slack: {str(e)}")
+        return False

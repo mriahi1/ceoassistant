@@ -33,7 +33,11 @@ def generate_daily_digest(data, user_id=None):
         action_items = generate_action_items(data)
         
         # Generate key metrics
-        key_metrics = generate_key_metrics(data)
+        key_metrics_response = generate_key_metrics(data)
+        # Format metrics into a structured format for the digest
+        key_metrics = []
+        if isinstance(key_metrics_response, dict) and 'metrics' in key_metrics_response:
+            key_metrics = key_metrics_response['metrics']
         
         # Create the digest structure
         digest = {
@@ -56,7 +60,7 @@ def generate_daily_digest(data, user_id=None):
                 "ooti": {
                     "active_projects": len([p for p in data.get("ooti", {}).get("projects", []) if p.get("status") == "active"]),
                     "at_risk_projects": len([p for p in data.get("ooti", {}).get("projects", []) if p.get("status") == "at_risk"]),
-                    "resource_utilization": data.get("ooti", {}).get("metrics", {}).get("overall_resource_utilization", 0)
+                    "resource_utilization": data.get("ooti", {}).get("metrics", {}).get("resource_utilization", 0)
                 }
             }
         }
@@ -90,7 +94,7 @@ def generate_daily_digest(data, user_id=None):
             "timestamp": datetime.now().isoformat(),
             "error": str(e),
             "executive_summary": "Error generating daily digest. Please check the logs.",
-            "key_metrics": {},
+            "key_metrics": [],
             "action_items": [f"Investigate digest generation error: {str(e)}"]
         }
 

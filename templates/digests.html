@@ -42,19 +42,15 @@
                         {% endif %}
                         
                         {% if digest.key_metrics %}
-                        <div class="mb-3">
-                            <h6>Key Metrics</h6>
-                            <div class="row">
-                                {% for key, value in digest.key_metrics.items() %}
-                                {% if loop.index <= 4 %}
-                                <div class="col-6 mb-2">
-                                    <small class="d-block text-muted">{{ key }}</small>
-                                    <strong>{{ value }}</strong>
-                                </div>
-                                {% endif %}
-                                {% endfor %}
-                            </div>
+                        <div class="digest-metrics">
+                            {% for metric in digest.key_metrics %}
+                            <span class="badge rounded-pill bg-light text-dark me-1">
+                                {{ metric.name }}: {{ metric.value }}
+                            </span>
+                            {% endfor %}
                         </div>
+                        {% else %}
+                        <p class="text-muted small">No metrics available</p>
                         {% endif %}
                         
                         {% if digest.action_items %}

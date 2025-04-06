@@ -51,11 +51,25 @@
                 <div class="card-body dashboard-card-body">
                     {% if digest.key_metrics %}
                         <div class="row">
-                            {% for key, value in digest.key_metrics.items() %}
+                            {% for metric in digest.key_metrics %}
                             <div class="col-md-6 mb-3">
-                                <div class="metric-card">
-                                    <div class="metric-label">{{ key }}</div>
-                                    <div class="metric-value">{{ value }}</div>
+                                <div class="metric-card p-3 border rounded shadow-sm">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h6 class="metric-label mb-0 fw-bold">{{ metric.name }}</h6>
+                                        {% if metric.trend %}
+                                            {% if metric.trend == "up" %}
+                                                <span class="badge bg-success" title="Trending Up"><i data-feather="trending-up" class="feather-sm"></i></span>
+                                            {% elif metric.trend == "down" %}
+                                                <span class="badge bg-danger" title="Trending Down"><i data-feather="trending-down" class="feather-sm"></i></span>
+                                            {% else %}
+                                                <span class="badge bg-secondary" title="Stable"><i data-feather="minus" class="feather-sm"></i></span>
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                    <div class="metric-value h4">{{ metric.value }}</div>
+                                    {% if metric.importance %}
+                                        <div class="metric-description small text-muted mt-2">{{ metric.importance }}</div>
+                                    {% endif %}
                                 </div>
                             </div>
                             {% endfor %}
