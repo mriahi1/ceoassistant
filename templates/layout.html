@@ -34,37 +34,17 @@
             </a>
             
             <div class="sidebar-section mt-2 mb-2">
-                <span class="sidebar-header px-3">Communications</span>
-            </div>
-            
-            <a href="{{ url_for('gmail_inbox') }}" class="sidebar-link {% if '/gmail' in request.path %}active{% endif %}">
-                <i data-feather="mail" class="sidebar-icon"></i>
-                <span>Gmail</span>
-            </a>
-            <a href="{{ url_for('slack_channel') }}" class="sidebar-link {% if '/slack' in request.path %}active{% endif %}">
-                <i data-feather="message-square" class="sidebar-icon"></i>
-                <span>Slack</span>
-            </a>
-            <a href="{{ url_for('drive_files') }}" class="sidebar-link {% if '/drive' in request.path %}active{% endif %}">
-                <i data-feather="hard-drive" class="sidebar-icon"></i>
-                <span>Google Drive</span>
-            </a>
-            <a href="{{ url_for('calendar_view') }}" class="sidebar-link {% if '/calendar' in request.path %}active{% endif %}">
-                <i data-feather="calendar" class="sidebar-icon"></i>
-                <span>Calendar</span>
-            </a>
-            
-            <div class="sidebar-section mt-2 mb-2">
                 <span class="sidebar-header px-3">Business</span>
             </div>
+            
+            <a href="{{ url_for('scorecard_view') }}" class="sidebar-link {% if '/scorecard' in request.path %}active{% endif %}">
+                <i data-feather="bar-chart" class="sidebar-icon"></i>
+                <span>Scorecard</span>
+            </a>
             
             <a href="{{ url_for('financials_view') }}" class="sidebar-link {% if '/financials' in request.path %}active{% endif %}">
                 <i data-feather="dollar-sign" class="sidebar-icon"></i>
                 <span>Financials</span>
-            </a>
-            <a href="{{ url_for('scorecard_view') }}" class="sidebar-link {% if '/scorecard' in request.path %}active{% endif %}">
-                <i data-feather="bar-chart" class="sidebar-icon"></i>
-                <span>Scorecard</span>
             </a>
             
             <div class="sidebar-section mt-2 mb-2">
@@ -74,10 +54,6 @@
             <a href="{{ url_for('integrations') }}" class="sidebar-link {% if request.path == url_for('integrations') %}active{% endif %}">
                 <i data-feather="link" class="sidebar-icon"></i>
                 <span>Integrations</span>
-            </a>
-            <a href="{{ url_for('monitoring') }}" class="sidebar-link {% if request.path == url_for('monitoring') %}active{% endif %}">
-                <i data-feather="activity" class="sidebar-icon"></i>
-                <span>Monitoring</span>
             </a>
             <a href="{{ url_for('settings') }}" class="sidebar-link {% if request.path == url_for('settings') %}active{% endif %}">
                 <i data-feather="settings" class="sidebar-icon"></i>
@@ -137,7 +113,7 @@
         {% endwith %}
         
         <!-- Mobile Header (Only visible on mobile) -->
-        <div class="mobile-header d-flex d-md-none align-items-center justify-content-between mb-3">
+        <div class="mobile-header d-flex d-md-none align-items-center justify-content-between">
             <div class="d-flex align-items-center">
                 <i data-feather="cpu" class="text-primary me-2"></i>
                 <h4 class="mb-0">CEO Assistant</h4>
@@ -202,78 +178,89 @@
             <i data-feather="file-text"></i>
             <span>Digests</span>
         </a>
-        <a href="{{ url_for('gmail_inbox') }}" class="mobile-nav-item {% if '/gmail' in request.path %}active{% endif %}">
-            <i data-feather="mail"></i>
-            <span>Mail</span>
+        <a href="{{ url_for('scorecard_view') }}" class="mobile-nav-item {% if '/scorecard' in request.path %}active{% endif %}">
+            <i data-feather="bar-chart"></i>
+            <span>Scorecard</span>
         </a>
-        <div class="mobile-nav-item more-menu" data-bs-toggle="modal" data-bs-target="#mobileMenuModal">
-            <i data-feather="more-horizontal"></i>
-            <span>More</span>
-        </div>
+        <a href="{{ url_for('settings') }}" class="mobile-nav-item {% if request.path == url_for('settings') %}active{% endif %}">
+            <i data-feather="settings"></i>
+            <span>Settings</span>
+        </a>
     </nav>
     
-    <!-- Mobile Menu Modal -->
-    <div class="modal fade" id="mobileMenuModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content bg-dark">
-                <div class="modal-header">
-                    <h5 class="modal-title">Menu</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="list-group list-group-flush">
-                        <a href="{{ url_for('slack_channel') }}" class="list-group-item list-group-item-action bg-dark text-light">
-                            <i data-feather="message-square" class="me-2"></i> Slack
-                        </a>
-                        <a href="{{ url_for('drive_files') }}" class="list-group-item list-group-item-action bg-dark text-light">
-                            <i data-feather="hard-drive" class="me-2"></i> Google Drive
-                        </a>
-                        <a href="{{ url_for('calendar_view') }}" class="list-group-item list-group-item-action bg-dark text-light">
-                            <i data-feather="calendar" class="me-2"></i> Calendar
-                        </a>
-                        <a href="{{ url_for('financials_view') }}" class="list-group-item list-group-item-action bg-dark text-light">
-                            <i data-feather="dollar-sign" class="me-2"></i> Financials
-                        </a>
-                        <a href="{{ url_for('scorecard_view') }}" class="list-group-item list-group-item-action bg-dark text-light">
-                            <i data-feather="bar-chart" class="me-2"></i> Scorecard
-                        </a>
-                        <a href="{{ url_for('integrations') }}" class="list-group-item list-group-item-action bg-dark text-light">
-                            <i data-feather="link" class="me-2"></i> Integrations
-                        </a>
-                        <a href="{{ url_for('monitoring') }}" class="list-group-item list-group-item-action bg-dark text-light">
-                            <i data-feather="activity" class="me-2"></i> Monitoring
-                        </a>
-                        <a href="{{ url_for('settings') }}" class="list-group-item list-group-item-action bg-dark text-light">
-                            <i data-feather="settings" class="me-2"></i> Settings
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- Quick Actions FAB Button (Mobile only) -->
+    <div class="quick-actions-fab d-md-none" id="quickActionsFab">
+        <i data-feather="zap"></i>
     </div>
+    
+    <!-- Quick Actions Menu -->
+    <div class="quick-actions-menu d-md-none" id="quickActionsMenu">
+        <a href="#" class="quick-action-item" id="generateDigestAction">
+            <i data-feather="file-text"></i>
+            <span>Generate Digest</span>
+        </a>
+        <a href="#" class="quick-action-item" id="refreshDataAction">
+            <i data-feather="refresh-cw"></i>
+            <span>Refresh Data</span>
+        </a>
+        <a href="{{ url_for('integrations') }}" class="quick-action-item">
+            <i data-feather="link"></i>
+            <span>Integrations</span>
+        </a>
+        <a href="{{ url_for('financials_view') }}" class="quick-action-item">
+            <i data-feather="dollar-sign"></i>
+            <span>Financials</span>
+        </a>
+    </div>
+    
+    <!-- Hidden forms for quick actions -->
+    <form id="quickGenerateDigestForm" action="{{ url_for('generate_digest') }}" method="post" style="display: none;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    </form>
+    <form id="quickRefreshDataForm" action="{{ url_for('refresh_data') }}" method="post" style="display: none;">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    </form>
     {% endif %}
     
-    <!-- Bootstrap JS -->
+    <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- Initialize Feather Icons -->
     <script>
+        // Initialize Feather Icons
         document.addEventListener('DOMContentLoaded', function() {
             feather.replace();
             
-            // Add touch feedback for mobile
-            document.querySelectorAll('.mobile-nav-item').forEach(el => {
-                el.addEventListener('touchstart', () => {
-                    el.style.opacity = '0.7';
+            // Quick Actions functionality
+            const quickActionsFab = document.getElementById('quickActionsFab');
+            const quickActionsMenu = document.getElementById('quickActionsMenu');
+            
+            if (quickActionsFab && quickActionsMenu) {
+                quickActionsFab.addEventListener('click', function() {
+                    quickActionsMenu.classList.toggle('active');
                 });
-                el.addEventListener('touchend', () => {
-                    el.style.opacity = '1';
+                
+                // Close menu when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!event.target.closest('#quickActionsFab') && 
+                        !event.target.closest('#quickActionsMenu')) {
+                        quickActionsMenu.classList.remove('active');
+                    }
                 });
-            });
+                
+                // Set up action handlers
+                document.getElementById('generateDigestAction').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.getElementById('quickGenerateDigestForm').submit();
+                });
+                
+                document.getElementById('refreshDataAction').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    document.getElementById('quickRefreshDataForm').submit();
+                });
+            }
         });
     </script>
     
-    <!-- Page-specific scripts -->
     {% block scripts %}{% endblock %}
 </body>
 </html>

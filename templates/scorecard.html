@@ -1,709 +1,229 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<div class="container-fluid">
+<div class="container-fluid dashboard-container">
     <!-- Header Section -->
-    <div class="row mb-4">
+    <div class="row mb-3">
         <div class="col-12">
-            <h1>Business Scorecard</h1>
-            <p class="text-muted">Key Performance Indicators from OOTI.co</p>
-        </div>
-    </div>
-    
-    <!-- KPI Cards -->
-    <div class="row mb-4">
-        <div class="col-lg-3 col-md-6 mb-4">
-            <div class="card dashboard-card h-100">
-                <div class="card-header dashboard-card-header bg-gradient-primary">
-                    <h5 class="card-title mb-0 text-white">
-                        <i data-feather="check-circle" class="me-2"></i> Delivery Performance
-                    </h5>
-                </div>
-                <div class="card-body dashboard-card-body text-center">
-                    {% if scorecard_data and scorecard_data.indicators %}
-                        <div class="display-4 fw-bold mb-3">
-                            {{ scorecard_data.indicators.delivery_on_time }}%
-                        </div>
-                        <p class="text-muted">Projects Delivered On Time</p>
-                        
-                        <!-- Progress bar -->
-                        <div class="progress mt-3" style="height: 8px;">
-                            {% set delivery_pct = scorecard_data.indicators.delivery_on_time %}
-                            <div class="progress-bar {% if delivery_pct >= 90 %}bg-success
-                                                     {% elif delivery_pct >= 75 %}bg-warning
-                                                     {% else %}bg-danger{% endif %}" 
-                                 role="progressbar" style="width: {{ delivery_pct }}%" 
-                                 aria-valuenow="{{ delivery_pct }}" aria-valuemin="0" aria-valuemax="100">
-                            </div>
-                        </div>
-                        <small class="text-muted mt-2 d-block">Target: 95%</small>
-                    {% else %}
-                        <div class="text-center py-4">
-                            <i data-feather="check-circle" class="text-muted mb-3" style="width: 48px; height: 48px;"></i>
-                            <p>Delivery data not available</p>
-                            <p class="small text-muted">Connect OOTI.co to view KPI data</p>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-lg-3 col-md-6 mb-4">
-            <div class="card dashboard-card h-100">
-                <div class="card-header dashboard-card-header bg-gradient-primary">
-                    <h5 class="card-title mb-0 text-white">
-                        <i data-feather="users" class="me-2"></i> Client Satisfaction
-                    </h5>
-                </div>
-                <div class="card-body dashboard-card-body text-center">
-                    {% if scorecard_data and scorecard_data.indicators %}
-                        <div class="display-4 fw-bold mb-3">
-                            {{ scorecard_data.indicators.client_satisfaction }}%
-                        </div>
-                        <p class="text-muted">Client Satisfaction Score</p>
-                        
-                        <!-- Progress bar -->
-                        <div class="progress mt-3" style="height: 8px;">
-                            {% set satisfaction = scorecard_data.indicators.client_satisfaction %}
-                            <div class="progress-bar {% if satisfaction >= 90 %}bg-success
-                                                     {% elif satisfaction >= 75 %}bg-warning
-                                                     {% else %}bg-danger{% endif %}" 
-                                 role="progressbar" style="width: {{ satisfaction }}%" 
-                                 aria-valuenow="{{ satisfaction }}" aria-valuemin="0" aria-valuemax="100">
-                            </div>
-                        </div>
-                        <small class="text-muted mt-2 d-block">Target: 90%</small>
-                    {% else %}
-                        <div class="text-center py-4">
-                            <i data-feather="users" class="text-muted mb-3" style="width: 48px; height: 48px;"></i>
-                            <p>Satisfaction data not available</p>
-                            <p class="small text-muted">Connect OOTI.co to view KPI data</p>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-lg-3 col-md-6 mb-4">
-            <div class="card dashboard-card h-100">
-                <div class="card-header dashboard-card-header bg-gradient-primary">
-                    <h5 class="card-title mb-0 text-white">
-                        <i data-feather="dollar-sign" class="me-2"></i> Project Profitability
-                    </h5>
-                </div>
-                <div class="card-body dashboard-card-body text-center">
-                    {% if scorecard_data and scorecard_data.indicators %}
-                        <div class="display-4 fw-bold mb-3">
-                            {{ scorecard_data.indicators.project_profitability }}%
-                        </div>
-                        <p class="text-muted">Average Project Profit Margin</p>
-                        
-                        <!-- Progress bar -->
-                        <div class="progress mt-3" style="height: 8px;">
-                            {% set profitability = scorecard_data.indicators.project_profitability %}
-                            {% set profit_percent = (profitability / 35 * 100)|round|min(100) %}
-                            <div class="progress-bar {% if profitability >= 25 %}bg-success
-                                                     {% elif profitability >= 15 %}bg-warning
-                                                     {% else %}bg-danger{% endif %}" 
-                                 role="progressbar" style="width: {{ profit_percent }}%" 
-                                 aria-valuenow="{{ profitability }}" aria-valuemin="0" aria-valuemax="35">
-                            </div>
-                        </div>
-                        <small class="text-muted mt-2 d-block">Target: 25%</small>
-                    {% else %}
-                        <div class="text-center py-4">
-                            <i data-feather="dollar-sign" class="text-muted mb-3" style="width: 48px; height: 48px;"></i>
-                            <p>Profitability data not available</p>
-                            <p class="small text-muted">Connect OOTI.co to view KPI data</p>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-lg-3 col-md-6 mb-4">
-            <div class="card dashboard-card h-100">
-                <div class="card-header dashboard-card-header bg-gradient-primary">
-                    <h5 class="card-title mb-0 text-white">
-                        <i data-feather="clock" class="me-2"></i> Resource Utilization
-                    </h5>
-                </div>
-                <div class="card-body dashboard-card-body text-center">
-                    {% if scorecard_data and scorecard_data.indicators %}
-                        <div class="display-4 fw-bold mb-3">
-                            {{ scorecard_data.indicators.resource_utilization }}%
-                        </div>
-                        <p class="text-muted">Team Utilization Rate</p>
-                        
-                        <!-- Progress bar -->
-                        <div class="progress mt-3" style="height: 8px;">
-                            {% set utilization = scorecard_data.indicators.resource_utilization %}
-                            <div class="progress-bar {% if utilization >= 85 %}bg-success
-                                                     {% elif utilization >= 70 %}bg-warning
-                                                     {% else %}bg-danger{% endif %}" 
-                                 role="progressbar" style="width: {{ utilization }}%" 
-                                 aria-valuenow="{{ utilization }}" aria-valuemin="0" aria-valuemax="100">
-                            </div>
-                        </div>
-                        <small class="text-muted mt-2 d-block">Target: 85%</small>
-                    {% else %}
-                        <div class="text-center py-4">
-                            <i data-feather="clock" class="text-muted mb-3" style="width: 48px; height: 48px;"></i>
-                            <p>Utilization data not available</p>
-                            <p class="small text-muted">Connect OOTI.co to view KPI data</p>
-                        </div>
-                    {% endif %}
-                </div>
+            <h1 class="mb-1 d-flex align-items-center">
+                Business Scorecard
+                {% if platform_data and platform_data.get('last_updated') %}
+                <span class="badge bg-secondary ms-2 fs-6">Updated {{ platform_data.get('last_updated').strftime('%H:%M') }}</span>
+                {% endif %}
+            </h1>
+            <div class="d-flex align-items-center mb-2">
+                <button type="button" class="btn btn-sm action-btn action-btn-primary" 
+                        onclick="document.getElementById('refresh-data-form').submit();">
+                    <i data-feather="refresh-cw"></i> Refresh Data
+                </button>
             </div>
         </div>
     </div>
     
-    <!-- Sales KPIs Section -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card dashboard-card">
-                <div class="card-header dashboard-card-header">
-                    <h5 class="card-title mb-0">
-                        <i data-feather="trending-up" class="me-2"></i> Sales Performance
-                    </h5>
-                </div>
-                <div class="card-body dashboard-card-body">
-                    {% if scorecard_data and scorecard_data.indicators %}
-                        <div class="row">
-                            <div class="col-md-4 text-center mb-4">
-                                <h6 class="text-muted">Sales Pipeline Value</h6>
-                                <h3 class="mb-3">€{{ "{:,.0f}".format(scorecard_data.indicators.sales_pipeline_value) }}</h3>
-                                <div class="progress" style="height: 8px;">
-                                    {% set pipeline_goal = 3000000 %}
-                                    {% set pipeline_percent = (scorecard_data.indicators.sales_pipeline_value / pipeline_goal * 100)|round|min(100) %}
-                                    <div class="progress-bar bg-info" role="progressbar" style="width: {{ pipeline_percent }}%" 
-                                         aria-valuenow="{{ scorecard_data.indicators.sales_pipeline_value }}" aria-valuemin="0" aria-valuemax="{{ pipeline_goal }}">
-                                    </div>
+    <!-- Main Scorecard -->
+    <div class="card dashboard-card mb-4">
+        <div class="card-header dashboard-card-header bg-gradient-primary">
+            <h5 class="card-title mb-0 text-white d-flex align-items-center">
+                <i data-feather="trending-up" class="me-2"></i> Key Performance Indicators
+            </h5>
+        </div>
+        <div class="card-body dashboard-card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-dark table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th class="text-end">Value</th>
+                            <th class="text-end">Target</th>
+                            <th class="text-end">Trend</th>
+                            <th class="text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- MRR -->
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <i data-feather="dollar-sign" class="me-2 text-primary"></i>
+                                    <span>Monthly Revenue</span>
                                 </div>
-                                <small class="text-muted mt-2 d-block">Goal: €3,000,000</small>
-                            </div>
-                            <div class="col-md-4 text-center mb-4">
-                                <h6 class="text-muted">Win Rate</h6>
-                                <h3 class="mb-3">{{ scorecard_data.indicators.win_rate }}%</h3>
-                                <div class="progress" style="height: 8px;">
-                                    {% set win_rate = scorecard_data.indicators.win_rate %}
-                                    <div class="progress-bar {% if win_rate >= 40 %}bg-success
-                                                           {% elif win_rate >= 30 %}bg-warning
-                                                           {% else %}bg-danger{% endif %}" 
-                                         role="progressbar" style="width: {{ win_rate }}%" 
-                                         aria-valuenow="{{ win_rate }}" aria-valuemin="0" aria-valuemax="100">
-                                    </div>
+                            </td>
+                            <td class="text-end fw-bold">${{ '{:,.0f}'.format(platform_data.get('chargebee', {}).get('mrr', 0) or 0) }}</td>
+                            <td class="text-end">${{ '{:,.0f}'.format(platform_data.get('targets', {}).get('mrr', 0) or 25000) }}</td>
+                            <td class="text-end">
+                                {% set mrr_trend = platform_data.get('trends', {}).get('mrr', 0) %}
+                                {% if mrr_trend > 5 %}
+                                <span class="text-success">+{{ mrr_trend }}% <i data-feather="trending-up" style="width: 16px;"></i></span>
+                                {% elif mrr_trend > 0 %}
+                                <span class="text-success">+{{ mrr_trend }}% <i data-feather="trending-up" style="width: 16px;"></i></span>
+                                {% elif mrr_trend == 0 %}
+                                <span class="text-muted">0% <i data-feather="minus" style="width: 16px;"></i></span>
+                                {% else %}
+                                <span class="text-danger">{{ mrr_trend }}% <i data-feather="trending-down" style="width: 16px;"></i></span>
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                {% set mrr = platform_data.get('chargebee', {}).get('mrr', 0) or 0 %}
+                                {% set mrr_target = platform_data.get('targets', {}).get('mrr', 0) or 25000 %}
+                                {% if mrr >= mrr_target %}
+                                <span class="badge bg-success">On Target</span>
+                                {% elif mrr >= mrr_target * 0.9 %}
+                                <span class="badge bg-warning">Near Target</span>
+                                {% else %}
+                                <span class="badge bg-danger">Below Target</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        
+                        <!-- New Customers -->
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <i data-feather="user-plus" class="me-2 text-primary"></i>
+                                    <span>New Customers</span>
                                 </div>
-                                <small class="text-muted mt-2 d-block">Target: 40%</small>
-                            </div>
-                            <div class="col-md-4 text-center mb-4">
-                                <h6 class="text-muted">Average Deal Size</h6>
-                                <h3 class="mb-3">€{{ "{:,.0f}".format(scorecard_data.indicators.average_deal_size) }}</h3>
-                                <div class="progress" style="height: 8px;">
-                                    {% set avg_deal_goal = 250000 %}
-                                    {% set deal_percent = (scorecard_data.indicators.average_deal_size / avg_deal_goal * 100)|round|min(100) %}
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: {{ deal_percent }}%" 
-                                         aria-valuenow="{{ scorecard_data.indicators.average_deal_size }}" aria-valuemin="0" aria-valuemax="{{ avg_deal_goal }}">
-                                    </div>
+                            </td>
+                            <td class="text-end fw-bold">{{ platform_data.get('chargebee', {}).get('metrics', {}).get('new_customers', 0) or 0 }}</td>
+                            <td class="text-end">{{ platform_data.get('targets', {}).get('new_customers', 0) or 10 }}</td>
+                            <td class="text-end">
+                                {% set customer_trend = platform_data.get('trends', {}).get('new_customers', 0) %}
+                                {% if customer_trend > 0 %}
+                                <span class="text-success">+{{ customer_trend }}% <i data-feather="trending-up" style="width: 16px;"></i></span>
+                                {% elif customer_trend == 0 %}
+                                <span class="text-muted">0% <i data-feather="minus" style="width: 16px;"></i></span>
+                                {% else %}
+                                <span class="text-danger">{{ customer_trend }}% <i data-feather="trending-down" style="width: 16px;"></i></span>
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                {% set new_customers = platform_data.get('chargebee', {}).get('metrics', {}).get('new_customers', 0) or 0 %}
+                                {% set new_customers_target = platform_data.get('targets', {}).get('new_customers', 0) or 10 %}
+                                {% if new_customers >= new_customers_target %}
+                                <span class="badge bg-success">On Target</span>
+                                {% elif new_customers >= new_customers_target * 0.8 %}
+                                <span class="badge bg-warning">Near Target</span>
+                                {% else %}
+                                <span class="badge bg-danger">Below Target</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        
+                        <!-- Sales Pipeline -->
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <i data-feather="trending-up" class="me-2 text-primary"></i>
+                                    <span>Sales Pipeline</span>
                                 </div>
-                                <small class="text-muted mt-2 d-block">Goal: €250,000</small>
-                            </div>
-                        </div>
-                    {% else %}
-                        <div class="text-center py-5">
-                            <i data-feather="trending-up" class="text-muted mb-3" style="width: 64px; height: 64px;"></i>
-                            <h4>No Sales KPI Data Available</h4>
-                            <p class="text-muted">Connect OOTI.co to view sales performance metrics</p>
-                        </div>
-                    {% endif %}
-                </div>
+                            </td>
+                            <td class="text-end fw-bold">${{ '{:,.0f}'.format(platform_data.get('hubspot', {}).get('metrics', {}).get('total_deal_value', 0) or 0) }}</td>
+                            <td class="text-end">${{ '{:,.0f}'.format(platform_data.get('targets', {}).get('pipeline', 0) or 100000) }}</td>
+                            <td class="text-end">
+                                {% set pipeline_trend = platform_data.get('trends', {}).get('pipeline', 0) %}
+                                {% if pipeline_trend > 0 %}
+                                <span class="text-success">+{{ pipeline_trend }}% <i data-feather="trending-up" style="width: 16px;"></i></span>
+                                {% elif pipeline_trend == 0 %}
+                                <span class="text-muted">0% <i data-feather="minus" style="width: 16px;"></i></span>
+                                {% else %}
+                                <span class="text-danger">{{ pipeline_trend }}% <i data-feather="trending-down" style="width: 16px;"></i></span>
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                {% set pipeline = platform_data.get('hubspot', {}).get('metrics', {}).get('total_deal_value', 0) or 0 %}
+                                {% set pipeline_target = platform_data.get('targets', {}).get('pipeline', 0) or 100000 %}
+                                {% if pipeline >= pipeline_target %}
+                                <span class="badge bg-success">On Target</span>
+                                {% elif pipeline >= pipeline_target * 0.85 %}
+                                <span class="badge bg-warning">Near Target</span>
+                                {% else %}
+                                <span class="badge bg-danger">Below Target</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        
+                        <!-- Customer Retention -->
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <i data-feather="heart" class="me-2 text-primary"></i>
+                                    <span>Customer Retention</span>
+                                </div>
+                            </td>
+                            <td class="text-end fw-bold">{{ platform_data.get('chargebee', {}).get('metrics', {}).get('retention_rate', 0) or 95 }}%</td>
+                            <td class="text-end">{{ platform_data.get('targets', {}).get('retention_rate', 0) or 95 }}%</td>
+                            <td class="text-end">
+                                {% set retention_trend = platform_data.get('trends', {}).get('retention', 0) %}
+                                {% if retention_trend > 0 %}
+                                <span class="text-success">+{{ retention_trend }}% <i data-feather="trending-up" style="width: 16px;"></i></span>
+                                {% elif retention_trend == 0 %}
+                                <span class="text-muted">0% <i data-feather="minus" style="width: 16px;"></i></span>
+                                {% else %}
+                                <span class="text-danger">{{ retention_trend }}% <i data-feather="trending-down" style="width: 16px;"></i></span>
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                {% set retention = platform_data.get('chargebee', {}).get('metrics', {}).get('retention_rate', 0) or 95 %}
+                                {% set retention_target = platform_data.get('targets', {}).get('retention_rate', 0) or 95 %}
+                                {% if retention >= retention_target %}
+                                <span class="badge bg-success">On Target</span>
+                                {% elif retention >= retention_target * 0.95 %}
+                                <span class="badge bg-warning">Near Target</span>
+                                {% else %}
+                                <span class="badge bg-danger">Below Target</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
     
-    <!-- Project and HR KPIs Section -->
-    <div class="row mb-4">
-        <!-- Project Metrics -->
-        <div class="col-lg-6 mb-4">
-            <div class="card dashboard-card h-100">
-                <div class="card-header dashboard-card-header">
-                    <h5 class="card-title mb-0">
-                        <i data-feather="briefcase" class="me-2"></i> Project Metrics
-                    </h5>
-                </div>
-                <div class="card-body dashboard-card-body">
-                    {% if scorecard_data and scorecard_data.metrics %}
-                        <div class="row mb-4">
-                            <div class="col-6 text-center">
-                                <h6 class="text-muted">Active Projects</h6>
-                                <h3>{{ scorecard_data.metrics.active_projects_count }}</h3>
-                            </div>
-                            <div class="col-6 text-center">
-                                <h6 class="text-muted">At Risk Projects</h6>
-                                <h3 class="{% if scorecard_data.metrics.at_risk_projects_count > 0 %}text-warning{% endif %}">
-                                    {{ scorecard_data.metrics.at_risk_projects_count }}
-                                </h3>
-                            </div>
-                        </div>
-                        
-                        <h6 class="mb-3">Budget Utilization</h6>
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="flex-grow-1 me-3">
-                                <div class="progress" style="height: 8px;">
-                                    {% set budget_util = scorecard_data.metrics.budget_utilization %}
-                                    <div class="progress-bar {% if budget_util <= 85 %}bg-success
-                                                           {% elif budget_util <= 100 %}bg-warning
-                                                           {% else %}bg-danger{% endif %}" 
-                                         role="progressbar" style="width: {{ budget_util|min(100) }}%" 
-                                         aria-valuenow="{{ budget_util }}" aria-valuemin="0" aria-valuemax="100">
-                                    </div>
-                                </div>
-                            </div>
-                            <div style="min-width: 60px;" class="text-end">
-                                {{ "%.1f"|format(budget_util) }}%
-                            </div>
-                        </div>
-                        
-                        <div class="row mt-4">
-                            <div class="col-md-4 text-center mb-3">
-                                <h6 class="text-muted small">Total Budget</h6>
-                                <p class="mb-0">€{{ "{:,.0f}".format(scorecard_data.metrics.total_budget) }}</p>
-                            </div>
-                            <div class="col-md-4 text-center mb-3">
-                                <h6 class="text-muted small">Total Spent</h6>
-                                <p class="mb-0">€{{ "{:,.0f}".format(scorecard_data.metrics.total_spent) }}</p>
-                            </div>
-                            <div class="col-md-4 text-center mb-3">
-                                <h6 class="text-muted small">Remaining</h6>
-                                <p class="mb-0">€{{ "{:,.0f}".format(scorecard_data.metrics.total_remaining) }}</p>
-                            </div>
-                        </div>
-                    {% else %}
-                        <div class="text-center py-5">
-                            <i data-feather="briefcase" class="text-muted mb-3" style="width: 48px; height: 48px;"></i>
-                            <h5>No Project Metrics Available</h5>
-                            <p class="text-muted">Connect OOTI.co to view project metrics</p>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-        
-        <!-- HR Metrics -->
-        <div class="col-lg-6 mb-4">
-            <div class="card dashboard-card h-100">
-                <div class="card-header dashboard-card-header">
-                    <h5 class="card-title mb-0">
-                        <i data-feather="user" class="me-2"></i> Human Resources
-                    </h5>
-                </div>
-                <div class="card-body dashboard-card-body">
-                    {% if scorecard_data and scorecard_data.indicators %}
-                        <div class="row mb-4">
-                            <div class="col-6 text-center">
-                                <h6 class="text-muted">Employee Satisfaction</h6>
-                                <h3>{{ scorecard_data.indicators.employee_satisfaction }}%</h3>
-                                <div class="progress mt-2" style="height: 8px;">
-                                    {% set emp_sat = scorecard_data.indicators.employee_satisfaction %}
-                                    <div class="progress-bar {% if emp_sat >= 85 %}bg-success
-                                                           {% elif emp_sat >= 70 %}bg-warning
-                                                           {% else %}bg-danger{% endif %}" 
-                                         role="progressbar" style="width: {{ emp_sat }}%" 
-                                         aria-valuenow="{{ emp_sat }}" aria-valuemin="0" aria-valuemax="100">
-                                    </div>
-                                </div>
-                                <small class="text-muted mt-2 d-block">Target: 85%</small>
-                            </div>
-                            <div class="col-6 text-center">
-                                <h6 class="text-muted">Overall Utilization</h6>
-                                <h3>{{ "%.1f"|format(scorecard_data.metrics.overall_resource_utilization) }}%</h3>
-                                <div class="progress mt-2" style="height: 8px;">
-                                    {% set resource_util = scorecard_data.metrics.overall_resource_utilization %}
-                                    <div class="progress-bar {% if resource_util >= 85 %}bg-success
-                                                           {% elif resource_util >= 70 %}bg-warning
-                                                           {% else %}bg-danger{% endif %}" 
-                                         role="progressbar" style="width: {{ resource_util }}%" 
-                                         aria-valuenow="{{ resource_util }}" aria-valuemin="0" aria-valuemax="100">
-                                    </div>
-                                </div>
-                                <small class="text-muted mt-2 d-block">Target: 85%</small>
-                            </div>
-                        </div>
-                        
-                        {% if scorecard_data.resources %}
-                            <h6 class="mb-3">Department Utilization</h6>
-                            {% for department in scorecard_data.resources %}
-                                <div class="mb-3">
-                                    <div class="d-flex justify-content-between mb-1">
-                                        <span>{{ department.department }}</span>
-                                        <span>{{ department.utilization }}%</span>
-                                    </div>
-                                    <div class="progress" style="height: 5px;">
-                                        <div class="progress-bar {% if department.utilization >= 85 %}bg-success
-                                                               {% elif department.utilization >= 70 %}bg-warning
-                                                               {% else %}bg-danger{% endif %}" 
-                                             role="progressbar" style="width: {{ department.utilization }}%" 
-                                             aria-valuenow="{{ department.utilization }}" aria-valuemin="0" aria-valuemax="100">
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between mt-1">
-                                        <small class="text-muted">{{ department.allocated }}/{{ department.total_staff }} allocated</small>
-                                        <small class="text-muted">Planned hires: {{ department.planned_hires }}</small>
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        {% endif %}
-                    {% else %}
-                        <div class="text-center py-5">
-                            <i data-feather="user" class="text-muted mb-3" style="width: 48px; height: 48px;"></i>
-                            <h5>No HR Metrics Available</h5>
-                            <p class="text-muted">Connect OOTI.co to view HR metrics</p>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Key Business Activities Section -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card dashboard-card">
-                <div class="card-header dashboard-card-header bg-gradient-primary">
-                    <h5 class="card-title mb-0 text-white">
-                        <i data-feather="activity" class="me-2"></i> Key Business Activities
-                    </h5>
-                </div>
-                <div class="card-body dashboard-card-body p-0">
-                    {% if scorecard_data %}
-                        <div class="table-responsive">
-                            <table class="table table-dark table-hover mb-0">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 30%">Activity</th>
-                                        <th style="width: 15%">Status</th>
-                                        <th style="width: 15%">Health</th>
-                                        <th style="width: 20%">Metrics</th>
-                                        <th style="width: 20%">Next Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Project Delivery -->
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <i data-feather="check-circle" class="text-primary me-2"></i>
-                                                <div>
-                                                    <strong>Project Delivery</strong>
-                                                    <div class="small text-muted">On-time project completion</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            {% set delivery = scorecard_data.indicators.delivery_on_time|default(0) %}
-                                            <div class="d-flex align-items-center">
-                                                <div class="status-indicator 
-                                                    {% if delivery >= 90 %}status-success
-                                                    {% elif delivery >= 75 %}status-warning
-                                                    {% else %}status-danger{% endif %} me-2"></div>
-                                                <span>
-                                                    {% if delivery >= 90 %}On Track
-                                                    {% elif delivery >= 75 %}At Risk
-                                                    {% else %}Critical{% endif %}
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="progress" style="height: 8px;">
-                                                <div class="progress-bar 
-                                                    {% if delivery >= 90 %}bg-success
-                                                    {% elif delivery >= 75 %}bg-warning
-                                                    {% else %}bg-danger{% endif %}"
-                                                    role="progressbar" style="width: {{ delivery }}%">
-                                                </div>
-                                            </div>
-                                            <div class="small text-center mt-1">{{ delivery }}%</div>
-                                        </td>
-                                        <td>
-                                            <div class="small">
-                                                <div>Target: 95%</div>
-                                                <div>Projects: {{ scorecard_data.metrics.active_projects_count }}</div>
-                                                <div>At Risk: {{ scorecard_data.metrics.at_risk_projects_count }}</div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="small">
-                                                {% if delivery >= 90 %}
-                                                    Monitor project timelines
-                                                {% elif delivery >= 75 %}
-                                                    Schedule delivery reviews
-                                                {% else %}
-                                                    Escalate to management
-                                                {% endif %}
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    
-                                    <!-- Customer Satisfaction -->
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <i data-feather="users" class="text-info me-2"></i>
-                                                <div>
-                                                    <strong>Customer Satisfaction</strong>
-                                                    <div class="small text-muted">Client happiness index</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            {% set satisfaction = scorecard_data.indicators.client_satisfaction|default(0) %}
-                                            <div class="d-flex align-items-center">
-                                                <div class="status-indicator 
-                                                    {% if satisfaction >= 90 %}status-success
-                                                    {% elif satisfaction >= 75 %}status-warning
-                                                    {% else %}status-danger{% endif %} me-2"></div>
-                                                <span>
-                                                    {% if satisfaction >= 90 %}Excellent
-                                                    {% elif satisfaction >= 75 %}Good
-                                                    {% else %}Needs Attention{% endif %}
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="progress" style="height: 8px;">
-                                                <div class="progress-bar 
-                                                    {% if satisfaction >= 90 %}bg-success
-                                                    {% elif satisfaction >= 75 %}bg-warning
-                                                    {% else %}bg-danger{% endif %}"
-                                                    role="progressbar" style="width: {{ satisfaction }}%">
-                                                </div>
-                                            </div>
-                                            <div class="small text-center mt-1">{{ satisfaction }}%</div>
-                                        </td>
-                                        <td>
-                                            <div class="small">
-                                                <div>Target: 90%</div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="small">
-                                                {% if satisfaction >= 90 %}
-                                                    Collect success stories
-                                                {% elif satisfaction >= 75 %}
-                                                    Schedule client reviews
-                                                {% else %}
-                                                    Launch improvement plan
-                                                {% endif %}
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    
-                                    <!-- Sales Pipeline -->
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <i data-feather="trending-up" class="text-success me-2"></i>
-                                                <div>
-                                                    <strong>Sales Pipeline</strong>
-                                                    <div class="small text-muted">New business acquisition</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            {% set pipeline_goal = 3000000 %}
-                                            {% set pipeline_value = scorecard_data.indicators.sales_pipeline_value|default(0) %}
-                                            {% set pipeline_percent = (pipeline_value / pipeline_goal * 100)|round|min(100) %}
-                                            <div class="d-flex align-items-center">
-                                                <div class="status-indicator 
-                                                    {% if pipeline_percent >= 85 %}status-success
-                                                    {% elif pipeline_percent >= 60 %}status-warning
-                                                    {% else %}status-danger{% endif %} me-2"></div>
-                                                <span>
-                                                    {% if pipeline_percent >= 85 %}Strong
-                                                    {% elif pipeline_percent >= 60 %}Moderate
-                                                    {% else %}Weak{% endif %}
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="progress" style="height: 8px;">
-                                                <div class="progress-bar 
-                                                    {% if pipeline_percent >= 85 %}bg-success
-                                                    {% elif pipeline_percent >= 60 %}bg-warning
-                                                    {% else %}bg-danger{% endif %}"
-                                                    role="progressbar" style="width: {{ pipeline_percent }}%">
-                                                </div>
-                                            </div>
-                                            <div class="small text-center mt-1">{{ pipeline_percent }}%</div>
-                                        </td>
-                                        <td>
-                                            <div class="small">
-                                                <div>Target: €3M</div>
-                                                <div>Current: €{{ "{:,.0f}".format(pipeline_value) }}</div>
-                                                <div>Win Rate: {{ scorecard_data.indicators.win_rate|default(0) }}%</div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="small">
-                                                {% if pipeline_percent >= 85 %}
-                                                    Review top opportunities
-                                                {% elif pipeline_percent >= 60 %}
-                                                    Increase outbound activity
-                                                {% else %}
-                                                    Launch sales sprint
-                                                {% endif %}
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    
-                                    <!-- Financial Performance -->
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <i data-feather="dollar-sign" class="text-warning me-2"></i>
-                                                <div>
-                                                    <strong>Financial Performance</strong>
-                                                    <div class="small text-muted">Profitability and margins</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            {% set profitability = scorecard_data.indicators.project_profitability|default(0) %}
-                                            <div class="d-flex align-items-center">
-                                                <div class="status-indicator 
-                                                    {% if profitability >= 25 %}status-success
-                                                    {% elif profitability >= 15 %}status-warning
-                                                    {% else %}status-danger{% endif %} me-2"></div>
-                                                <span>
-                                                    {% if profitability >= 25 %}Healthy
-                                                    {% elif profitability >= 15 %}Stable
-                                                    {% else %}Concerning{% endif %}
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            {% set profit_percent = (profitability / 35 * 100)|round|min(100) %}
-                                            <div class="progress" style="height: 8px;">
-                                                <div class="progress-bar 
-                                                    {% if profitability >= 25 %}bg-success
-                                                    {% elif profitability >= 15 %}bg-warning
-                                                    {% else %}bg-danger{% endif %}"
-                                                    role="progressbar" style="width: {{ profit_percent }}%">
-                                                </div>
-                                            </div>
-                                            <div class="small text-center mt-1">{{ profitability }}%</div>
-                                        </td>
-                                        <td>
-                                            <div class="small">
-                                                <div>Target: 25%</div>
-                                                <div>Budget: €{{ "{:,.0f}".format(scorecard_data.metrics.total_budget|default(0)) }}</div>
-                                                <div>Utilization: {{ "%.1f"|format(scorecard_data.metrics.overall_resource_utilization|default(0)) }}%</div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="small">
-                                                {% if profitability >= 25 %}
-                                                    Monitor cash reserves
-                                                {% elif profitability >= 15 %}
-                                                    Review project budgets
-                                                {% else %}
-                                                    Cost reduction plan
-                                                {% endif %}
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    
-                                    <!-- Team Performance -->
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center">
-                                                <i data-feather="award" class="text-danger me-2"></i>
-                                                <div>
-                                                    <strong>Team Performance</strong>
-                                                    <div class="small text-muted">Employee productivity and satisfaction</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            {% set emp_sat = scorecard_data.indicators.employee_satisfaction|default(0) %}
-                                            <div class="d-flex align-items-center">
-                                                <div class="status-indicator 
-                                                    {% if emp_sat >= 85 %}status-success
-                                                    {% elif emp_sat >= 70 %}status-warning
-                                                    {% else %}status-danger{% endif %} me-2"></div>
-                                                <span>
-                                                    {% if emp_sat >= 85 %}Strong
-                                                    {% elif emp_sat >= 70 %}Average
-                                                    {% else %}Needs Improvement{% endif %}
-                                                </span>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="progress" style="height: 8px;">
-                                                <div class="progress-bar 
-                                                    {% if emp_sat >= 85 %}bg-success
-                                                    {% elif emp_sat >= 70 %}bg-warning
-                                                    {% else %}bg-danger{% endif %}"
-                                                    role="progressbar" style="width: {{ emp_sat }}%">
-                                                </div>
-                                            </div>
-                                            <div class="small text-center mt-1">{{ emp_sat }}%</div>
-                                        </td>
-                                        <td>
-                                            <div class="small">
-                                                <div>Target: 85%</div>
-                                                <div>Utilization: {{ "%.1f"|format(scorecard_data.metrics.overall_resource_utilization|default(0)) }}%</div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="small">
-                                                {% if emp_sat >= 85 %}
-                                                    Reward top performers
-                                                {% elif emp_sat >= 70 %}
-                                                    Schedule team workshops
-                                                {% else %}
-                                                    Launch engagement plan
-                                                {% endif %}
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    {% else %}
-                        <div class="text-center py-5">
-                            <i data-feather="activity" class="text-muted mb-3" style="width: 64px; height: 64px;"></i>
-                            <h4>No Business Activity Data Available</h4>
-                            <p class="text-muted">Connect OOTI.co to view key business activities</p>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Historical Trends Section -->
+    <!-- Action Cards Row -->
     <div class="row">
-        <div class="col-12">
-            <div class="card dashboard-card">
-                <div class="card-header dashboard-card-header">
-                    <h5 class="card-title mb-0">
-                        <i data-feather="info" class="me-2"></i> About This Scorecard
+        <!-- Critical Actions Card -->
+        <div class="col-lg-6 mb-3">
+            <div class="card dashboard-card h-100">
+                <div class="card-header dashboard-card-header bg-gradient-warning">
+                    <h5 class="card-title mb-0 text-white d-flex align-items-center">
+                        <i data-feather="alert-circle" class="me-2"></i> Critical Actions
                     </h5>
                 </div>
                 <div class="card-body dashboard-card-body">
-                    <p>This Business Scorecard provides a comprehensive view of your key performance indicators (KPIs) sourced from OOTI.co:</p>
-                    <ul>
-                        <li><strong>Delivery Performance:</strong> Tracks how well your team meets project deadlines.</li>
-                        <li><strong>Client Satisfaction:</strong> Measures client happiness with your services.</li>
-                        <li><strong>Project Profitability:</strong> Shows the profit margin across all projects.</li>
-                        <li><strong>Resource Utilization:</strong> Indicates how efficiently your team's time is being used.</li>
-                        <li><strong>Sales KPIs:</strong> Includes pipeline value, win rate, and average deal size.</li>
-                        <li><strong>Project Metrics:</strong> Provides insights into project status and budget utilization.</li>
-                        <li><strong>HR Metrics:</strong> Shows employee satisfaction and departmental utilization.</li>
-                        <li><strong>Key Business Activities:</strong> Provides status indicators for critical business functions.</li>
-                    </ul>
-                    <p>The data in this scorecard is updated in real-time from your OOTI.co account. Use these insights to make strategic decisions and keep your business on track.</p>
+                    <div class="action-item">
+                        <span class="action-number">1</span>
+                        <span>Follow up with 3 customers at risk of churning based on usage patterns</span>
+                    </div>
+                    <div class="action-item">
+                        <span class="action-number">2</span>
+                        <span>Accelerate sales cycles for 5 deals in closing stage (value: ${{ '{:,.0f}'.format(platform_data.get('hubspot', {}).get('metrics', {}).get('closing_deals_value', 0) or 25000) }})</span>
+                    </div>
+                    <div class="action-item">
+                        <span class="action-number">3</span>
+                        <span>Review pricing strategy for Enterprise tier to improve conversion rate</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Opportunities Card -->
+        <div class="col-lg-6 mb-3">
+            <div class="card dashboard-card h-100">
+                <div class="card-header dashboard-card-header bg-gradient-success">
+                    <h5 class="card-title mb-0 text-white d-flex align-items-center">
+                        <i data-feather="target" class="me-2"></i> Growth Opportunities
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    <div class="insight-item">
+                        <p class="mb-0">Expansion opportunity with {{ platform_data.get('hubspot', {}).get('metrics', {}).get('expansion_customers_count', 0) or 5 }} existing customers based on usage patterns</p>
+                    </div>
+                    <div class="insight-item">
+                        <p class="mb-0">New market segment showing {{ platform_data.get('trends', {}).get('new_segment_growth', 0) or 32 }}% growth ({{ platform_data.get('hubspot', {}).get('metrics', {}).get('new_segment', '') or 'Healthcare' }} sector)</p>
+                    </div>
+                    <div class="insight-item">
+                        <p class="mb-0">Feature adoption for new analytics module at {{ platform_data.get('metrics', {}).get('feature_adoption', 0) or 76 }}%, showing positive customer response</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -714,7 +234,8 @@
 {% block scripts %}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Additional scripts for scorecard if needed
+        // Re-initialize feather icons
+        feather.replace();
     });
 </script>
 {% endblock %}

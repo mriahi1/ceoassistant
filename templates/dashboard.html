@@ -3,116 +3,107 @@
 {% block content %}
 <div class="container-fluid dashboard-container">
     <!-- Header Section -->
-    <div class="row mb-4">
+    <div class="row mb-3">
         <div class="col-12">
-            <h1 class="mb-0">Executive Dashboard</h1>
-            <p class="text-muted">
+            <h1 class="mb-1 d-flex align-items-center">
+                Executive Dashboard
                 {% if last_updated %}
-                    Data last updated: {{ last_updated.strftime('%Y-%m-%d %H:%M:%S') }}
-                {% else %}
-                    No data available yet
+                <span class="badge bg-secondary ms-2 fs-6">Updated {{ last_updated.strftime('%H:%M') }}</span>
                 {% endif %}
-            </p>
+            </h1>
+            <div class="d-flex align-items-center mb-2">
+                <button type="button" class="btn btn-sm action-btn action-btn-primary me-2" 
+                        onclick="document.getElementById('refresh-data-form').submit();">
+                    <i data-feather="refresh-cw"></i> Refresh Data
+                </button>
+                <button type="button" class="btn btn-sm action-btn action-btn-warning" 
+                        onclick="document.getElementById('generate-digest-form').submit();">
+                    <i data-feather="file-text"></i> Generate Digest
+                </button>
+            </div>
         </div>
     </div>
     
     {% if missing_keys %}
     <!-- Missing API Keys Warning -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="alert alert-warning">
-                <h5 class="alert-heading"><i data-feather="alert-triangle" class="me-2"></i> Missing API Credentials</h5>
-                <p>The following API keys are missing:</p>
-                <ul>
-                    {% for key in missing_keys %}
-                    <li>{{ key }}</li>
-                    {% endfor %}
-                </ul>
-                <p class="mb-0">Please add these environment variables to enable full functionality.</p>
-            </div>
-        </div>
+    <div class="alert alert-warning">
+        <h5 class="alert-heading d-flex align-items-center">
+            <i data-feather="alert-triangle" class="me-2"></i> Missing API Keys
+        </h5>
+        <p class="mb-1">The following API keys are missing:</p>
+        <ul class="mb-2">
+            {% for key in missing_keys %}
+            <li>{{ key }}</li>
+            {% endfor %}
+        </ul>
+        <a href="{{ url_for('integrations') }}" class="btn btn-sm btn-warning">
+            <i data-feather="settings" class="me-1"></i> Configure Integrations
+        </a>
     </div>
     {% endif %}
     
     {% if error %}
     <!-- Error Message -->
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="alert alert-danger">
-                <h5 class="alert-heading"><i data-feather="alert-circle" class="me-2"></i> Error</h5>
-                <p>An error occurred while retrieving data. Please check the logs for details.</p>
-                <p class="mb-0">Try refreshing the data or check your API credentials.</p>
-            </div>
-        </div>
+    <div class="alert alert-danger">
+        <h5 class="alert-heading d-flex align-items-center">
+            <i data-feather="alert-circle" class="me-2"></i> Error
+        </h5>
+        <p>Failed to retrieve data. Please check your API credentials.</p>
+        <button type="button" class="btn btn-sm btn-danger" 
+                onclick="document.getElementById('refresh-data-form').submit();">
+            <i data-feather="refresh-cw" class="me-1"></i> Try Again
+        </button>
     </div>
     {% else %}
     
-    <!-- Executive Summary Section -->
-    {% if latest_digest %}
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card dashboard-card">
-                <div class="card-header dashboard-card-header bg-gradient-primary">
-                    <h5 class="card-title mb-0 text-white">
-                        <i data-feather="briefcase" class="me-2"></i> Executive Summary
-                    </h5>
-                </div>
-                <div class="card-body dashboard-card-body">
-                    <p class="text-muted mb-2">{{ latest_digest.date }}</p>
-                    <p class="card-text">{{ latest_digest.executive_summary }}</p>
-                    <div class="text-end">
-                        <a href="{{ url_for('digests') }}" class="btn btn-sm btn-outline-primary">
-                            View All Digests <i data-feather="arrow-right" class="ms-1"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    {% endif %}
-    
     <!-- Key Metrics Section -->
-    <div class="row mb-4">
+    <div class="row mb-3">
         {% if platform_data and platform_data.get('hubspot') %}
-        <div class="col-md-4 mb-3">
+        <div class="col-md-4 col-sm-6 mb-3">
             <div class="metric-card">
-                <div class="metric-label">Sales Pipeline Value</div>
+                <div class="metric-label">Sales Pipeline</div>
                 <div class="metric-value">
-                    ${{ "{:,.2f}".format(platform_data.get('hubspot', {}).get('metrics', {}).get('total_deal_value', 0)) }}
+                    ${{ "{:,.0f}".format(platform_data.get('hubspot', {}).get('metrics', {}).get('total_deal_value', 0)) }}
                 </div>
-                <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center justify-content-between">
                     <span class="badge text-bg-primary">
                         {{ platform_data.get('hubspot', {}).get('deals', [])|length }} deals
                     </span>
+                    <a href="{{ url_for('scorecard_view') }}" class="text-primary small">
+                        Details <i data-feather="chevron-right" style="width: 14px;"></i>
+                    </a>
                 </div>
             </div>
         </div>
         {% endif %}
         
         {% if platform_data and platform_data.get('chargebee') %}
-        <div class="col-md-4 mb-3">
+        <div class="col-md-4 col-sm-6 mb-3">
             <div class="metric-card">
-                <div class="metric-label">Monthly Recurring Revenue</div>
+                <div class="metric-label">Monthly Revenue</div>
                 <div class="metric-value">
-                    ${{ "{:,.2f}".format(platform_data.get('chargebee', {}).get('mrr', 0)) }}
+                    ${{ "{:,.0f}".format(platform_data.get('chargebee', {}).get('mrr', 0)) }}
                 </div>
-                <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center justify-content-between">
                     <span class="badge text-bg-primary">
                         {{ platform_data.get('chargebee', {}).get('metrics', {}).get('active_subscriptions_count', 0) }} subscriptions
                     </span>
+                    <a href="{{ url_for('financials_view') }}" class="text-primary small">
+                        Details <i data-feather="chevron-right" style="width: 14px;"></i>
+                    </a>
                 </div>
             </div>
         </div>
         {% endif %}
         
         {% if platform_data and platform_data.get('ooti') %}
-        <div class="col-md-4 mb-3">
+        <div class="col-md-4 col-sm-6 mb-3">
             <div class="metric-card">
-                <div class="metric-label">Active Projects</div>
+                <div class="metric-label">Projects</div>
                 <div class="metric-value">
                     {{ platform_data.get('ooti', {}).get('metrics', {}).get('active_projects_count', 0) }}
                 </div>
-                <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center justify-content-between">
                     {% set at_risk = platform_data.get('ooti', {}).get('metrics', {}).get('at_risk_projects_count', 0) %}
                     {% if at_risk > 0 %}
                     <span class="badge text-bg-warning">
@@ -121,45 +112,43 @@
                     {% else %}
                     <span class="badge text-bg-success">All on track</span>
                     {% endif %}
+                    <a href="{{ url_for('scorecard_view') }}" class="text-primary small">
+                        Details <i data-feather="chevron-right" style="width: 14px;"></i>
+                    </a>
                 </div>
             </div>
         </div>
         {% endif %}
     </div>
     
-    <!-- Strategic Insights & Action Items -->
-    <div class="row mb-4">
-        <!-- Strategic Insights -->
-        <div class="col-lg-6 mb-3">
-            <div class="card dashboard-card h-100">
-                <div class="card-header dashboard-card-header bg-gradient-primary">
-                    <h5 class="card-title mb-0 text-white">
-                        <i data-feather="trending-up" class="me-2"></i> Strategic Insights
-                    </h5>
-                </div>
-                <div class="card-body dashboard-card-body">
-                    {% if insights %}
-                        {% for insight in insights %}
-                        <div class="insight-item">
-                            <p class="mb-0">{{ insight }}</p>
-                        </div>
-                        {% endfor %}
-                    {% else %}
-                        <div class="text-center text-muted py-4">
-                            <i data-feather="coffee" style="width: 48px; height: 48px;" class="mb-3"></i>
-                            <p>No insights available yet. Generate a digest to see insights.</p>
-                        </div>
-                    {% endif %}
-                </div>
+    <!-- Executive Summary Section from latest digest -->
+    {% if latest_digest %}
+    <div class="card dashboard-card mb-3">
+        <div class="card-header dashboard-card-header bg-gradient-primary">
+            <h5 class="card-title mb-0 text-white d-flex align-items-center">
+                <i data-feather="briefcase" class="me-2"></i> Executive Summary
+                <span class="ms-auto small">{{ latest_digest.date }}</span>
+            </h5>
+        </div>
+        <div class="card-body dashboard-card-body">
+            <p class="card-text">{{ latest_digest.executive_summary }}</p>
+            <div class="text-end">
+                <a href="{{ url_for('digests') }}" class="btn btn-sm action-btn action-btn-primary">
+                    <i data-feather="file-text" class="me-1"></i> All Digests
+                </a>
             </div>
         </div>
-        
-        <!-- Action Items -->
-        <div class="col-lg-6 mb-3">
+    </div>
+    {% endif %}
+    
+    <!-- Strategic Insights & Action Items -->
+    <div class="row">
+        <!-- Priority Action Items - Top position on mobile -->
+        <div class="col-lg-6 mb-3 order-1 order-lg-2">
             <div class="card dashboard-card h-100">
                 <div class="card-header dashboard-card-header bg-gradient-warning">
-                    <h5 class="card-title mb-0 text-white">
-                        <i data-feather="check-square" class="me-2"></i> Priority Action Items
+                    <h5 class="card-title mb-0 text-white d-flex align-items-center">
+                        <i data-feather="check-square" class="me-2"></i> Priority Actions
                     </h5>
                 </div>
                 <div class="card-body dashboard-card-body">
@@ -171,9 +160,44 @@
                         </div>
                         {% endfor %}
                     {% else %}
-                        <div class="text-center text-muted py-4">
-                            <i data-feather="clipboard" style="width: 48px; height: 48px;" class="mb-3"></i>
-                            <p>No action items available yet. Generate a digest to see recommended actions.</p>
+                        <div class="empty-state">
+                            <i data-feather="clipboard"></i>
+                            <p class="empty-state-title">No action items yet</p>
+                            <p class="empty-state-text">Generate a digest to see recommended actions</p>
+                            <button type="button" class="btn btn-sm action-btn action-btn-warning" 
+                                    onclick="document.getElementById('generate-digest-form').submit();">
+                                <i data-feather="file-text"></i> Generate Digest
+                            </button>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Strategic Insights -->
+        <div class="col-lg-6 mb-3 order-2 order-lg-1">
+            <div class="card dashboard-card h-100">
+                <div class="card-header dashboard-card-header bg-gradient-primary">
+                    <h5 class="card-title mb-0 text-white d-flex align-items-center">
+                        <i data-feather="trending-up" class="me-2"></i> Strategic Insights
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    {% if insights %}
+                        {% for insight in insights %}
+                        <div class="insight-item">
+                            <p class="mb-0">{{ insight }}</p>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="empty-state">
+                            <i data-feather="coffee"></i>
+                            <p class="empty-state-title">No insights available</p>
+                            <p class="empty-state-text">Generate a digest to see strategic insights</p>
+                            <button type="button" class="btn btn-sm action-btn action-btn-primary" 
+                                    onclick="document.getElementById('generate-digest-form').submit();">
+                                <i data-feather="file-text"></i> Generate Digest
+                            </button>
                         </div>
                     {% endif %}
                 </div>
@@ -186,6 +210,20 @@
 
 {% block scripts %}
 <script>
-    // This would be where we add any dashboard-specific JavaScript
+    document.addEventListener('DOMContentLoaded', function() {
+        // Re-initialize feather icons for dynamically loaded content
+        feather.replace();
+        
+        // Quick actions for metric cards
+        document.querySelectorAll('.metric-card').forEach(function(card) {
+            card.addEventListener('click', function(e) {
+                // Only trigger if not clicking on a link within the card
+                if (!e.target.closest('a')) {
+                    const link = card.querySelector('a');
+                    if (link) link.click();
+                }
+            });
+        });
+    });
 </script>
 {% endblock %}
