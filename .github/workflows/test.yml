@@ -86,6 +86,9 @@ jobs:
         # Run email access control tests to ensure only authorized emails can access data
         pytest -v minimal_tests/test_email_access_control.py
         
+        # Run API access control tests
+        pytest -v minimal_tests/test_api_integration.py
+        
         # Run other security tests
         pytest -v minimal_tests/test_security.py
         pytest -v minimal_tests/test_access_control.py
@@ -113,7 +116,18 @@ jobs:
         echo "Testing email-based access control to prevent data leaks"
         pytest -v minimal_tests/test_email_access_control.py
         
+        # Check if unauthorized emails are correctly blocked
+        python -c "from utils.access_control import is_authorized_email; assert not is_authorized_email('unauthorized@example.com')"
+        
+        # Check that our whitelisted emails have access
+        python -c "from utils.access_control import is_authorized_email; assert is_authorized_email('maxriahi@gmail.com')"
+        python -c "from utils.access_control import is_authorized_email; assert is_authorized_email('mriahi@ooti.co')"
+        
     - name: Test API security
       run: |
         echo "Testing API security to prevent unauthorized data access"
-        if [ -f minimal_tests/test_api_security.py ]; then pytest -v minimal_tests/test_api_security.py; fi 
+        if [ -f minimal_tests/test_api_security.py ]; then pytest -v minimal_tests/test_api_security.py; fi
+        
+        # Also test our API integration
+        pytest -v minimal_tests/test_api_integration.py
+

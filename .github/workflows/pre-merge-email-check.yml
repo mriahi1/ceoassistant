@@ -1,0 +1,51 @@
+name: Verify Email Access Restrictions
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'utils/access_control.py'
+      - 'app/**/*.py'
+      - 'minimal_tests/test_email_access_control.py'
+
+jobs:
+  verify-email-restrictions:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    
+    - name: Verify email whitelist integrity
+      run: |
+        # Check if AUTHORIZED_EMAILS list is present and contains only the expected emails
+        python -c "from utils.access_control import AUTHORIZED_EMAILS; assert len(AUTHORIZED_EMAILS) == 2; assert 'maxriahi@gmail.com' in AUTHORIZED_EMAILS; assert 'mriahi@ooti.co' in AUTHORIZED_EMAILS"
+    
+    - name: Run email access control tests
+      run: |
+        pytest -v minimal_tests/test_email_access_control.py
+    
+    - name: Verify API integration
+      run: |
+        pytest -v minimal_tests/test_api_integration.py::test_email_based_api_restrictions
+    
+    - name: Verify protected routes
+      run: |
+        # Check if routes with sensitive data have the restricted_access_required decorator
+        # This is a simple grep check to find potential issues
+        grep -r "restricted_access_required" app/ || echo "Warning: No routes with restricted access detected"
+    
+    - name: Notify on potential issues
+      if: failure()
+      run: |
+        echo "::warning::Email access restrictions may have been compromised. Please review the changes carefully." 
