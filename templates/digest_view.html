@@ -7,7 +7,7 @@
         <div class="col-12 d-flex justify-content-between align-items-center">
             <div>
                 <h1>Daily Digest: {{ digest.date }}</h1>
-                <p class="text-muted">Generated on {{ digest.timestamp | replace("T", " at ").split(".")[0] }}</p>
+                <p class="text-muted">Generated on {{ digest.timestamp | format_datetime('%Y-%m-%d %H:%M') }}</p>
             </div>
             <div>
                 <a href="{{ url_for('digests') }}" class="btn btn-outline-secondary me-2">

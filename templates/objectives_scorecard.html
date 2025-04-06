@@ -1,0 +1,196 @@
+{% extends 'layout.html' %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/objectives.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid dashboard-container">
+    <!-- Header Section -->
+    <div class="row mb-3">
+        <div class="col-12">
+            <h1 class="mb-1 d-flex align-items-center">
+                Business Objectives
+                <span class="badge bg-secondary ms-2 fs-6">Updated {{ now().strftime('%H:%M') }}</span>
+            </h1>
+            <div class="d-flex align-items-center mb-2">
+                <button type="button" class="btn btn-sm action-btn action-btn-primary" 
+                        onclick="window.location.reload();">
+                    <i data-feather="refresh-cw"></i> Refresh
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Company Objectives -->
+    <div class="card dashboard-card mb-4">
+        <div class="card-header dashboard-card-header bg-gradient-primary">
+            <h5 class="card-title mb-0 text-white d-flex align-items-center">
+                <i data-feather="target" class="me-2"></i> Company Objectives
+            </h5>
+        </div>
+        <div class="card-body dashboard-card-body p-3">
+            <div class="row">
+                {% for objective in objectives_data.company_objectives %}
+                <div class="col-md-6 mb-3">
+                    <div class="objective-card p-3 h-100 {% if objective.status == 'at_risk' %}border-warning{% elif objective.status == 'behind' %}border-danger{% else %}border-success{% endif %}">
+                        <h6 class="d-flex justify-content-between">
+                            {{ objective.title }}
+                            {% if objective.status == 'at_risk' %}
+                            <span class="badge bg-warning">At Risk</span>
+                            {% elif objective.status == 'behind' %}
+                            <span class="badge bg-danger">Behind</span>
+                            {% else %}
+                            <span class="badge bg-success">On Track</span>
+                            {% endif %}
+                        </h6>
+                        <div class="progress mb-2" style="height: 8px;">
+                            <div class="progress-bar {% if objective.progress < 40 %}bg-danger{% elif objective.progress < 70 %}bg-warning{% else %}bg-success{% endif %}" 
+                                 role="progressbar" 
+                                 style="width: {{ objective.progress }}%;" 
+                                 aria-valuenow="{{ objective.progress }}" 
+                                 aria-valuemin="0" 
+                                 aria-valuemax="100"></div>
+                        </div>
+                        <div class="d-flex justify-content-between small mb-2">
+                            <span>Target: {{ objective.target }}</span>
+                            <span>Current: {{ objective.current }}</span>
+                        </div>
+                        <p class="small text-muted mb-0">{{ objective.details }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Department Objectives -->
+    <div class="card dashboard-card mb-4">
+        <div class="card-header dashboard-card-header bg-gradient-info">
+            <h5 class="card-title mb-0 text-white d-flex align-items-center">
+                <i data-feather="layers" class="me-2"></i> Department Objectives
+            </h5>
+        </div>
+        <div class="card-body dashboard-card-body p-0">
+            <div class="accordion" id="departmentAccordion">
+                {% for dept in objectives_data.department_objectives %}
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading{{ loop.index }}">
+                        <button class="accordion-button {% if not loop.first %}collapsed{% endif %}" type="button" 
+                                data-bs-toggle="collapse" 
+                                data-bs-target="#collapse{{ loop.index }}" 
+                                aria-expanded="{% if loop.first %}true{% else %}false{% endif %}" 
+                                aria-controls="collapse{{ loop.index }}">
+                            <i data-feather="chevron-right" class="accordion-icon me-2"></i>
+                            {{ dept.department }} Department
+                        </button>
+                    </h2>
+                    <div id="collapse{{ loop.index }}" 
+                         class="accordion-collapse collapse {% if loop.first %}show{% endif %}" 
+                         aria-labelledby="heading{{ loop.index }}" 
+                         data-bs-parent="#departmentAccordion">
+                        <div class="accordion-body">
+                            {% for obj in dept.objectives %}
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h6 class="mb-1">{{ obj.title }}</h6>
+                                    <span class="badge {% if obj.progress < 50 %}bg-danger{% elif obj.progress < 75 %}bg-warning{% else %}bg-success{% endif %}">
+                                        {{ obj.progress }}%
+                                    </span>
+                                </div>
+                                <div class="progress" style="height: 5px;">
+                                    <div class="progress-bar {% if obj.progress < 50 %}bg-danger{% elif obj.progress < 75 %}bg-warning{% else %}bg-success{% endif %}" 
+                                         role="progressbar" 
+                                         style="width: {{ obj.progress }}%;" 
+                                         aria-valuenow="{{ obj.progress }}" 
+                                         aria-valuemin="0" 
+                                         aria-valuemax="100"></div>
+                                </div>
+                                <div class="d-flex justify-content-between small text-muted mt-1">
+                                    <span>Target: {{ obj.target }}</span>
+                                    <span>Current: {{ obj.current }}</span>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Key Metrics -->
+    <div class="card dashboard-card mb-4">
+        <div class="card-header dashboard-card-header bg-gradient-success">
+            <h5 class="card-title mb-0 text-white d-flex align-items-center">
+                <i data-feather="bar-chart-2" class="me-2"></i> Key Metrics
+            </h5>
+        </div>
+        <div class="card-body dashboard-card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-dark table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th class="text-end">Value</th>
+                            <th class="text-end">Trend</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for metric in objectives_data.key_metrics %}
+                        <tr>
+                            <td>{{ metric.name }}</td>
+                            <td class="text-end fw-bold">{{ metric.value }}</td>
+                            <td class="text-end">
+                                {% if metric.status == 'positive' %}
+                                <span class="text-success">{{ metric.trend }} <i data-feather="trending-up" style="width: 16px;"></i></span>
+                                {% elif metric.status == 'neutral' %}
+                                <span class="text-muted">{{ metric.trend }} <i data-feather="minus" style="width: 16px;"></i></span>
+                                {% else %}
+                                <span class="text-danger">{{ metric.trend }} <i data-feather="trending-down" style="width: 16px;"></i></span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Action Items -->
+    <div class="card dashboard-card mb-4">
+        <div class="card-header dashboard-card-header bg-gradient-warning">
+            <h5 class="card-title mb-0 text-white d-flex align-items-center">
+                <i data-feather="check-square" class="me-2"></i> Priority Action Items
+            </h5>
+        </div>
+        <div class="card-body dashboard-card-body">
+            <ul class="list-group list-group-flush">
+                {% for item in objectives_data.action_items %}
+                <li class="list-group-item bg-transparent d-flex align-items-start">
+                    <i data-feather="arrow-right" class="me-2 text-warning"></i>
+                    <span>{{ item }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Re-initialize feather icons
+        feather.replace();
+        
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+</script>
+{% endblock %} 
