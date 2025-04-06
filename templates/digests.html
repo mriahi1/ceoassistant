@@ -75,7 +75,7 @@
                         {% endif %}
                         
                         <div class="text-end">
-                            <a href="{{ url_for('view_digest', filename=digest.filename) }}" class="btn btn-sm btn-outline-primary">
+                            <a href="{{ url_for('view_digest', digest_id=digest.id) }}" class="btn btn-sm btn-outline-primary">
                                 View Full Digest <i data-feather="arrow-right" class="ms-1"></i>
                             </a>
                         </div>
