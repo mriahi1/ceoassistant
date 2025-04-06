@@ -125,8 +125,10 @@ def callback():
         # Log in user
         login_user(user)
         
-        # Generate a new session ID to prevent session fixation
-        session.regenerate()
+        # Create new session to prevent session fixation
+        old_session = dict(session)
+        session.clear()
+        session.update(old_session)
         
         # Redirect to home page
         return redirect(url_for("index"))
