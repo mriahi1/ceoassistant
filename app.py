@@ -41,6 +41,7 @@ from api.openai_integration import generate_key_metrics, analyze_okr_alignment
 from api.hubspot import HubSpotAPI
 from api.chargebee import ChargebeeAPI
 from utils.access_control import restricted_access_required, check_user_email_authorization
+from utils.audit_logger import audit_access_decorator, log_access_attempt
 
 
 # Initialize Flask app - IMPORTANT: This must be defined before using app
@@ -1462,7 +1463,7 @@ def okr_alignment_api():
 @app.route('/okr_alignment')
 @login_required
 def okr_alignment():
-    """OKR Alignment analysis page"""
+    """OKR alignment analysis page"""
     try:
         data = get_cached_data()
         if not data:
@@ -1485,6 +1486,7 @@ def okr_alignment():
 @app.route('/api/metrics')
 @login_required
 @restricted_access_required  # Only allow access to authorized emails
+@audit_access_decorator      # Add audit logging
 def metrics_api():
     """API endpoint for sensitive metrics data"""
     try:
@@ -1504,6 +1506,7 @@ def metrics_api():
 @app.route('/api/insights')
 @login_required
 @restricted_access_required  # Only allow access to authorized emails
+@audit_access_decorator      # Add audit logging
 def insights_api():
     """API endpoint for sensitive business insights"""
     try:
@@ -1519,3 +1522,220 @@ def insights_api():
     except Exception as e:
         logger.error(f"Error in insights API: {str(e)}")
         return jsonify({"error": str(e)}), 500
+
+@app.route('/admin/audit-logs')
+@login_required
+@restricted_access_required  # Only authorized emails can access this
+def admin_audit_logs():
+    """Administrative endpoint to view audit logs"""
+    from utils.audit_viewer import load_audit_logs, generate_summary
+    import json
+    from flask import render_template_string
+    
+    # Get parameters
+    email_filter = request.args.get('email', '')
+    endpoint_filter = request.args.get('endpoint', '')
+    status_filter = request.args.get('status', '')
+    
+    # Load all logs
+    logs = load_audit_logs()
+    
+    # Filter logs based on request parameters
+    filtered_logs = []
+    for log in logs:
+        if log.get('is_summary', False):
+            continue
+            
+        # Email filter
+        if email_filter and not (log.get('user_email') and email_filter.lower() in log.get('user_email', '').lower()):
+            continue
+            
+        # Endpoint filter
+        if endpoint_filter and not (log.get('endpoint') and endpoint_filter.lower() in log.get('endpoint', '').lower()):
+            continue
+            
+        # Status filter
+        if status_filter == 'granted' and not log.get('access_granted'):
+            continue
+        elif status_filter == 'denied' and log.get('access_granted'):
+            continue
+            
+        filtered_logs.append(log)
+    
+    # Generate summary
+    summary = generate_summary(filtered_logs)
+    
+    # Limit to most recent 100 logs for display
+    display_logs = sorted(filtered_logs, key=lambda x: x.get('timestamp', ''), reverse=True)[:100]
+    
+    # Format logs for display
+    formatted_logs = []
+    for log in display_logs:
+        timestamp = log.get('timestamp', '').replace('T', ' ').split('.')[0]
+        status = "GRANTED" if log.get('access_granted') else "DENIED"
+        user = log.get('user_email', 'Unknown')
+        endpoint = log.get('endpoint', 'Unknown')
+        ip = log.get('ip_address', 'Unknown')
+        
+        formatted_logs.append({
+            'timestamp': timestamp,
+            'status': status,
+            'user': user,
+            'endpoint': endpoint,
+            'ip': ip,
+            'details': json.dumps(log, indent=2)
+        })
+    
+    # Simple HTML template for displaying logs
+    template = """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Audit Logs</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+        <style>
+            .log-row { cursor: pointer; }
+            .log-details { display: none; font-family: monospace; white-space: pre-wrap; }
+            .denied { background-color: #ffebee; }
+        </style>
+    </head>
+    <body>
+        <div class="container mt-4">
+            <h1>Audit Logs</h1>
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4>Summary</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="card text-white bg-primary">
+                                <div class="card-body">
+                                    <h5 class="card-title">Total Attempts</h5>
+                                    <p class="card-text display-4">{{ summary.total_attempts }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-white bg-success">
+                                <div class="card-body">
+                                    <h5 class="card-title">Access Granted</h5>
+                                    <p class="card-text display-4">{{ summary.granted }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-white bg-danger">
+                                <div class="card-body">
+                                    <h5 class="card-title">Access Denied</h5>
+                                    <p class="card-text display-4">{{ summary.denied }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-white bg-info">
+                                <div class="card-body">
+                                    <h5 class="card-title">Unique Users</h5>
+                                    <p class="card-text display-4">{{ summary.unique_users }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4>Filters</h4>
+                </div>
+                <div class="card-body">
+                    <form method="get" class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="text" class="form-control" id="email" name="email" value="{{ email_filter }}">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="endpoint" class="form-label">Endpoint</label>
+                            <input type="text" class="form-control" id="endpoint" name="endpoint" value="{{ endpoint_filter }}">
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="status" class="form-label">Status</label>
+                            <select class="form-control" id="status" name="status">
+                                <option value="" {% if not status_filter %}selected{% endif %}>All</option>
+                                <option value="granted" {% if status_filter == 'granted' %}selected{% endif %}>Granted</option>
+                                <option value="denied" {% if status_filter == 'denied' %}selected{% endif %}>Denied</option>
+                            </select>
+                        </div>
+                        <div class="col-12 text-end">
+                            <button type="submit" class="btn btn-primary">Apply Filters</button>
+                            <a href="/admin/audit-logs" class="btn btn-secondary">Clear Filters</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h4>Log Entries (Most Recent 100)</h4>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Status</th>
+                                <th>User</th>
+                                <th>Endpoint</th>
+                                <th>IP Address</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for log in logs %}
+                            <tr class="log-row {% if log.status == 'DENIED' %}denied{% endif %}" onclick="toggleDetails('{{ loop.index }}')">
+                                <td>{{ log.timestamp }}</td>
+                                <td>{{ log.status }}</td>
+                                <td>{{ log.user }}</td>
+                                <td>{{ log.endpoint }}</td>
+                                <td>{{ log.ip }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="5" class="log-details" id="details-{{ loop.index }}">{{ log.details }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            {% if not logs %}
+            <div class="alert alert-info mt-4">
+                No logs matching the selected filters.
+            </div>
+            {% endif %}
+        </div>
+        
+        <script>
+            function toggleDetails(id) {
+                const detailsRow = document.getElementById('details-' + id);
+                if (detailsRow.style.display === 'table-cell') {
+                    detailsRow.style.display = 'none';
+                } else {
+                    detailsRow.style.display = 'table-cell';
+                }
+            }
+        </script>
+    </body>
+    </html>
+    """
+    
+    return render_template_string(
+        template, 
+        logs=formatted_logs, 
+        summary=summary,
+        email_filter=email_filter,
+        endpoint_filter=endpoint_filter,
+        status_filter=status_filter
+    )

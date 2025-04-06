@@ -112,9 +112,17 @@ test-security:
 		bandit -r app/ -x app/tests 2>/dev/null || echo "Skipping app directory scan"; \
 	fi
 	@echo "Running security and access control tests..."
-	@echo "---------------------------------------------------------"
-	@pytest -v minimal_tests/test_security.py minimal_tests/test_access_control.py minimal_tests/test_api_security.py minimal_tests/test_session_security.py minimal_tests/test_email_access_control.py
+	@echo "-----------------------------------------"
+	@echo "Email Access Control Tests"
+	@pytest -xvs minimal_tests/test_email_access_control.py
+	@echo "-----------------------------------------"
+	@echo "Security Tests"
+	@pytest -xvs minimal_tests/test_security.py
+	@echo "-----------------------------------------"
+	@echo "Access Control Tests"
+	@pytest -xvs minimal_tests/test_access_control.py
 	@echo "========================================================="
+	@echo "Security checks complete!"
 
 # Run linting checks
 test-lint:

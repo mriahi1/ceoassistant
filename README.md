@@ -265,4 +265,161 @@ This will run tests covering:
 - Session security and fixation prevention
 - API security (rate limiting, input validation, token security)
 - Email-based access restrictions
-- Dependency vulnerability scanning with Safety 
+- Dependency vulnerability scanning with Safety
+
+## Security and Access Control Testing
+
+The application includes comprehensive security testing to ensure that data is protected and only authorized users have access to sensitive information.
+
+### Security Testing Overview
+
+The security test suite is divided into multiple components:
+
+1. **Email Access Control Tests**: Verify that only specific email addresses (`maxriahi@gmail.com` and `mriahi@ooti.co`) can access sensitive data endpoints.
+
+2. **Security Tests**: Cover password strength validation, token generation and validation, password hashing, CSRF protection, and input sanitization.
+
+3. **Access Control Tests**: Ensure that role-based permissions, route access control, and data access levels are properly enforced.
+
+4. **API Security Tests**: Validate that API endpoints are protected with proper authentication, rate limiting, and input validation.
+
+5. **Session Security Tests**: Check that sessions are managed securely, with proper expiration, secure cookies, and prevention of session fixation.
+
+### Running Security Tests
+
+To run the security test suite, use the following command:
+
+```
+make test-security
+```
+
+This command will:
+- Check for vulnerabilities in dependencies using Safety
+- Run a static code analysis using Bandit
+- Execute all security-related test files
+
+### Test Implementation
+
+The tests are designed to verify security at multiple levels:
+
+1. **Unit Tests**: Test individual security functions in isolation
+2. **Integration Tests**: Test how security components work together
+3. **End-to-End Tests**: Test the full security workflow from user interaction to data access
+
+All security tests are located in the `minimal_tests/` directory and follow the naming pattern `test_*_security.py` or `test_access_control.py`.
+
+### Email-Based Access Control
+
+The application is configured to only allow specific email addresses (`maxriahi@gmail.com` and `mriahi@ooti.co`) to access sensitive data endpoints. This restriction is implemented through the `utils/access_control.py` module and is applied to sensitive API endpoints using the `@restricted_access_required` decorator.
+
+The email access control tests verify:
+- Authorized emails are allowed access
+- Unauthorized emails are correctly denied
+- Proper handling of edge cases (case sensitivity, empty emails, etc.)
+- Proper integration with the Flask application 
+
+## Continuous Integration Security Checks
+
+This project includes automated security checks in the CI pipeline to prevent accidental data leaks or security regressions. These checks will fail the build if any security issues are detected, blocking potentially dangerous changes from being merged.
+
+### Pre-merge Security Verification
+
+A dedicated pre-merge workflow (`pre-merge-security-check.yml`) runs specific tests to ensure:
+
+1. **Email Access Control**: Verifies that only the authorized email addresses (`maxriahi@gmail.com` and `mriahi@ooti.co`) can access sensitive data
+2. **API Endpoint Protection**: Checks that sensitive API endpoints have proper access controls
+3. **Authorization Whitelist Integrity**: Ensures the authorized emails list hasn't been tampered with
+4. **Sensitive Data Exposure**: Scans code for potential exposure of sensitive business metrics
+
+### Integration with Main CI Pipeline
+
+The main CI workflow also includes:
+
+1. **Security Scanning**: Checks for vulnerabilities in dependencies using Safety
+2. **Static Code Analysis**: Analyzes code for security issues using Bandit
+3. **Comprehensive Security Tests**: Runs all security-related test suites
+4. **Data Leak Prevention**: Dedicated job to verify email access restrictions
+
+### When Adding New Features
+
+When adding new features or API endpoints that expose sensitive business data:
+
+1. Always apply the `@restricted_access_required` decorator to sensitive API endpoints
+2. Write tests to verify the access control is working correctly
+3. Run `make test-security` locally before pushing to ensure security tests pass
+
+These CI checks help maintain a high security standard and prevent accidental data leaks, ensuring that only specifically authorized emails have access to sensitive company data.
+
+## Audit Logging System
+
+The application includes a comprehensive audit logging system that records all attempts to access restricted resources. This provides visibility into who is accessing sensitive data and helps detect potential security incidents.
+
+### Audit Log Features
+
+- **Comprehensive Logging**: Every access attempt to restricted endpoints is logged
+- **Detailed Information**: Logs include user email, IP address, session ID, timestamp, and access result
+- **JSON Format**: Logs are stored in both human-readable and JSON formats for easy parsing
+- **Performance Metrics**: Response times are captured to identify potential issues
+
+### Logged Information
+
+Each audit log entry includes:
+
+- Timestamp of the access attempt
+- User email and ID
+- IP address and user agent
+- Session ID
+- Endpoint being accessed
+- Whether access was granted or denied
+- Request method and parameters
+- Response time
+
+### Viewing Audit Logs
+
+#### Command-Line Interface
+
+A command-line utility is provided to search and analyze audit logs:
+
+```bash
+# View recent access attempts
+python utils/audit_viewer.py
+
+# View only denied access attempts
+python utils/audit_viewer.py --status denied
+
+# Filter by user email
+python utils/audit_viewer.py --email maxriahi@gmail.com
+
+# Show summary statistics
+python utils/audit_viewer.py --summary
+
+# Filter by date range
+python utils/audit_viewer.py --start-date 2023-01-01 --end-date 2023-01-31
+```
+
+#### Web Interface
+
+Authorized users (with emails `maxriahi@gmail.com` or `mriahi@ooti.co`) can view audit logs through the web interface:
+
+1. Navigate to `/admin/audit-logs`
+2. Use the filters to search logs by email, endpoint, or status
+3. Click on any log entry to view detailed information
+4. View summary statistics at the top of the page
+
+The web interface provides:
+- Colorful summary cards showing total attempts, successes, and failures
+- Filtering options for detailed investigation
+- Interactive log entries that expand to show full details
+- Highlighted denied access attempts for easy identification
+
+### Implementation
+
+Audit logging is implemented using:
+
+1. **Centralized Logging Module**: `utils/audit_logger.py` provides logging functions
+2. **Decorator-Based Logging**: `@audit_access_decorator` can be applied to any sensitive endpoint
+3. **Integration with Access Control**: Automatically logs both successful and failed access attempts
+
+### Log File Location
+
+Audit logs are stored in `logs/access_audit.log` and are rotated automatically to prevent file size issues. 

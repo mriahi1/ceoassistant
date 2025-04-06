@@ -1,6 +1,7 @@
 from functools import wraps
 from flask import current_app, request, jsonify, abort
 from flask_login import current_user
+from utils.audit_logger import log_access_attempt
 
 # Authorized email addresses - these are the only emails allowed to access restricted data
 AUTHORIZED_EMAILS = ["maxriahi@gmail.com", "mriahi@ooti.co"]
@@ -30,41 +31,69 @@ def check_user_email_authorization(user):
     Returns:
         bool: True if authorized, False otherwise
     """
-    if not user or not hasattr(user, 'email'):
+    if not user:
+        return False
+    
+    # Check if the user object has an email attribute
+    if not hasattr(user, 'email'):
         return False
     
     return is_authorized_email(user.email)
 
 def restricted_access_required(f):
     """
-    Decorator for routes that require email-based access restrictions.
-    This ensures only users with specific email addresses can access the route.
+    Decorator to restrict access to only authorized email addresses.
+    Must be used after @login_required to ensure user is authenticated.
     
-    Usage:
-        @app.route('/protected-data')
-        @login_required  # First ensure the user is logged in
-        @restricted_access_required  # Then check if their email is authorized
-        def protected_data():
-            return render_template('protected_data.html')
+    Example:
+        @app.route('/api/sensitive-data')
+        @login_required
+        @restricted_access_required
+        def sensitive_data_endpoint():
+            return jsonify({"data": "sensitive"})
     """
     @wraps(f)
     def decorated_function(*args, **kwargs):
         # Ensure user is authenticated (should be handled by login_required)
         if not current_user.is_authenticated:
-            abort(401)  # Unauthorized
+            # Log the unauthorized access attempt
+            log_access_attempt(
+                endpoint=request.path,
+                access_granted=False,
+                details={"reason": "User not authenticated"}
+            )
+            abort(401)
         
-        # Check if user's email is in the authorized list
-        if not check_user_email_authorization(current_user):
-            # If not authorized, return 403 Forbidden
+        # Check if the user's email is authorized
+        if check_user_email_authorization(current_user):
+            # Log successful access
+            log_access_attempt(
+                endpoint=request.path,
+                access_granted=True,
+                user_email=current_user.email,
+                user_id=current_user.id
+            )
+            # Allow access
+            return f(*args, **kwargs)
+        else:
+            # Log denied access
+            log_access_attempt(
+                endpoint=request.path,
+                access_granted=False,
+                user_email=current_user.email if hasattr(current_user, 'email') else None,
+                user_id=current_user.id if hasattr(current_user, 'id') else None,
+                details={"reason": "Email not authorized"}
+            )
+            
+            # Check content type to determine response format
             if request.content_type == 'application/json':
                 return jsonify({
-                    'error': 'Access denied',
-                    'message': 'Your email address is not authorized to access this resource'
+                    "error": "Access denied",
+                    "message": "Your email is not authorized to access this resource."
                 }), 403
             else:
-                abort(403)  # Forbidden
-                
-        return f(*args, **kwargs)
+                # HTML response - redirect to a forbidden page or abort
+                abort(403)
     
     return decorated_function
 
