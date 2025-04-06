@@ -40,6 +40,7 @@ from models.user import User
 from api.openai_integration import generate_key_metrics, analyze_okr_alignment
 from api.hubspot import HubSpotAPI
 from api.chargebee import ChargebeeAPI
+from utils.access_control import restricted_access_required, check_user_email_authorization
 
 
 # Initialize Flask app - IMPORTANT: This must be defined before using app
@@ -1480,3 +1481,41 @@ def okr_alignment():
         logger.error(f"Error in OKR alignment page: {str(e)}")
         flash(f"Error: {str(e)}", "error")
         return redirect(url_for('index'))
+
+@app.route('/api/metrics')
+@login_required
+@restricted_access_required  # Only allow access to authorized emails
+def metrics_api():
+    """API endpoint for sensitive metrics data"""
+    try:
+        # Get cached data
+        data = get_cached_data()
+        if not data:
+            return jsonify({"error": "No data available"}), 400
+        
+        # Generate metrics
+        metrics = generate_key_metrics(data)
+        
+        return jsonify(metrics)
+    except Exception as e:
+        logger.error(f"Error in metrics API: {str(e)}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/api/insights')
+@login_required
+@restricted_access_required  # Only allow access to authorized emails
+def insights_api():
+    """API endpoint for sensitive business insights"""
+    try:
+        # Get cached data
+        data = get_cached_data()
+        if not data:
+            return jsonify({"error": "No data available"}), 400
+        
+        # Generate insights
+        insights = generate_strategic_insights(data)
+        
+        return jsonify(insights)
+    except Exception as e:
+        logger.error(f"Error in insights API: {str(e)}")
+        return jsonify({"error": str(e)}), 500

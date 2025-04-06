@@ -171,6 +171,7 @@ This will run tests covering:
 - Route access permissions
 - Session security and fixation prevention
 - API security (rate limiting, input validation, token security)
+- Email-based access restrictions
 - Dependency vulnerability scanning with Safety
 
 ### Pre-Deployment Testing
@@ -214,4 +215,54 @@ make install-dev  # Installs development dependencies
 ```bash
 make run      # Development mode
 make prod     # Production mode
-``` 
+```
+
+## Security and Access Control
+
+### Email-Based Access Restrictions
+
+The application is configured to only allow access to sensitive data for specific authorized email addresses:
+- `maxriahi@gmail.com`
+- `mriahi@ooti.co`
+
+This restriction is implemented using the `restricted_access_required` decorator in `utils/access_control.py`. This decorator can be applied to any route that should be restricted to these authorized users:
+
+```python
+@app.route('/api/sensitive-data')
+@login_required  # First ensure the user is logged in
+@restricted_access_required  # Then check if their email is authorized
+def sensitive_data():
+    # Only accessible to authorized email addresses
+    return jsonify({"data": "sensitive information"})
+```
+
+#### Testing Email Access Control
+
+The email access control functionality is tested in `minimal_tests/test_email_access_control.py`. These tests verify that:
+- Only authorized emails can access protected data
+- Requests from unauthorized emails are properly rejected
+- The system handles edge cases correctly (missing emails, case variations, etc.)
+
+Run these tests with:
+```bash
+pytest -v minimal_tests/test_email_access_control.py
+```
+
+### Security and Access Control Testing
+
+Run security and access control tests with:
+
+```bash
+make test-security
+```
+
+This will run tests covering:
+- Password strength and secure storage
+- CSRF token validation and protection
+- XSS prevention through input sanitization
+- Role-based access control (RBAC)
+- Route access permissions
+- Session security and fixation prevention
+- API security (rate limiting, input validation, token security)
+- Email-based access restrictions
+- Dependency vulnerability scanning with Safety 
