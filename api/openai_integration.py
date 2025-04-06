@@ -99,7 +99,7 @@ def generate_strategic_insights(data, max_tokens=800):
         # Load the 2025 OKRs for context
         okrs = ""
         try:
-            with open("data/2025_OKRs.txt", "r") as f:
+            with open("data/2025_OKRS.txt", "r") as f:
                 okrs = f.read()
         except Exception as e:
             logger.warning(f"Could not load 2025 OKRs file: {str(e)}")
@@ -169,7 +169,7 @@ def generate_action_items(data, max_tokens=800):
         # Load the 2025 OKRs for context
         okrs = ""
         try:
-            with open("data/2025_OKRs.txt", "r") as f:
+            with open("data/2025_OKRS.txt", "r") as f:
                 okrs = f.read()
         except Exception as e:
             logger.warning(f"Could not load 2025 OKRs file: {str(e)}")
@@ -238,7 +238,7 @@ def generate_key_metrics(data, max_tokens=500):
         # Load the 2025 OKRs for context
         okrs = ""
         try:
-            with open("data/2025_OKRs.txt", "r") as f:
+            with open("data/2025_OKRS.txt", "r") as f:
                 okrs = f.read()
         except Exception as e:
             logger.warning(f"Could not load 2025 OKRs file: {str(e)}")
@@ -316,7 +316,7 @@ def analyze_okr_alignment(data, max_tokens=800):
         # Load the 2025 OKRs
         okrs = ""
         try:
-            with open("data/2025_OKRs.txt", "r") as f:
+            with open("data/2025_OKRS.txt", "r") as f:
                 okrs = f.read()
         except Exception as e:
             logger.error(f"Could not load 2025 OKRs file: {str(e)}")
