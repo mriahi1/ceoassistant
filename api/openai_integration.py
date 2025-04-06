@@ -96,11 +96,20 @@ def generate_strategic_insights(data, max_tokens=800):
             "ooti": data.get('ooti', {}).get('metrics', {})
         }
         
+        # Load the 2025 OKRs for context
+        okrs = ""
+        try:
+            with open("data/2025_OKRs.txt", "r") as f:
+                okrs = f.read()
+        except Exception as e:
+            logger.warning(f"Could not load 2025 OKRs file: {str(e)}")
+        
         prompt = (
-            "Based on this business data, identify 5 strategic insights that would be valuable "
+            "Based on this business data and the company's 2025 objectives, identify 5 strategic insights that would be valuable "
             "for a CEO to know. Focus on sales pipeline risks/opportunities, revenue trends, "
             "operational gaps, and highlight priority areas. Each insight should be specific, "
-            "actionable, and include business impact.\n\n"
+            "actionable, aligned with our OKRs, and include business impact.\n\n"
+            f"COMPANY 2025 OBJECTIVES:\n{okrs}\n\n"
             f"METRICS: {json.dumps(metrics, indent=2)}\n\n"
             f"SAMPLE DEALS: {json.dumps(hubspot_deals, indent=2)}\n\n"
             f"SAMPLE SUBSCRIPTIONS: {json.dumps(chargebee_subs, indent=2)}\n\n"
@@ -113,7 +122,7 @@ def generate_strategic_insights(data, max_tokens=800):
             model=config.OPENAI_MODEL,  # the newest OpenAI model is "gpt-4o" which was released May 13, 2024.
                                          # do not change this unless explicitly requested by the user
             messages=[
-                {"role": "system", "content": "You are a strategic business analyst that identifies key insights from business data."},
+                {"role": "system", "content": "You are a strategic business analyst that identifies key insights from business data. Always frame your analysis in the context of the company's objectives and key results (OKRs). Prioritize insights that directly contribute to achieving these objectives."},
                 {"role": "user", "content": prompt}
             ],
             max_tokens=max_tokens,
@@ -157,6 +166,14 @@ def generate_action_items(data, max_tokens=800):
         ooti_projects = data.get('ooti', {}).get('projects', [])
         at_risk_projects = [p for p in ooti_projects if p.get('status') == 'at_risk']
         
+        # Load the 2025 OKRs for context
+        okrs = ""
+        try:
+            with open("data/2025_OKRs.txt", "r") as f:
+                okrs = f.read()
+        except Exception as e:
+            logger.warning(f"Could not load 2025 OKRs file: {str(e)}")
+        
         # Format the data for the prompt
         data_summary = {
             "hubspot_metrics": hubspot_metrics,
@@ -168,12 +185,13 @@ def generate_action_items(data, max_tokens=800):
         }
         
         prompt = (
-            "As a CEO's AI assistant, based on this business data, generate a prioritized list of "
-            "action items the CEO should focus on this week. Each action item should be specific, "
-            "actionable, and directly tied to business impact. Focus on sales pipeline risks, revenue "
-            "opportunities, operational gaps, and strategic priorities.\n\n"
-            f"DATA: {json.dumps(data_summary, indent=2)}\n\n"
-            "Return 7 prioritized action items in this JSON format: "
+            "Based on this business data and our company's 2025 objectives, suggest 5 high-priority action items "
+            "for a CEO to address this week. Each action item should be specific, actionable, and impactful. "
+            "Focus on urgent issues, revenue opportunities, and critical operational improvements. "
+            "Phrase each item as a clear, executable task.\n\n"
+            f"COMPANY 2025 OBJECTIVES:\n{okrs}\n\n"
+            f"BUSINESS DATA: {json.dumps(data_summary, indent=2)}\n\n"
+            "Return exactly 5 action items in this JSON format: "
             "{ \"action_items\": [\"action 1\", \"action 2\", ...] }"
         )
         
@@ -181,7 +199,7 @@ def generate_action_items(data, max_tokens=800):
             model=config.OPENAI_MODEL,  # the newest OpenAI model is "gpt-4o" which was released May 13, 2024.
                                          # do not change this unless explicitly requested by the user
             messages=[
-                {"role": "system", "content": "You are a strategic executive assistant that creates focused, actionable to-do lists for CEOs."},
+                {"role": "system", "content": "You are a CEO's executive assistant that creates actionable tasks based on business data. Always prioritize actions that align with the company's objectives and key results (OKRs)."},
                 {"role": "user", "content": prompt}
             ],
             max_tokens=max_tokens,
@@ -197,27 +215,36 @@ def generate_action_items(data, max_tokens=800):
 
 def generate_key_metrics(data, max_tokens=500):
     """
-    Generate key metrics summary from platform data
+    Generate a list of key metrics to focus on based on platform data
     
     Args:
         data (dict): The platform data
         max_tokens (int, optional): Maximum tokens for the response. Defaults to 500.
     
     Returns:
-        dict: Dictionary of key metrics with values
+        dict: Dictionary with key metrics and values
     """
     if not openai_client:
         logger.error("OpenAI client not initialized. Cannot generate key metrics.")
-        return {"Error": "OpenAI client not initialized"}
+        return {"Error": "OpenAI client not initialized."}
     
     try:
-        # Extract relevant metrics from each platform
+        # Extract metrics from data
         hubspot_metrics = data.get('hubspot', {}).get('metrics', {})
         chargebee_metrics = data.get('chargebee', {}).get('metrics', {})
         ooti_metrics = data.get('ooti', {}).get('metrics', {})
         ooti_indicators = data.get('ooti', {}).get('indicators', {})
         
-        metrics_data = {
+        # Load the 2025 OKRs for context
+        okrs = ""
+        try:
+            with open("data/2025_OKRs.txt", "r") as f:
+                okrs = f.read()
+        except Exception as e:
+            logger.warning(f"Could not load 2025 OKRs file: {str(e)}")
+        
+        # Format all metrics together
+        all_metrics = {
             "hubspot": hubspot_metrics,
             "chargebee": chargebee_metrics,
             "ooti": {
@@ -227,20 +254,30 @@ def generate_key_metrics(data, max_tokens=500):
         }
         
         prompt = (
-            "As a CEO's AI assistant, identify the 8 most important business metrics "
-            "from this data that the CEO should track. Calculate derived metrics when "
-            "useful, and format the values to be CEO-friendly (round numbers, add $ "
-            "signs for currency, % signs for percentages, etc.).\n\n"
-            f"DATA: {json.dumps(metrics_data, indent=2)}\n\n"
-            "Return 8 key metrics in this JSON format: "
-            "{ \"metric_name1\": \"value1\", \"metric_name2\": \"value2\", ... }"
+            "Based on this business data and our company's 2025 objectives, identify the 5 most important metrics "
+            "for the CEO to monitor this week. For each metric, provide the current value and a brief explanation "
+            "of why it's important in the context of our OKRs.\n\n"
+            f"COMPANY 2025 OBJECTIVES:\n{okrs}\n\n"
+            f"AVAILABLE METRICS: {json.dumps(all_metrics, indent=2)}\n\n"
+            "Return exactly 5 key metrics in this JSON format:\n"
+            "{\n"
+            "  \"metrics\": [\n"
+            "    {\n"
+            "      \"name\": \"Metric name\",\n"
+            "      \"value\": \"Current value with units\",\n"
+            "      \"importance\": \"Brief explanation of importance\",\n"
+            "      \"trend\": \"up/down/stable\"\n"
+            "    },\n"
+            "    ...\n"
+            "  ]\n"
+            "}"
         )
         
         response = openai_client.chat.completions.create(
             model=config.OPENAI_MODEL,  # the newest OpenAI model is "gpt-4o" which was released May 13, 2024.
                                          # do not change this unless explicitly requested by the user
             messages=[
-                {"role": "system", "content": "You are a business metrics analyst that identifies and formats key metrics for executives."},
+                {"role": "system", "content": "You are a business metrics analyst that identifies and formats key metrics for executives. Always prioritize metrics that directly relate to the company's objectives and key results (OKRs)."},
                 {"role": "user", "content": prompt}
             ],
             max_tokens=max_tokens,
@@ -252,4 +289,84 @@ def generate_key_metrics(data, max_tokens=500):
         return result
     except Exception as e:
         logger.error(f"Error generating key metrics with OpenAI: {str(e)}")
+        return {"Error": str(e)}
+
+def analyze_okr_alignment(data, max_tokens=800):
+    """
+    Analyze alignment between current metrics and 2025 OKRs
+    
+    Args:
+        data (dict): The platform data
+        max_tokens (int, optional): Maximum tokens for the response. Defaults to 800.
+    
+    Returns:
+        dict: Analysis of alignment between current metrics and OKRs
+    """
+    if not openai_client:
+        logger.error("OpenAI client not initialized. Cannot analyze OKR alignment.")
+        return {"Error": "OpenAI client not initialized."}
+    
+    try:
+        # Extract metrics from data
+        hubspot_metrics = data.get('hubspot', {}).get('metrics', {})
+        chargebee_metrics = data.get('chargebee', {}).get('metrics', {})
+        ooti_metrics = data.get('ooti', {}).get('metrics', {})
+        ooti_indicators = data.get('ooti', {}).get('indicators', {})
+        
+        # Load the 2025 OKRs
+        okrs = ""
+        try:
+            with open("data/2025_OKRs.txt", "r") as f:
+                okrs = f.read()
+        except Exception as e:
+            logger.error(f"Could not load 2025 OKRs file: {str(e)}")
+            return {"Error": f"Could not load OKRs file: {str(e)}"}
+        
+        # Format all metrics together
+        all_metrics = {
+            "hubspot": hubspot_metrics,
+            "chargebee": chargebee_metrics,
+            "ooti": {
+                **ooti_metrics,
+                "indicators": ooti_indicators
+            }
+        }
+        
+        prompt = (
+            "Analyze our current business performance and metrics against our 2025 objectives and key results. "
+            "For each major objective category (Company-wide, Sales, Marketing, Customer Success, Product, Gestion), "
+            "assess our current alignment, identify gaps, and recommend actions to improve alignment.\n\n"
+            f"COMPANY 2025 OBJECTIVES:\n{okrs}\n\n"
+            f"CURRENT METRICS AND PERFORMANCE:\n{json.dumps(all_metrics, indent=2)}\n\n"
+            "Return your analysis in this JSON format:\n"
+            "{\n"
+            "  \"alignment_analysis\": [\n"
+            "    {\n"
+            "      \"objective_category\": \"Category name\",\n"
+            "      \"alignment_score\": 0-100,\n"
+            "      \"key_gaps\": [\"gap 1\", \"gap 2\", ...],\n"
+            "      \"recommended_actions\": [\"action 1\", \"action 2\", ...]\n"
+            "    },\n"
+            "    ...\n"
+            "  ],\n"
+            "  \"overall_alignment\": 0-100,\n"
+            "  \"priority_focus_areas\": [\"area 1\", \"area 2\", ...]\n"
+            "}"
+        )
+        
+        response = openai_client.chat.completions.create(
+            model=config.OPENAI_MODEL,
+            messages=[
+                {"role": "system", "content": "You are a strategic business analyst specializing in OKR alignment and implementation. Your role is to assess how well current business performance aligns with long-term objectives and identify concrete steps to improve alignment."},
+                {"role": "user", "content": prompt}
+            ],
+            max_tokens=max_tokens,
+            temperature=0.5,
+            response_format={"type": "json_object"}
+        )
+        
+        result = json.loads(response.choices[0].message.content)
+        return result
+    except Exception as e:
+        logger.error(f"Error analyzing OKR alignment with OpenAI: {str(e)}")
         return {"Error": str(e)}

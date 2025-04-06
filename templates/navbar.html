@@ -1,0 +1,18 @@
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ms-auto">
+      {% if current_user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.path == '/digests' %}active{% endif %}" href="/digests">Digests</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.path == '/scorecard' %}active{% endif %}" href="/scorecard">Scorecard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if request.path == '/okr_alignment' %}active{% endif %}" href="/okr_alignment">OKR Alignment</a>
+        </li>
+      {% endif %}
+    </ul>
+  </div> 

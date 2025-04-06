@@ -37,6 +37,9 @@ from utils.insights_generator import generate_insights, generate_action_items
 from utils.data_processor import consolidate_data
 from api.ooti import OOTIAPI
 from models.user import User
+from api.openai_integration import generate_key_metrics, analyze_okr_alignment
+from api.hubspot import HubSpotAPI
+from api.chargebee import ChargebeeAPI
 
 
 # Initialize Flask app - IMPORTANT: This must be defined before using app
@@ -1436,3 +1439,44 @@ def debug_session():
     }
     
     return jsonify(debug_info)
+
+@app.route('/api/okr_alignment')
+@login_required
+def okr_alignment_api():
+    """API endpoint for OKR alignment analysis"""
+    try:
+        # Get cached data
+        data = get_cached_data()
+        if not data:
+            return jsonify({"error": "No data available"}), 400
+        
+        # Generate OKR alignment analysis
+        alignment = analyze_okr_alignment(data)
+        
+        return jsonify(alignment)
+    except Exception as e:
+        logger.error(f"Error in OKR alignment API: {str(e)}")
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/okr_alignment')
+@login_required
+def okr_alignment():
+    """OKR Alignment analysis page"""
+    try:
+        data = get_cached_data()
+        if not data:
+            flash("No data available. Please check your integrations.", "warning")
+            return redirect(url_for('integrations'))
+        
+        # Generate OKR alignment analysis
+        alignment = analyze_okr_alignment(data)
+        
+        return render_template(
+            'okr_alignment.html',
+            alignment=alignment,
+            page_title="OKR Alignment Analysis"
+        )
+    except Exception as e:
+        logger.error(f"Error in OKR alignment page: {str(e)}")
+        flash(f"Error: {str(e)}", "error")
+        return redirect(url_for('index'))

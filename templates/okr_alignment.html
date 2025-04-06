@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}OKR Alignment Analysis{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">OKR Alignment Analysis</h1>
+    
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Overall Alignment</h4>
+            <button class="btn btn-sm btn-primary" onclick="refreshAnalysis()">Refresh Analysis</button>
+        </div>
+        <div class="card-body">
+            {% if alignment.Error %}
+                <div class="alert alert-danger">{{ alignment.Error }}</div>
+            {% else %}
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="text-center mb-3">
+                            <h2 class="display-4">{{ alignment.overall_alignment }}%</h2>
+                            <p class="lead">Overall OKR Alignment</p>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <h5>Priority Focus Areas</h5>
+                        <ul class="list-group">
+                            {% for area in alignment.priority_focus_areas %}
+                                <li class="list-group-item">{{ area }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row">
+        {% if not alignment.Error %}
+            {% for analysis in alignment.alignment_analysis %}
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h4 class="mb-0">{{ analysis.objective_category }}</h4>
+                                <span class="badge 
+                                    {% if analysis.alignment_score >= 80 %}bg-success
+                                    {% elif analysis.alignment_score >= 50 %}bg-warning
+                                    {% else %}bg-danger{% endif %}">
+                                    {{ analysis.alignment_score }}%
+                                </span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h5>Key Gaps</h5>
+                            <ul class="mb-4">
+                                {% for gap in analysis.key_gaps %}
+                                    <li>{{ gap }}</li>
+                                {% endfor %}
+                            </ul>
+                            
+                            <h5>Recommended Actions</h5>
+                            <ul>
+                                {% for action in analysis.recommended_actions %}
+                                    <li>{{ action }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    function refreshAnalysis() {
+        // Show loading spinner
+        document.body.classList.add('loading');
+        
+        // Make API request to refresh analysis
+        fetch('/api/okr_alignment', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': '{{ csrf_token() }}'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Reload the page to show updated data
+            window.location.reload();
+        })
+        .catch(error => {
+            console.error('Error refreshing analysis:', error);
+            alert('Error refreshing analysis. Please try again.');
+        })
+        .finally(() => {
+            document.body.classList.remove('loading');
+        });
+    }
+</script>
+{% endblock %} 

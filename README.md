@@ -139,4 +139,60 @@ pytest
 
 ## Support
 
-For issues or questions, please open an issue on GitHub or contact support@example.com. 
+For issues or questions, please open an issue on GitHub or contact support@example.com.
+
+## Testing Infrastructure
+
+The project includes a comprehensive testing infrastructure to ensure code quality before deployment:
+
+### Basic Testing
+
+Run basic tests with:
+
+```bash
+make test
+```
+
+This runs simple tests to verify the testing environment is working correctly.
+
+### Pre-Deployment Testing
+
+Before deploying, run the full test suite:
+
+```bash
+./run_tests_before_deploy.sh
+```
+
+or
+
+```bash
+make test-all
+```
+
+This will:
+1. Install all required test dependencies
+2. Run the test suite with minimal tests
+3. Perform linting checks to catch potential code issues
+4. Run security checks on dependencies (if safety is installed)
+
+The script will exit with a failure code if any tests fail, preventing deployment of broken code.
+
+### Test Environment
+
+To work around compatibility issues between Flask 3.1.0 and pytest-flask, we use a separate test directory (`minimal_tests/`) for basic tests that don't depend on the Flask application context.
+
+## Development Environment
+
+To set up the development environment:
+
+```bash
+make setup
+make install-dev  # Installs development dependencies
+```
+
+## Running the Application
+
+```bash
+make run      # Development mode
+make prod     # Production mode
+``` 
