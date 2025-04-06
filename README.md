@@ -155,6 +155,24 @@ make test
 
 This runs simple tests to verify the testing environment is working correctly.
 
+### Security and Access Control Testing
+
+Run security and access control tests with:
+
+```bash
+make test-security
+```
+
+This will run tests covering:
+- Password strength and secure storage
+- CSRF token validation and protection
+- XSS prevention through input sanitization
+- Role-based access control (RBAC)
+- Route access permissions
+- Session security and fixation prevention
+- API security (rate limiting, input validation, token security)
+- Dependency vulnerability scanning with Safety
+
 ### Pre-Deployment Testing
 
 Before deploying, run the full test suite:
@@ -174,6 +192,7 @@ This will:
 2. Run the test suite with minimal tests
 3. Perform linting checks to catch potential code issues
 4. Run security checks on dependencies (if safety is installed)
+5. Run all security and access control tests
 
 The script will exit with a failure code if any tests fail, preventing deployment of broken code.
 
