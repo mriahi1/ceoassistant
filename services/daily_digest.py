@@ -6,7 +6,6 @@ import config
 from api.openai_integration import summarize_data, generate_action_items, generate_key_metrics
 from utils.data_processor import save_data_snapshot
 from api.slack_integration import post_digest_to_slack
-from app import db, Digest  # Import here to avoid circular imports
 
 logger = logging.getLogger(__name__)
 
@@ -22,6 +21,9 @@ def generate_daily_digest(data, user_id=None):
         dict: The generated digest
     """
     try:
+        # Import here to avoid circular imports
+        from app import db, Digest
+        
         logger.info("Generating daily digest")
         
         # Generate executive summary using OpenAI
