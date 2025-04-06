@@ -27,10 +27,13 @@ jobs:
         python -m pip install --upgrade pip
         if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        # Install the package in development mode
+        pip install -e .
     
     - name: Run tests with coverage
       run: |
-        pytest -v --cov=app --cov-report=xml --cov-report=term tests/ minimal_tests/
+        # Set PYTHONPATH to include the current directory
+        PYTHONPATH=$PWD pytest -v --cov=app --cov-report=xml --cov-report=term tests/ minimal_tests/
     
     - name: Check coverage threshold
       run: |
@@ -72,6 +75,8 @@ jobs:
         pip install safety bandit pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
+        # Install the package in development mode
+        pip install -e .
     
     - name: Check for security vulnerabilities in dependencies
       run: |
@@ -83,6 +88,9 @@ jobs:
         
     - name: Run security-specific tests
       run: |
+        # Set PYTHONPATH for all test runs
+        export PYTHONPATH=$PWD
+        
         # Run email access control tests to ensure only authorized emails can access data
         pytest -v minimal_tests/test_email_access_control.py
         
@@ -110,9 +118,14 @@ jobs:
         pip install pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
         if [ -f requirements-dev.txt ]; then pip install -r requirements-dev.txt; fi
+        # Install the package in development mode
+        pip install -e .
     
     - name: Test email access restrictions
       run: |
+        # Set PYTHONPATH for all commands
+        export PYTHONPATH=$PWD
+        
         echo "Testing email-based access control to prevent data leaks"
         pytest -v minimal_tests/test_email_access_control.py
         
@@ -125,6 +138,9 @@ jobs:
         
     - name: Test API security
       run: |
+        # Set PYTHONPATH for all commands
+        export PYTHONPATH=$PWD
+        
         echo "Testing API security to prevent unauthorized data access"
         if [ -f minimal_tests/test_api_security.py ]; then pytest -v minimal_tests/test_api_security.py; fi
         
