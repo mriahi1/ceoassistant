@@ -29,6 +29,15 @@
                             <div class="status-indicator status-success"></div>
                             <div>Connected successfully</div>
                         </div>
+                        {% if data_sources and data_sources.get('hubspot') == false %}
+                        <div class="alert alert-warning mb-3">
+                            <div class="d-flex align-items-center mb-2">
+                                <i data-feather="alert-triangle" class="me-2" style="width: 18px;"></i>
+                                <strong>Using Mock Data</strong>
+                            </div>
+                            <p class="mb-0 small">This integration is configured but returning simulated data. Check your API key permissions.</p>
+                        </div>
+                        {% endif %}
                         <p>Your HubSpot CRM integration is active. The system can access:</p>
                         <ul>
                             <li>Deals and sales pipeline</li>
@@ -71,6 +80,15 @@
                             <div class="status-indicator status-success"></div>
                             <div>Connected successfully</div>
                         </div>
+                        {% if data_sources and data_sources.get('chargebee') == false %}
+                        <div class="alert alert-warning mb-3">
+                            <div class="d-flex align-items-center mb-2">
+                                <i data-feather="alert-triangle" class="me-2" style="width: 18px;"></i>
+                                <strong>Using Mock Data</strong>
+                            </div>
+                            <p class="mb-0 small">This integration is configured but returning simulated data. Check your API key and site settings.</p>
+                        </div>
+                        {% endif %}
                         <p>Your Chargebee subscription management integration is active. The system can access:</p>
                         <ul>
                             <li>Subscriptions and plans</li>
@@ -115,6 +133,15 @@
                             <div class="status-indicator status-success"></div>
                             <div>Connected successfully</div>
                         </div>
+                        {% if data_sources and data_sources.get('ooti') == false %}
+                        <div class="alert alert-warning mb-3">
+                            <div class="d-flex align-items-center mb-2">
+                                <i data-feather="alert-triangle" class="me-2" style="width: 18px;"></i>
+                                <strong>Using Mock Data</strong>
+                            </div>
+                            <p class="mb-0 small">This integration is configured but returning simulated data. Check your API key permissions.</p>
+                        </div>
+                        {% endif %}
                         <p>Your OOTI ERP integration is active. The system can access:</p>
                         <ul>
                             <li>Projects and timelines</li>

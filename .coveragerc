@@ -1,0 +1,3 @@
+[run]
+source = .
+omit = tests/* minimal_tests/* */site-packages/* */dist-packages/* setup.py

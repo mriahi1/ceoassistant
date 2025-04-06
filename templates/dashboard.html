@@ -73,6 +73,13 @@
                         Details <i data-feather="chevron-right" style="width: 14px;"></i>
                     </a>
                 </div>
+                {% if data_sources %}
+                <div class="mt-2 text-center">
+                    <span class="badge {% if data_sources.hubspot %}bg-success{% else %}bg-warning{% endif %} rounded-pill">
+                        {% if data_sources.hubspot %}Real Data{% else %}Mock Data{% endif %}
+                    </span>
+                </div>
+                {% endif %}
             </div>
         </div>
         {% endif %}
@@ -92,6 +99,13 @@
                         Details <i data-feather="chevron-right" style="width: 14px;"></i>
                     </a>
                 </div>
+                {% if data_sources %}
+                <div class="mt-2 text-center">
+                    <span class="badge {% if data_sources.chargebee %}bg-success{% else %}bg-warning{% endif %} rounded-pill">
+                        {% if data_sources.chargebee %}Real Data{% else %}Mock Data{% endif %}
+                    </span>
+                </div>
+                {% endif %}
             </div>
         </div>
         {% endif %}
@@ -116,6 +130,13 @@
                         Details <i data-feather="chevron-right" style="width: 14px;"></i>
                     </a>
                 </div>
+                {% if data_sources %}
+                <div class="mt-2 text-center">
+                    <span class="badge {% if data_sources.ooti %}bg-success{% else %}bg-warning{% endif %} rounded-pill">
+                        {% if data_sources.ooti %}Real Data{% else %}Mock Data{% endif %}
+                    </span>
+                </div>
+                {% endif %}
             </div>
         </div>
         {% endif %}

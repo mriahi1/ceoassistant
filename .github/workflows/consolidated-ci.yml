@@ -33,7 +33,18 @@ jobs:
     - name: Run core tests
       run: |
         export PYTHONPATH=$PWD
-        pytest -v --cov=. --omit="tests/*,minimal_tests/*" --cov-report=xml --cov-report=term minimal_tests/
+        # Added coverage configuration file
+        cat > .coveragerc << EOL
+[run]
+source = .
+omit = 
+    tests/*
+    minimal_tests/*
+    setup.py
+    */site-packages/*
+    */dist-packages/*
+EOL
+        pytest -v --cov=. --cov-report=xml --cov-report=term minimal_tests/
     
     - name: Lint with flake8
       run: |

@@ -8,6 +8,12 @@ from api.ooti import OOTIAPI
 
 logger = logging.getLogger(__name__)
 
+def is_mock_data(api_instance):
+    """Check if the API is using mock data"""
+    if hasattr(api_instance, 'use_mock'):
+        return api_instance.use_mock
+    return not bool(getattr(api_instance, 'api_key', None))
+
 def fetch_hubspot_data():
     """Fetch data from HubSpot"""
     try:
@@ -159,6 +165,12 @@ def fetch_modjo_data():
 
 def consolidate_data():
     """Consolidate data from all platforms"""
+    # Create API instances to check mock status
+    hubspot_api = HubSpotAPI()
+    chargebee_api = ChargebeeAPI()
+    ooti_api = OOTIAPI()
+    
+    # Fetch data
     hubspot_data = fetch_hubspot_data()
     chargebee_data = fetch_chargebee_data()
     ooti_data = fetch_ooti_data()
@@ -190,6 +202,19 @@ def consolidate_data():
     if "error" in modjo_data:
         errors.append(f"Modjo error: {modjo_data['error']}")
     
+    # Track data sources (real or mock)
+    data_sources = {
+        "hubspot": not is_mock_data(hubspot_api),
+        "chargebee": not is_mock_data(chargebee_api),
+        "ooti": not is_mock_data(ooti_api),
+        "calendar": config.CALENDAR_ENABLED and bool(config.GOOGLE_CREDENTIALS_PATH),
+        "gmail": config.GMAIL_ENABLED and bool(config.GOOGLE_CREDENTIALS_PATH),
+        "jira": bool(config.JIRA_API_KEY),
+        "github": bool(config.GITHUB_TOKEN),
+        "sentry": bool(config.SENTRY_API_KEY),
+        "modjo": bool(config.MODJO_API_KEY)
+    }
+    
     # Create consolidated data structure
     consolidated_data = {
         "hubspot": hubspot_data,
@@ -202,7 +227,8 @@ def consolidate_data():
         "sentry": sentry_data,
         "modjo": modjo_data,
         "timestamp": datetime.now().isoformat(),
-        "errors": errors if errors else None
+        "errors": errors if errors else None,
+        "data_sources": data_sources
     }
     
     return consolidated_data

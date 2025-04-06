@@ -205,52 +205,63 @@ def get_cached_data():
         return data_cache["data"]
 
 @app.route('/')
+@login_required
 def index():
-    """Main dashboard page or simple landing page"""
-    # If already authenticated, show the dashboard
-    if current_user.is_authenticated:
-        # Check for missing API keys
-        if missing_keys:
-            return render_template('dashboard.html', 
-                                missing_keys=missing_keys,
-                                error_message="Missing required API keys")
-        
-        try:
-            platform_data = get_cached_data()
-            if not platform_data:
-                flash("Could not retrieve platform data. Please check your API credentials.", "danger")
-                return render_template('dashboard.html', error=True)
-            
-            # Generate insights from the data
-            insights = generate_insights(platform_data)
-            action_items = generate_action_items(platform_data)
-            
-            # Get latest digest if it exists
-            latest_digest = None
-            digest_files = list(config.DIGESTS_DIR.glob("*.json"))
-            if digest_files:
-                latest_digest_file = max(digest_files, key=lambda x: x.stat().st_mtime)
-                with open(latest_digest_file, 'r') as f:
-                    latest_digest = json.load(f)
-            
-            return render_template('dashboard.html', 
-                                insights=insights,
-                                action_items=action_items,
-                                platform_data=platform_data,
-                                latest_digest=latest_digest,
-                                last_updated=data_cache["last_updated"])
-        except Exception as e:
-            logger.error(f"Error in dashboard: {str(e)}")
-            flash(f"An error occurred: {str(e)}", "danger")
-            return render_template('dashboard.html', error=True)
-    else:
-        # Not authenticated, show the landing page
-        return render_template('landing.html')
+    """Dashboard home page"""
+    platform_data = get_cached_data()
+    if not platform_data:
+        logger.warning("No platform data available")
+        return render_template('dashboard.html', platform_data=None, error=True)
+    
+    # Pass data_sources to the template to show if data is real or mock
+    data_sources = platform_data.get('data_sources', {})
+    
+    # Get missing API keys to show setup instructions
+    missing_keys = []
+    if not config.HUBSPOT_API_KEY:
+        missing_keys.append("HubSpot API Key")
+    if not (config.CHARGEBEE_API_KEY and config.CHARGEBEE_SITE):
+        missing_keys.append("Chargebee Credentials")
+    if not config.OOTI_API_KEY:
+        missing_keys.append("OOTI API Key")
+    if not config.OPENAI_API_KEY:
+        missing_keys.append("OpenAI API Key")
+    
+    # Get latest digest for executive summary
+    latest_digest = None
+    try:
+        latest = Digest.query.order_by(Digest.created_at.desc()).first()
+        if latest:
+            digest_content = json.loads(latest.content)
+            latest_digest = {
+                "id": latest.id,
+                "date": latest.date,
+                "executive_summary": digest_content.get("executive_summary", "No summary available.")
+            }
+    except Exception as e:
+        logger.error(f"Error retrieving latest digest: {str(e)}")
+    
+    insights = get_insights_from_data(platform_data) if platform_data else []
+    action_items = get_action_items_from_data(platform_data) if platform_data else []
+    
+    return render_template('dashboard.html', 
+                          platform_data=platform_data, 
+                          missing_keys=missing_keys,
+                          latest_digest=latest_digest,
+                          insights=insights,
+                          action_items=action_items,
+                          last_updated=data_cache.get("last_updated"),
+                          data_sources=data_sources,
+                          error=False)
 
 @app.route('/integrations')
 @login_required
 def integrations():
     """Shows the status of various integrations"""
+    # Get current platform data
+    platform_data = get_cached_data()
+    data_sources = platform_data.get('data_sources', {}) if platform_data else {}
+    
     integration_status = {
         "hubspot": bool(config.HUBSPOT_API_KEY),
         "chargebee": bool(config.CHARGEBEE_API_KEY and config.CHARGEBEE_SITE),
@@ -266,7 +277,8 @@ def integrations():
         "sentry": config.SENTRY_ENABLED and bool(config.SENTRY_API_KEY),
         "modjo": config.MODJO_ENABLED and bool(config.MODJO_API_KEY)
     }
-    return render_template('integrations.html', integration_status=integration_status)
+    
+    return render_template('integrations.html', integration_status=integration_status, data_sources=data_sources)
 
 @app.route('/digests')
 @login_required
@@ -1181,6 +1193,10 @@ with app.app_context():
 @login_required
 def monitoring():
     """System monitoring and health dashboard"""
+    # Get current platform data
+    platform_data = get_cached_data()
+    data_sources = platform_data.get('data_sources', {}) if platform_data else {}
+    
     # Get integration status
     integration_status = {
         "hubspot": bool(config.HUBSPOT_API_KEY),
@@ -1263,6 +1279,7 @@ def monitoring():
                            last_refresh=last_refresh,
                            core_integrations_health=core_integrations_health,
                            app_status=app_status,
+                           data_sources=data_sources,
                            system_load="Normal")
 
 @app.route('/test_integration/<integration>', methods=['POST'])
