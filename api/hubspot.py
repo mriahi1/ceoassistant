@@ -19,7 +19,7 @@ class HubSpotAPI:
                 'Content-Type': 'application/json'
             }
         else:
-            logger.info("No HubSpot API key provided. Using mock data.")
+            logger.info("No HubSpot API key provided. Will return empty data.")
             self.headers = {}
         
     def _make_request(self, endpoint, method='GET', params=None, data=None):
@@ -178,10 +178,21 @@ class HubSpotAPI:
     def get_all_hubspot_data(self):
         """Get all relevant HubSpot data for the dashboard"""
         try:
-            # If using mock data, return generated mock data
+            # If no API key, return empty data
             if self.use_mock:
-                logger.info("Using mock HubSpot data")
-                return generate_hubspot_mock_data()
+                logger.info("No HubSpot API key. Returning empty data.")
+                return {
+                    "deals": [],
+                    "contacts": [],
+                    "activities": [],
+                    "pipelines": [],
+                    "metrics": {
+                        "total_deal_value": 0,
+                        "deals_by_stage": {},
+                        "recent_deals_count": 0,
+                        "contacts_count": 0
+                    }
+                }
             
             # Otherwise, use the real API
             deals = self.get_deals()

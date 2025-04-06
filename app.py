@@ -954,91 +954,25 @@ def financials_view():
 def scorecard_view():
     """Business Objectives Scorecard page"""
     try:
-        # Create a predefined set of business objectives that don't depend on any external API
+        # Empty objectives data structure when no API is connected
         objectives_data = {
-            "company_objectives": [
-                {
-                    "title": "Revenue Growth",
-                    "target": "$250,000 MRR",
-                    "current": "$210,000 MRR",
-                    "progress": 84,
-                    "status": "on_track",
-                    "details": "Targeting 20% annual growth through expansion of enterprise tier"
-                },
-                {
-                    "title": "Customer Satisfaction",
-                    "target": "NPS Score: 60+",
-                    "current": "NPS Score: 52",
-                    "progress": 87,
-                    "status": "on_track",
-                    "details": "Implementing product enhancements based on customer feedback"
-                },
-                {
-                    "title": "Market Expansion",
-                    "target": "3 New Markets",
-                    "current": "1 Market",
-                    "progress": 33,
-                    "status": "at_risk",
-                    "details": "Healthcare sector successful, delays in financial services rollout"
-                },
-                {
-                    "title": "Product Development",
-                    "target": "Launch Advanced Analytics",
-                    "current": "Beta Testing Phase",
-                    "progress": 75,
-                    "status": "on_track",
-                    "details": "On track for Q3 launch with 45 current beta testers"
-                }
-            ],
-            "department_objectives": [
-                {
-                    "department": "Sales",
-                    "objectives": [
-                        {"title": "New Customer Acquisition", "target": "15 new enterprise customers", "current": "11 acquired", "progress": 73},
-                        {"title": "Sales Cycle Reduction", "target": "30 days average", "current": "42 days average", "progress": 60}
-                    ]
-                },
-                {
-                    "department": "Engineering",
-                    "objectives": [
-                        {"title": "System Reliability", "target": "99.9% uptime", "current": "99.7% uptime", "progress": 97},
-                        {"title": "Feature Deployment", "target": "12 major features", "current": "7 completed", "progress": 58}
-                    ]
-                },
-                {
-                    "department": "Customer Success",
-                    "objectives": [
-                        {"title": "Retention Rate", "target": "95% annual retention", "current": "92% current rate", "progress": 96},
-                        {"title": "Support Response Time", "target": "< 2 hours", "current": "2.4 hours average", "progress": 83}
-                    ]
-                }
-            ],
-            "key_metrics": [
-                {"name": "Monthly Recurring Revenue", "value": "$210,000", "trend": "+5.2%", "status": "positive"},
-                {"name": "Customer Acquisition Cost", "value": "$2,800", "trend": "-3.1%", "status": "positive"},
-                {"name": "Customer Lifetime Value", "value": "$48,500", "trend": "+2.8%", "status": "positive"},
-                {"name": "Feature Adoption Rate", "value": "76%", "trend": "+4.5%", "status": "positive"},
-                {"name": "Churn Rate", "value": "2.3%", "trend": "+0.2%", "status": "negative"}
-            ],
-            "action_items": [
-                "Schedule executive review of financial services market entry strategy",
-                "Prioritize product roadmap for Q3 and Q4",
-                "Implement customer feedback loop for beta analytics features",
-                "Address support response time bottlenecks in EMEA region"
-            ]
+            "company_objectives": [],
+            "department_objectives": [],
+            "key_metrics": [],
+            "action_items": []
         }
         
         # Try to get data from the OOTI API but don't depend on it
         try:
             ooti_api = OOTIAPI()
             scorecard_data = ooti_api.get_all_ooti_data()
-            # Merge any available OOTI data with our predefined data
+            # Add any available OOTI data
             if scorecard_data:
                 objectives_data["ooti_data"] = scorecard_data
         except Exception as e:
-            logger.info(f"Using default objectives data without OOTI: {str(e)}")
+            logger.info(f"No OOTI data available: {str(e)}")
             
-        # Always render the template with our reliable objectives data
+        # Always render the template with our objectives data
         return render_template('objectives_scorecard.html', objectives_data=objectives_data)
     except Exception as e:
         logger.error(f"Error rendering scorecard: {str(e)}")
@@ -1222,27 +1156,27 @@ def monitoring():
     core_online = sum(1 for integration in core_integrations if integration_status.get(integration, False))
     core_integrations_health = int((core_online / len(core_integrations)) * 100) if core_integrations else 0
     
-    # Mock data for integration history
+    # Integration history data - empty if integration is not connected
     integration_last_success = {
-        "hubspot": (datetime.now() - timedelta(minutes=30)).strftime("%Y-%m-%d %H:%M:%S") if integration_status["hubspot"] else "Never",
-        "chargebee": (datetime.now() - timedelta(hours=1)).strftime("%Y-%m-%d %H:%M:%S") if integration_status["chargebee"] else "Never",
-        "ooti": (datetime.now() - timedelta(minutes=15)).strftime("%Y-%m-%d %H:%M:%S") if integration_status["ooti"] else "Never",
-        "jira": (datetime.now() - timedelta(hours=2)).strftime("%Y-%m-%d %H:%M:%S") if integration_status["jira"] else "Never",
-        "github": (datetime.now() - timedelta(minutes=45)).strftime("%Y-%m-%d %H:%M:%S") if integration_status["github"] else "Never",
-        "sentry": (datetime.now() - timedelta(hours=3)).strftime("%Y-%m-%d %H:%M:%S") if integration_status["sentry"] else "Never",
-        "modjo": (datetime.now() - timedelta(hours=1)).strftime("%Y-%m-%d %H:%M:%S") if integration_status["modjo"] else "Never",
-        "gmail": (datetime.now() - timedelta(hours=4)).strftime("%Y-%m-%d %H:%M:%S") if integration_status["gmail"] else "Never"
+        "hubspot": "Never",
+        "chargebee": "Never",
+        "ooti": "Never",
+        "jira": "Never",
+        "github": "Never",
+        "sentry": "Never",
+        "modjo": "Never",
+        "gmail": "Never"
     }
     
     integration_error_rates = {
-        "hubspot": "0%" if integration_status["hubspot"] else "100%",
-        "chargebee": "0%" if integration_status["chargebee"] else "100%",
-        "ooti": "0%" if integration_status["ooti"] else "100%",
-        "jira": "0%" if integration_status["jira"] else "100%",
-        "github": "0%" if integration_status["github"] else "100%",
-        "sentry": "0%" if integration_status["sentry"] else "100%",
-        "modjo": "0%" if integration_status["modjo"] else "100%",
-        "gmail": "0%" if integration_status["gmail"] else "100%"
+        "hubspot": "100%",
+        "chargebee": "100%",
+        "ooti": "100%",
+        "jira": "100%",
+        "github": "100%",
+        "sentry": "100%",
+        "modjo": "100%",
+        "gmail": "100%"
     }
     
     # Get environment variables
@@ -1483,38 +1417,8 @@ def download_logs():
 
 def get_recent_logs(limit=50):
     """Get recent system logs"""
-    # This is a mock implementation - in a real app, you'd fetch from a log store
-    # For this example, we're generating some sample logs
-    logs = []
-    now = datetime.now()
-    
-    # Sample log messages
-    log_messages = [
-        {"level": "INFO", "message": "Application started successfully"},
-        {"level": "INFO", "message": "User logged in: " + (current_user.email if current_user.is_authenticated else "unknown")},
-        {"level": "INFO", "message": "Data cache refreshed"},
-        {"level": "INFO", "message": "Daily digest generated"},
-        {"level": "WARNING", "message": "Slow API response from HubSpot (2.3s)"},
-        {"level": "ERROR", "message": "Failed to connect to Chargebee API: timeout"},
-        {"level": "INFO", "message": "Integration test completed for GitHub"},
-        {"level": "INFO", "message": "User viewed dashboard"},
-        {"level": "WARNING", "message": "High memory usage detected (85%)"},
-        {"level": "INFO", "message": "Cache cleared by user"},
-        {"level": "ERROR", "message": "Exception in data processor: KeyError"},
-        {"level": "INFO", "message": "System monitoring page accessed"}
-    ]
-    
-    # Generate random logs with timestamps
-    for i in range(min(limit, 50)):  # Limit to 50 for this example
-        log_entry = log_messages[i % len(log_messages)]
-        timestamp = now - timedelta(minutes=i*5)  # Logs every 5 minutes
-        logs.append({
-            "timestamp": timestamp.strftime("%Y-%m-%d %H:%M:%S"),
-            "level": log_entry["level"],
-            "message": log_entry["message"]
-        })
-    
-    return logs
+    # This is just a stub - would connect to a real logging system in production
+    return []
 
 @app.route('/debug/session')
 def debug_session():

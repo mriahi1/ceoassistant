@@ -21,7 +21,7 @@ class ChargebeeAPI:
                 'Content-Type': 'application/json'
             }
         else:
-            logger.info("No Chargebee API key or site provided. Using mock data.")
+            logger.info("No Chargebee API key or site provided. Will return empty data.")
             self.base_url = ""
             self.headers = {}
     
@@ -209,30 +209,46 @@ class ChargebeeAPI:
     def get_all_chargebee_data(self):
         """Get all relevant Chargebee data for the dashboard"""
         try:
-            # If using mock data, return generated mock data
+            # If no API key, return empty data
             if self.use_mock:
-                logger.info("Using mock Chargebee data")
-                return generate_chargebee_mock_data()
-                
+                logger.info("No Chargebee API key. Returning empty data.")
+                return {
+                    "subscriptions": [],
+                    "customers": [],
+                    "invoices": [],
+                    "mrr": 0,
+                    "metrics": {
+                        "active_subscriptions": 0,
+                        "total_customers": 0,
+                        "recent_invoices": 0,
+                        "mrr_by_plan": {}
+                    }
+                }
+            
             # Otherwise, use the real API
             subscriptions = self.get_subscriptions()
             customers = self.get_customers()
             invoices = self.get_invoices()
             mrr = self.get_mrr()
             
-            # Calculate some basic metrics
-            active_subscriptions = [s for s in subscriptions if s.get('status') == 'active']
-            canceled_subscriptions = [s for s in subscriptions if s.get('status') == 'cancelled']
+            # Calculate metrics
+            active_subscriptions = len([s for s in subscriptions if s.get('status') == 'active'])
             
-            # Calculate recent invoices (last 30 days)
+            # Get invoices created in the last 30 days
             thirty_days_ago = (datetime.now() - timedelta(days=30)).isoformat()
             recent_invoices = [
-                invoice for invoice in invoices
-                if invoice.get('date') and invoice.get('date') > thirty_days_ago
+                inv for inv in invoices
+                if inv.get('date') and inv.get('date') > thirty_days_ago
             ]
             
-            # Calculate total revenue from recent invoices
-            recent_revenue = sum(invoice.get('amount', 0) for invoice in recent_invoices)
+            # Calculate MRR by plan
+            mrr_by_plan = {}
+            for subscription in subscriptions:
+                if subscription.get('status') == 'active':
+                    plan_id = subscription.get('plan_id', 'unknown')
+                    if plan_id not in mrr_by_plan:
+                        mrr_by_plan[plan_id] = 0
+                    mrr_by_plan[plan_id] += subscription.get('amount', 0)
             
             return {
                 "subscriptions": subscriptions,
@@ -240,10 +256,10 @@ class ChargebeeAPI:
                 "invoices": invoices,
                 "mrr": mrr,
                 "metrics": {
-                    "active_subscriptions_count": len(active_subscriptions),
-                    "canceled_subscriptions_count": len(canceled_subscriptions),
-                    "recent_invoices_count": len(recent_invoices),
-                    "recent_revenue": recent_revenue
+                    "active_subscriptions": active_subscriptions,
+                    "total_customers": len(customers),
+                    "recent_invoices": len(recent_invoices),
+                    "mrr_by_plan": mrr_by_plan
                 }
             }
         except Exception as e:
@@ -254,10 +270,10 @@ class ChargebeeAPI:
                 "invoices": [],
                 "mrr": 0,
                 "metrics": {
-                    "active_subscriptions_count": 0,
-                    "canceled_subscriptions_count": 0,
-                    "recent_invoices_count": 0,
-                    "recent_revenue": 0
+                    "active_subscriptions": 0,
+                    "total_customers": 0,
+                    "recent_invoices": 0,
+                    "mrr_by_plan": {}
                 },
                 "error": str(e)
             }
