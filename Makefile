@@ -105,11 +105,11 @@ test-security:
 	fi
 	@echo "Running Bandit security scanner..."
 	@if command -v bandit &> /dev/null; then \
-		bandit -r app/ -x app/tests 2>/dev/null || echo "Skipping app directory scan"; \
+		bandit -r *.py api/ utils/ models/ services/ 2>/dev/null || echo "Skipping some files due to permissions"; \
 	else \
 		echo "Bandit not found. Installing..."; \
 		pip3 install bandit; \
-		bandit -r app/ -x app/tests 2>/dev/null || echo "Skipping app directory scan"; \
+		bandit -r *.py api/ utils/ models/ services/ 2>/dev/null || echo "Skipping some files due to permissions"; \
 	fi
 	@echo "Running security and access control tests..."
 	@echo "-----------------------------------------"
@@ -128,13 +128,13 @@ test-security:
 test-lint:
 	@echo "Running linting checks..."
 	@if command -v flake8 &> /dev/null; then \
-		flake8 app/ tests/ --count --select=E9,F63,F7,F82 --show-source --statistics; \
-		flake8 app/ tests/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics; \
+		flake8 *.py api/ utils/ models/ services/ tests/ --count --select=E9,F63,F7,F82 --show-source --statistics; \
+		flake8 *.py api/ utils/ models/ services/ tests/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics; \
 	else \
 		echo "Flake8 not found. Installing..."; \
 		pip install flake8; \
-		flake8 app/ tests/ --count --select=E9,F63,F7,F82 --show-source --statistics; \
-		flake8 app/ tests/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics; \
+		flake8 *.py api/ utils/ models/ services/ tests/ --count --select=E9,F63,F7,F82 --show-source --statistics; \
+		flake8 *.py api/ utils/ models/ services/ tests/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics; \
 	fi
 
 # Run all pre-deployment tests
@@ -157,7 +157,7 @@ test-all: install-dev
 	
 	# Run linting checks
 	@echo "Running linting checks..."
-	flake8 minimal_tests/ --count --select=E9,F63,F7,F82 --show-source --statistics
+	flake8 *.py api/ utils/ models/ services/ minimal_tests/ --count --select=E9,F63,F7,F82 --show-source --statistics
 	
 	# Run security checks
 	@echo "Running security checks..."

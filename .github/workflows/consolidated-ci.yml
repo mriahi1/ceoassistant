@@ -33,14 +33,14 @@ jobs:
     - name: Run core tests
       run: |
         export PYTHONPATH=$PWD
-        pytest -v --cov=app --cov-report=xml --cov-report=term minimal_tests/
+        pytest -v --cov=. --omit="tests/*,minimal_tests/*" --cov-report=xml --cov-report=term minimal_tests/
     
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
-        flake8 app/ tests/ minimal_tests/ --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 *.py api/ utils/ models/ services/ tests/ minimal_tests/ --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings
-        flake8 app/ tests/ minimal_tests/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        flake8 *.py api/ utils/ models/ services/ tests/ minimal_tests/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     
   security-checks:
     name: Security Validation
@@ -90,7 +90,7 @@ jobs:
     - name: Static code security analysis
       run: |
         echo "🔍 Running static code security analysis"
-        bandit -r app/ -x app/tests || true
+        bandit -r *.py api/ utils/ models/ services/ || true
         
     - name: Check for sensitive data exposure
       run: |
@@ -99,4 +99,4 @@ jobs:
         
         # Verify protected routes have access control
         echo "🔍 Verifying sensitive routes have access control"
-        grep -r "restricted_access_required" app/ || echo "⚠️ Warning: No routes with restricted access detected" 
+        grep -r "restricted_access_required" *.py api/ utils/ || echo "⚠️ Warning: No routes with restricted access detected" 

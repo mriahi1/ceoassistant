@@ -29,7 +29,7 @@ fi
 # Perform linting checks
 echo "========================================================"
 echo "Running linting checks..."
-flake8 minimal_tests/ --count --select=E9,F63,F7,F82 --show-source --statistics
+flake8 *.py api/ utils/ models/ services/ minimal_tests/ --count --select=E9,F63,F7,F82 --show-source --statistics
 
 # Check for security vulnerabilities with safety (if installed)
 if command -v safety &> /dev/null; then
