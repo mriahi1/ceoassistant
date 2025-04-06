@@ -15,9 +15,7 @@ logger = logging.getLogger(__name__)
 
 # Gmail API Scopes
 SCOPES = [
-    'https://www.googleapis.com/auth/gmail.readonly',
-    'https://www.googleapis.com/auth/gmail.send',
-    'https://www.googleapis.com/auth/gmail.compose'
+    'https://www.googleapis.com/auth/gmail.readonly'
 ]
 
 # Initialize Gmail API client
@@ -278,7 +276,9 @@ def get_email(email_id):
 
 def send_email(to, subject, body, reply_to=None):
     """
-    Send an email from the authenticated user
+    [DISABLED - READ ONLY MODE] Send an email from the authenticated user
+    
+    This function is currently disabled as the application is running in read-only mode.
     
     Args:
         to (str): Email recipient
@@ -287,39 +287,10 @@ def send_email(to, subject, body, reply_to=None):
         reply_to (str, optional): Message ID to reply to. Defaults to None.
     
     Returns:
-        bool: True if sent successfully, False otherwise
+        bool: Always returns False (disabled)
     """
-    if not gmail_service:
-        if not initialize_gmail_client():
-            logger.error("Failed to initialize Gmail client.")
-            return False
-    
-    try:
-        message = MIMEText(body)
-        message['to'] = to
-        message['subject'] = subject
-        
-        # Convert the message to a base64 encoded string
-        raw = base64.urlsafe_b64encode(message.as_bytes()).decode()
-        
-        if reply_to:
-            # This is a reply to an existing thread
-            thread_id = reply_to
-            message = {'raw': raw, 'threadId': thread_id}
-        else:
-            # This is a new message
-            message = {'raw': raw}
-        
-        message = gmail_service.users().messages().send(
-            userId='me', body=message
-        ).execute()
-        
-        logger.debug(f"Email sent: {message['id']}")
-        return True
-    
-    except Exception as e:
-        logger.error(f"Error sending email: {str(e)}")
-        return False
+    logger.warning("Email sending is disabled in read-only mode")
+    return False
 
 def search_emails(query, max_results=20):
     """
@@ -387,32 +358,18 @@ def search_emails(query, max_results=20):
 
 def mark_email_read(email_id):
     """
-    Mark an email as read
+    [DISABLED - READ ONLY MODE] Mark an email as read
+    
+    This function is currently disabled as the application is running in read-only mode.
     
     Args:
         email_id (str): The ID of the email to mark as read
     
     Returns:
-        bool: True if successful, False otherwise
+        bool: Always returns False (disabled)
     """
-    if not gmail_service:
-        if not initialize_gmail_client():
-            logger.error("Failed to initialize Gmail client.")
-            return False
-    
-    try:
-        gmail_service.users().messages().modify(
-            userId='me',
-            id=email_id,
-            body={'removeLabelIds': ['UNREAD']}
-        ).execute()
-        
-        logger.debug(f"Email {email_id} marked as read")
-        return True
-    
-    except Exception as e:
-        logger.error(f"Error marking email as read: {str(e)}")
-        return False
+    logger.warning("Email modification is disabled in read-only mode")
+    return False
 
 def analyze_email_thread(thread_id):
     """

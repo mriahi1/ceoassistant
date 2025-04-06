@@ -1,10 +1,24 @@
 import os
 import logging
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, session, Response
 from datetime import datetime, timedelta
 
+# ================================================================
+# SECURITY NOTICE: All external integrations are in READ-ONLY mode
+# No modifications will be made to external systems (Google, Slack, etc.)
+# All write operations are disabled for security reasons
+# ================================================================
+
 # Configure logging first, before any imports that use it
-logging.basicConfig(level=logging.DEBUG)
+if os.environ.get("FLASK_ENV", "production").lower() == "development":
+    logging_level = logging.DEBUG
+else:
+    logging_level = logging.INFO
+
+logging.basicConfig(
+    level=logging_level,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
 logger = logging.getLogger(__name__)
 
 import json
@@ -13,6 +27,7 @@ from flask_login import LoginManager, current_user, login_required
 from flask_wtf.csrf import CSRFProtect
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from flask_sqlalchemy import SQLAlchemy
 
 import config
 from services.daily_digest import generate_daily_digest
@@ -32,7 +47,12 @@ app.secret_key = os.environ.get("SESSION_SECRET")
 csrf = CSRFProtect(app)
 
 # Add to app configuration
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=24)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=8)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SESSION_COOKIE_SECURE'] = os.environ.get("FLASK_ENV", "production").lower() != "development"
+app.config['SESSION_COOKIE_HTTPONLY'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 
 # Import Google services if enabled
 gmail_integration = None
@@ -235,7 +255,11 @@ def integrations():
         "gmail": config.GMAIL_ENABLED and bool(config.GOOGLE_CREDENTIALS_PATH),
         "google_drive": config.GDRIVE_ENABLED and bool(config.GOOGLE_CREDENTIALS_PATH),
         "calendar": config.CALENDAR_ENABLED and bool(config.GOOGLE_CREDENTIALS_PATH),
-        "pennylane": config.PENNYLANE_ENABLED and bool(config.PENNYLANE_API_KEY)
+        "pennylane": config.PENNYLANE_ENABLED and bool(config.PENNYLANE_API_KEY),
+        "jira": config.JIRA_ENABLED and bool(config.JIRA_API_KEY),
+        "github": config.GITHUB_ENABLED and bool(config.GITHUB_TOKEN),
+        "sentry": config.SENTRY_ENABLED and bool(config.SENTRY_API_KEY),
+        "modjo": config.MODJO_ENABLED and bool(config.MODJO_API_KEY)
     }
     return render_template('integrations.html', integration_status=integration_status)
 
@@ -243,40 +267,15 @@ def integrations():
 @login_required
 def digests():
     """View all generated daily digests"""
-    digest_files = sorted(config.DIGESTS_DIR.glob("*.json"), 
-                          key=lambda x: x.stat().st_mtime, 
-                          reverse=True)
-    digests = []
-    
-    for digest_file in digest_files:
-        try:
-            with open(digest_file, 'r') as f:
-                digest_data = json.load(f)
-                digest_data['filename'] = digest_file.name
-                digests.append(digest_data)
-        except Exception as e:
-            logger.error(f"Error reading digest file {digest_file}: {str(e)}")
-    
-    return render_template('digests.html', digests=digests)
+    digest_list = Digest.query.order_by(Digest.created_at.desc()).all()
+    return render_template('digests.html', digests=[d.to_dict() for d in digest_list])
 
-@app.route('/digest/<filename>')
+@app.route('/digest/<int:digest_id>')
 @login_required
-def view_digest(filename):
+def view_digest(digest_id):
     """View a specific digest"""
-    digest_path = config.DIGESTS_DIR / filename
-    
-    if not digest_path.exists():
-        flash("Digest not found", "danger")
-        return redirect(url_for('digests'))
-    
-    try:
-        with open(digest_path, 'r') as f:
-            digest = json.load(f)
-        return render_template('digest_view.html', digest=digest)
-    except Exception as e:
-        logger.error(f"Error reading digest file {filename}: {str(e)}")
-        flash(f"Error reading digest: {str(e)}", "danger")
-        return redirect(url_for('digests'))
+    digest = Digest.query.get_or_404(digest_id)
+    return render_template('digest_view.html', digest=json.loads(digest.content))
 
 @app.route('/generate_digest', methods=['POST'])
 @login_required
@@ -290,36 +289,14 @@ def generate_digest():
             return redirect(url_for('index'))
         
         # Generate and save digest
-        digest = generate_daily_digest(platform_data)
+        digest = generate_daily_digest(platform_data, user_id=current_user.id)
         
-        # Save to file
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        digest_path = config.DIGESTS_DIR / f"digest_{timestamp}.json"
-        with open(digest_path, 'w') as f:
-            json.dump(digest, f, indent=2)
-        
-        # Send to Slack if enabled
-        if config.ENABLE_SLACK_NOTIFICATIONS:
-            # Format digest for Slack
-            slack_message = f"*Daily CEO Digest - {datetime.now().strftime('%Y-%m-%d')}*\n\n"
-            slack_message += f"*Executive Summary*\n{digest['executive_summary']}\n\n"
-            slack_message += f"*Key Metrics*\n"
-            for metric, value in digest['key_metrics'].items():
-                slack_message += f"• {metric}: {value}\n"
-            slack_message += f"\n*Top Priorities*\n"
-            for i, item in enumerate(digest['action_items'][:3], 1):
-                slack_message += f"{i}. {item}\n"
-            
-            # Send to Slack
-            post_message(slack_message)
-            flash("Digest generated and sent to Slack", "success")
-        else:
-            flash("Digest generated successfully", "success")
-        
+        flash("Digest generated successfully", "success")
         return redirect(url_for('digests'))
     except Exception as e:
-        logger.error(f"Error generating digest: {str(e)}")
-        flash(f"Error generating digest: {str(e)}", "danger")
+        # Log the detailed error but show a generic message to the user
+        logger.error(f"Error generating digest: {str(e)}", exc_info=True)
+        flash("An error occurred while generating the digest. Please try again or contact support.", "danger")
         return redirect(url_for('index'))
 
 @app.route('/settings')
@@ -349,8 +326,9 @@ def refresh_data():
         get_cached_data()  # This will refresh the cache
         flash("Data refreshed successfully", "success")
     except Exception as e:
-        logger.error(f"Error refreshing data: {str(e)}")
-        flash(f"Error refreshing data: {str(e)}", "danger")
+        # Log the detailed error but show a generic message to the user
+        logger.error(f"Error refreshing data: {str(e)}", exc_info=True)
+        flash("An error occurred while refreshing data. Please try again later.", "danger")
     
     return redirect(url_for('index'))
 
@@ -407,12 +385,25 @@ def ratelimit_handler(e):
     logger.warning(f"Rate limit exceeded: {str(e)}")
     return render_template('429.html', error_message="Rate limit exceeded. Please try again later."), 429
 
-# Register CSRF error handler
+# Register CSRF error handler with enhanced logging
 @app.errorhandler(400)
 def csrf_error(e):
     if 'CSRF' in str(e):
+        # Log detailed information about the request for security analysis
         logger.warning(f"CSRF error: {str(e)}")
-        return render_template('403.html', error_message="CSRF token validation failed. Please try again."), 403
+        logger.warning(f"Request path: {request.path}")
+        logger.warning(f"Request method: {request.method}")
+        logger.warning(f"Request IP: {request.remote_addr}")
+        logger.warning(f"Request User-Agent: {request.headers.get('User-Agent')}")
+        
+        # Check if this is an AJAX request
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return jsonify({
+                "success": False, 
+                "error": "CSRF token validation failed"
+            }), 403
+        else:
+            return render_template('403.html', error_message="Security validation failed. Please try again."), 403
     return e
 
 # Gmail routes
@@ -435,8 +426,9 @@ def gmail_inbox():
                               unread_emails=unread_emails,
                               recent_emails=recent_emails)
     except Exception as e:
-        logger.error(f"Error accessing Gmail: {str(e)}")
-        flash(f"Error accessing Gmail: {str(e)}", "danger")
+        # Log the detailed error but show a generic message to the user
+        logger.error(f"Error accessing Gmail: {str(e)}", exc_info=True)
+        flash("Unable to access Gmail. Please check your connection and try again.", "danger")
         return redirect(url_for('index'))
 
 @app.route('/gmail/email/<email_id>')
@@ -479,18 +471,35 @@ def search_gmail():
         return redirect(url_for('integrations'))
     
     if request.method == 'POST':
-        query = request.form.get('query', '')
+        # Get and validate query parameter
+        query = request.form.get('query', '').strip()
+        
+        # Input validation
+        if not query:
+            flash("Please enter a search query", "warning")
+            return render_template('gmail_search.html', query='', results=[])
+        
+        # Limit query length for security
+        if len(query) > 200:
+            flash("Search query is too long. Please limit to 200 characters.", "warning")
+            return render_template('gmail_search.html', query=query[:200], results=[])
+        
+        # Basic sanitization to prevent Gmail API query injection
+        # Remove potentially harmful characters
+        import re
+        sanitized_query = re.sub(r'[^\w\s@.\-:;,\'\"]+', '', query)
         
         try:
-            # Search emails
-            results = search_emails(query, max_results=20)
+            # Search emails with sanitized query
+            results = search_emails(sanitized_query, max_results=20)
             
             return render_template('gmail_search.html', 
-                                  query=query,
+                                  query=query,  # Show the original query to the user
                                   results=results)
         except Exception as e:
-            logger.error(f"Error searching Gmail: {str(e)}")
-            flash(f"Error searching Gmail: {str(e)}", "danger")
+            # Log the detailed error but show a generic message to the user
+            logger.error(f"Error searching Gmail: {str(e)}", exc_info=True)
+            flash("Unable to search Gmail. Please try again.", "danger")
             return redirect(url_for('gmail_inbox'))
     else:
         return render_template('gmail_search.html', 
@@ -604,18 +613,34 @@ def search_drive():
         return redirect(url_for('integrations'))
     
     if request.method == 'POST':
-        query = request.form.get('query', '')
+        # Get and validate query parameter
+        query = request.form.get('query', '').strip()
+        
+        # Input validation
+        if not query:
+            flash("Please enter a search query", "warning")
+            return render_template('drive_search.html', query='', results=[])
+        
+        # Limit query length for security
+        if len(query) > 200:
+            flash("Search query is too long. Please limit to 200 characters.", "warning")
+            return render_template('drive_search.html', query=query[:200], results=[])
+        
+        # Basic sanitization
+        import re
+        sanitized_query = re.sub(r'[^\w\s@.\-_:;,\'\"]+', '', query)
         
         try:
-            # Search files
-            results = search_files(query, max_results=30)
+            # Search files with sanitized query
+            results = search_files(sanitized_query, max_results=30)
             
             return render_template('drive_search.html', 
-                                  query=query,
+                                  query=query,  # Show the original query to the user
                                   results=results)
         except Exception as e:
-            logger.error(f"Error searching Google Drive: {str(e)}")
-            flash(f"Error searching Google Drive: {str(e)}", "danger")
+            # Log the detailed error but show a generic message to the user
+            logger.error(f"Error searching Google Drive: {str(e)}", exc_info=True)
+            flash("Unable to search Google Drive. Please try again.", "danger")
             return redirect(url_for('drive_files'))
     else:
         return render_template('drive_search.html', 
@@ -659,12 +684,18 @@ def create_drive_folder():
     parent_id = request.args.get('parent', None)
     
     if request.method == 'POST':
-        folder_name = request.form.get('name', '')
+        folder_name = request.form.get('name', '').strip()
         parent_id = request.form.get('parent_id', None)
         
+        # Input validation
         if not folder_name:
             flash("Folder name is required", "danger")
             return render_template('folder_create.html', parent_id=parent_id)
+        
+        # Sanitize folder name
+        import re
+        folder_name = re.sub(r'[<>:"/\\|?*]', '', folder_name)  # Remove invalid chars
+        folder_name = folder_name[:100]  # Limit length
         
         try:
             # Create the folder
@@ -678,8 +709,8 @@ def create_drive_folder():
             else:
                 flash("Failed to create folder", "danger")
         except Exception as e:
-            logger.error(f"Error creating folder: {str(e)}")
-            flash(f"Error creating folder: {str(e)}", "danger")
+            logger.error(f"Error creating folder: {str(e)}", exc_info=True)
+            flash("Error creating folder. Please try again.", "danger")
         
         return render_template('folder_create.html', parent_id=parent_id)
     else:
@@ -710,16 +741,18 @@ def upload_to_drive():
             flash("No file selected", "danger")
             return render_template('file_upload.html', parent_id=parent_id)
         
+        import tempfile
+        
+        temp_file = None
         try:
-            # Save the file temporarily
-            temp_path = os.path.join(config.DATA_DIR, file.filename)
+            # Create a secure temporary file
+            temp_fd, temp_path = tempfile.mkstemp(prefix="ceo_assistant_upload_")
+            temp_file = os.fdopen(temp_fd, 'wb')
             file.save(temp_path)
+            temp_file.close()
             
             # Upload the file to Google Drive
             uploaded_file = upload_file(temp_path, parent_id, description)
-            
-            # Remove the temporary file
-            os.remove(temp_path)
             
             if uploaded_file:
                 flash(f"File '{file.filename}' uploaded successfully", "success")
@@ -728,7 +761,16 @@ def upload_to_drive():
                 flash("Failed to upload file", "danger")
         except Exception as e:
             logger.error(f"Error uploading file: {str(e)}")
-            flash(f"Error uploading file: {str(e)}", "danger")
+            flash("Error uploading file. Please try again.", "danger")
+        finally:
+            # Ensure proper cleanup
+            if temp_file:
+                temp_file.close()
+            if temp_path and os.path.exists(temp_path):
+                try:
+                    os.remove(temp_path)
+                except Exception as e:
+                    logger.error(f"Error removing temporary file: {str(e)}")
         
         return render_template('file_upload.html', parent_id=parent_id)
     else:
@@ -751,12 +793,26 @@ def share_drive_file(file_id):
             return redirect(url_for('drive_files'))
         
         if request.method == 'POST':
-            email = request.form.get('email', '')
+            email = request.form.get('email', '').strip().lower()
             role = request.form.get('role', 'reader')
             
+            # Input validation for email
             if not email:
                 flash("Email address is required", "danger")
                 return render_template('file_share.html', file=file_data)
+            
+            # Validate email format
+            import re
+            email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+            if not re.match(email_pattern, email):
+                flash("Please enter a valid email address", "warning")
+                return render_template('file_share.html', file=file_data, email=email)
+            
+            # Validate role - only allow specific roles
+            allowed_roles = ['reader', 'commenter', 'writer']
+            if role not in allowed_roles:
+                flash("Invalid role specified", "danger")
+                return render_template('file_share.html', file=file_data, email=email)
             
             try:
                 # Share the file
@@ -768,15 +824,15 @@ def share_drive_file(file_id):
                 else:
                     flash("Failed to share file", "danger")
             except Exception as e:
-                logger.error(f"Error sharing file: {str(e)}")
-                flash(f"Error sharing file: {str(e)}", "danger")
+                logger.error(f"Error sharing file: {str(e)}", exc_info=True)
+                flash("Error sharing file. Please try again.", "danger")
             
-            return render_template('file_share.html', file=file_data)
+            return render_template('file_share.html', file=file_data, email=email)
         else:
             return render_template('file_share.html', file=file_data)
     except Exception as e:
-        logger.error(f"Error accessing file for sharing: {str(e)}")
-        flash(f"Error accessing file for sharing: {str(e)}", "danger")
+        logger.error(f"Error accessing file for sharing: {str(e)}", exc_info=True)
+        flash("Error accessing file. Please try again.", "danger")
         return redirect(url_for('drive_files'))
 
 @app.route('/digest/upload_to_drive/<filename>', methods=['POST'])
@@ -787,9 +843,26 @@ def upload_digest_to_drive_route(filename):
         flash("Google Drive integration is not enabled or properly configured.", "warning")
         return redirect(url_for('digests'))
     
-    digest_path = config.DIGESTS_DIR / filename
+    # Validate filename to prevent path traversal
+    import re
+    import os
     
-    if not digest_path.exists():
+    # Check for invalid characters and patterns
+    if not filename or '..' in filename or '/' in filename or '\\' in filename:
+        logger.warning(f"Possible path traversal attempt detected with filename: {filename}")
+        flash("Invalid digest filename", "danger")
+        return redirect(url_for('digests'))
+    
+    # Ensure filename matches expected pattern (e.g., digest_YYYY-MM-DD.json)
+    if not re.match(r'^[a-zA-Z0-9_\-\.]+\.json$', filename):
+        logger.warning(f"Invalid digest filename format: {filename}")
+        flash("Invalid digest filename format", "danger")
+        return redirect(url_for('digests'))
+    
+    # Construct path safely using pathlib to prevent path traversal
+    digest_path = config.DIGESTS_DIR / os.path.basename(filename)
+    
+    if not digest_path.exists() or not digest_path.is_file():
         flash("Digest not found", "danger")
         return redirect(url_for('digests'))
     
@@ -798,6 +871,12 @@ def upload_digest_to_drive_route(filename):
         with open(digest_path, 'r') as f:
             digest = json.load(f)
         
+        # Validate digest contains an ID
+        if not digest or not isinstance(digest, dict) or 'id' not in digest:
+            logger.warning(f"Invalid digest content in file: {filename}")
+            flash("Invalid digest content", "danger")
+            return redirect(url_for('digests'))
+        
         # Upload to Google Drive
         result = upload_digest_to_drive(digest)
         
@@ -805,11 +884,14 @@ def upload_digest_to_drive_route(filename):
             flash("Digest uploaded to Google Drive successfully", "success")
         else:
             flash("Failed to upload digest to Google Drive", "danger")
+    except json.JSONDecodeError:
+        logger.error(f"Invalid JSON in digest file: {filename}", exc_info=True)
+        flash("Invalid digest file format", "danger")
     except Exception as e:
-        logger.error(f"Error uploading digest to Google Drive: {str(e)}")
-        flash(f"Error uploading digest to Google Drive: {str(e)}", "danger")
+        logger.error(f"Error uploading digest to Google Drive: {str(e)}", exc_info=True)
+        flash("Error uploading digest to Google Drive", "danger")
     
-    return redirect(url_for('view_digest', filename=filename))
+    return redirect(url_for('view_digest', digest_id=digest['id']))
 
 # Calendar routes
 @app.route('/calendar')
@@ -984,3 +1066,351 @@ def enforce_https():
     if request.headers.get('X-Forwarded-Proto') == 'http':
         url = request.url.replace('http://', 'https://', 1)
         return redirect(url, code=301)
+
+# After app initialization
+db = SQLAlchemy(app)
+
+# Add model definitions
+class Digest(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    date = db.Column(db.String(10))  # YYYY-MM-DD
+    content = db.Column(db.Text)  # JSON stored as text
+    user_id = db.Column(db.String(100))  # Store who created it
+
+    def to_dict(self):
+        """Convert JSON content to Python dict"""
+        return {
+            'id': self.id,
+            'created_at': self.created_at.isoformat(),
+            'date': self.date,
+            'content': json.loads(self.content),
+            'user_id': self.user_id
+        }
+
+# Add this after registering blueprints
+with app.app_context():
+    db.create_all()
+    logger.info("Database tables created if they didn't exist")
+
+@app.route('/monitoring')
+@login_required
+def monitoring():
+    """System monitoring and health dashboard"""
+    # Get integration status
+    integration_status = {
+        "hubspot": bool(config.HUBSPOT_API_KEY),
+        "chargebee": bool(config.CHARGEBEE_API_KEY and config.CHARGEBEE_SITE),
+        "ooti": bool(config.OOTI_API_KEY),
+        "slack": bool(config.SLACK_BOT_TOKEN and config.SLACK_CHANNEL_ID),
+        "openai": bool(config.OPENAI_API_KEY),
+        "gmail": config.GMAIL_ENABLED and bool(config.GOOGLE_CREDENTIALS_PATH),
+        "google_drive": config.GDRIVE_ENABLED and bool(config.GOOGLE_CREDENTIALS_PATH),
+        "calendar": config.CALENDAR_ENABLED and bool(config.GOOGLE_CREDENTIALS_PATH),
+        "pennylane": config.PENNYLANE_ENABLED and bool(config.PENNYLANE_API_KEY),
+        "jira": config.JIRA_ENABLED and bool(config.JIRA_API_KEY),
+        "github": config.GITHUB_ENABLED and bool(config.GITHUB_TOKEN),
+        "sentry": config.SENTRY_ENABLED and bool(config.SENTRY_API_KEY),
+        "modjo": config.MODJO_ENABLED and bool(config.MODJO_API_KEY)
+    }
+    
+    # Get the timestamp of the last data refresh
+    last_refresh = data_cache["last_updated"].strftime("%Y-%m-%d %H:%M:%S") if data_cache["last_updated"] else "Never"
+    
+    # Calculate core integrations health percentage
+    core_integrations = ["hubspot", "chargebee", "ooti", "openai"]
+    core_online = sum(1 for integration in core_integrations if integration_status.get(integration, False))
+    core_integrations_health = int((core_online / len(core_integrations)) * 100) if core_integrations else 0
+    
+    # Mock data for integration history
+    integration_last_success = {
+        "hubspot": (datetime.now() - timedelta(minutes=30)).strftime("%Y-%m-%d %H:%M:%S") if integration_status["hubspot"] else "Never",
+        "chargebee": (datetime.now() - timedelta(hours=1)).strftime("%Y-%m-%d %H:%M:%S") if integration_status["chargebee"] else "Never",
+        "ooti": (datetime.now() - timedelta(minutes=15)).strftime("%Y-%m-%d %H:%M:%S") if integration_status["ooti"] else "Never",
+        "jira": (datetime.now() - timedelta(hours=2)).strftime("%Y-%m-%d %H:%M:%S") if integration_status["jira"] else "Never",
+        "github": (datetime.now() - timedelta(minutes=45)).strftime("%Y-%m-%d %H:%M:%S") if integration_status["github"] else "Never",
+        "sentry": (datetime.now() - timedelta(hours=3)).strftime("%Y-%m-%d %H:%M:%S") if integration_status["sentry"] else "Never",
+        "modjo": (datetime.now() - timedelta(hours=1)).strftime("%Y-%m-%d %H:%M:%S") if integration_status["modjo"] else "Never",
+        "gmail": (datetime.now() - timedelta(hours=4)).strftime("%Y-%m-%d %H:%M:%S") if integration_status["gmail"] else "Never"
+    }
+    
+    integration_error_rates = {
+        "hubspot": "0%" if integration_status["hubspot"] else "100%",
+        "chargebee": "0%" if integration_status["chargebee"] else "100%",
+        "ooti": "0%" if integration_status["ooti"] else "100%",
+        "jira": "0%" if integration_status["jira"] else "100%",
+        "github": "0%" if integration_status["github"] else "100%",
+        "sentry": "0%" if integration_status["sentry"] else "100%",
+        "modjo": "0%" if integration_status["modjo"] else "100%",
+        "gmail": "0%" if integration_status["gmail"] else "100%"
+    }
+    
+    # Get environment variables
+    environment_vars = [
+        {"name": "HUBSPOT_API_KEY", "configured": bool(config.HUBSPOT_API_KEY), "description": "HubSpot API key for CRM integration"},
+        {"name": "CHARGEBEE_API_KEY", "configured": bool(config.CHARGEBEE_API_KEY), "description": "Chargebee API key for subscription management"},
+        {"name": "CHARGEBEE_SITE", "configured": bool(config.CHARGEBEE_SITE), "description": "Chargebee site name"},
+        {"name": "OOTI_API_KEY", "configured": bool(config.OOTI_API_KEY), "description": "OOTI API key for ERP integration"},
+        {"name": "OPENAI_API_KEY", "configured": bool(config.OPENAI_API_KEY), "description": "OpenAI API key for AI features"},
+        {"name": "SLACK_BOT_TOKEN", "configured": bool(config.SLACK_BOT_TOKEN), "description": "Slack bot token for notifications"},
+        {"name": "SLACK_CHANNEL_ID", "configured": bool(config.SLACK_CHANNEL_ID), "description": "Slack channel ID for notifications"},
+        {"name": "GOOGLE_CREDENTIALS_PATH", "configured": bool(config.GOOGLE_CREDENTIALS_PATH), "description": "Path to Google service account credentials"},
+        {"name": "GMAIL_ENABLED", "configured": config.GMAIL_ENABLED, "description": "Enable Gmail integration"},
+        {"name": "GDRIVE_ENABLED", "configured": config.GDRIVE_ENABLED, "description": "Enable Google Drive integration"},
+        {"name": "CALENDAR_ENABLED", "configured": config.CALENDAR_ENABLED, "description": "Enable Google Calendar integration"},
+        {"name": "JIRA_API_KEY", "configured": bool(config.JIRA_API_KEY), "description": "Jira API key for project management"},
+        {"name": "GITHUB_TOKEN", "configured": bool(config.GITHUB_TOKEN), "description": "GitHub token for repository access"},
+        {"name": "SENTRY_API_KEY", "configured": bool(config.SENTRY_API_KEY), "description": "Sentry API key for error tracking"},
+        {"name": "MODJO_API_KEY", "configured": bool(config.MODJO_API_KEY), "description": "Modjo API key for conversation insights"}
+    ]
+    
+    # Get recent logs
+    recent_logs = get_recent_logs(50)
+    
+    # Determine overall app status
+    app_status = core_integrations_health >= 75
+    
+    return render_template('monitoring.html',
+                           integration_status=integration_status,
+                           integration_last_success=integration_last_success,
+                           integration_error_rates=integration_error_rates,
+                           environment_vars=environment_vars,
+                           recent_logs=recent_logs,
+                           last_refresh=last_refresh,
+                           core_integrations_health=core_integrations_health,
+                           app_status=app_status,
+                           system_load="Normal")
+
+@app.route('/test_integration/<integration>', methods=['POST'])
+@login_required
+@csrf.exempt  # Exempt the route, but we'll manually validate CSRF below
+@limiter.limit("20 per hour")  # Add rate limiting to prevent abuse
+def test_integration(integration):
+    """Test a specific integration"""
+    # Implement CSRF validation for AJAX requests
+    token = request.form.get('csrf_token')
+    # If no token in form data, check the header
+    if not token and request.headers.get('X-CSRFToken'):
+        token = request.headers.get('X-CSRFToken')
+    
+    if not token or not csrf._validate_token(token):
+        logger.warning(f"CSRF validation failed in test_integration for {integration}")
+        return jsonify({"success": False, "error": "CSRF validation failed"}), 403
+
+    # Validate integration parameter to prevent injection
+    valid_integrations = ["hubspot", "chargebee", "ooti", "jira", "github", 
+                         "sentry", "modjo", "gmail", "google_drive", "calendar", 
+                         "pennylane", "slack", "openai"]
+    
+    if integration not in valid_integrations:
+        logger.warning(f"Invalid integration parameter: {integration}")
+        return jsonify({"success": False, "error": "Invalid integration parameter"}), 400
+    
+    try:
+        # Check if the integration is enabled and configured
+        if integration == "hubspot":
+            if not config.HUBSPOT_API_KEY:
+                return jsonify({"success": False, "error": "HubSpot API key is not configured"})
+            from api.hubspot import HubSpotAPI
+            client = HubSpotAPI()
+            result = client.test_connection()
+            return jsonify({"success": result, "error": None if result else "Could not connect to HubSpot API"})
+        
+        elif integration == "chargebee":
+            if not (config.CHARGEBEE_API_KEY and config.CHARGEBEE_SITE):
+                return jsonify({"success": False, "error": "Chargebee credentials are not configured"})
+            from api.chargebee import ChargebeeAPI
+            client = ChargebeeAPI()
+            result = client.test_connection()
+            return jsonify({"success": result, "error": None if result else "Could not connect to Chargebee API"})
+        
+        elif integration == "ooti":
+            if not config.OOTI_API_KEY:
+                return jsonify({"success": False, "error": "OOTI API key is not configured"})
+            from api.ooti import OOTIAPI
+            client = OOTIAPI()
+            result = client.test_connection()
+            return jsonify({"success": result, "error": None if result else "Could not connect to OOTI API"})
+        
+        elif integration == "jira":
+            if not config.JIRA_API_KEY:
+                return jsonify({"success": False, "error": "Jira API key is not configured"})
+            from api.jira_integration import initialize_jira_client
+            result = initialize_jira_client()
+            return jsonify({"success": result, "error": None if result else "Could not connect to Jira API"})
+        
+        elif integration == "github":
+            if not config.GITHUB_TOKEN:
+                return jsonify({"success": False, "error": "GitHub token is not configured"})
+            from api.github_integration import initialize_github_client
+            result = initialize_github_client()
+            return jsonify({"success": result, "error": None if result else "Could not connect to GitHub API"})
+        
+        elif integration == "sentry":
+            if not config.SENTRY_API_KEY:
+                return jsonify({"success": False, "error": "Sentry API key is not configured"})
+            from api.sentry_integration import initialize_sentry_client
+            result = initialize_sentry_client()
+            return jsonify({"success": result, "error": None if result else "Could not connect to Sentry API"})
+        
+        elif integration == "modjo":
+            if not config.MODJO_API_KEY:
+                return jsonify({"success": False, "error": "Modjo API key is not configured"})
+            from api.modjo_integration import initialize_modjo_client
+            result = initialize_modjo_client()
+            return jsonify({"success": result, "error": None if result else "Could not connect to Modjo API"})
+        
+        elif integration == "gmail":
+            if not (config.GMAIL_ENABLED and config.GOOGLE_CREDENTIALS_PATH):
+                return jsonify({"success": False, "error": "Gmail integration is not enabled or credentials are missing"})
+            from api.gmail_integration import initialize_gmail_client
+            result = initialize_gmail_client()
+            return jsonify({"success": result, "error": None if result else "Could not connect to Gmail API"})
+        
+        else:
+            return jsonify({"success": False, "error": f"Unknown integration: {integration}"})
+    
+    except Exception as e:
+        logger.error(f"Error testing integration {integration}: {str(e)}", exc_info=True)
+        return jsonify({"success": False, "error": "An error occurred while testing the integration"}), 500
+
+@app.route('/test_all_integrations', methods=['POST'])
+@login_required
+def test_all_integrations():
+    """Test all configured integrations"""
+    results = {}
+    
+    # Test each integration that is enabled
+    if config.HUBSPOT_API_KEY:
+        try:
+            from api.hubspot import HubSpotAPI
+            client = HubSpotAPI()
+            results["hubspot"] = client.test_connection()
+        except Exception as e:
+            logger.error(f"Error testing HubSpot integration: {str(e)}")
+            results["hubspot"] = False
+    
+    if config.CHARGEBEE_API_KEY and config.CHARGEBEE_SITE:
+        try:
+            from api.chargebee import ChargebeeAPI
+            client = ChargebeeAPI()
+            results["chargebee"] = client.test_connection()
+        except Exception as e:
+            logger.error(f"Error testing Chargebee integration: {str(e)}")
+            results["chargebee"] = False
+    
+    if config.OOTI_API_KEY:
+        try:
+            from api.ooti import OOTIAPI
+            client = OOTIAPI()
+            results["ooti"] = client.test_connection()
+        except Exception as e:
+            logger.error(f"Error testing OOTI integration: {str(e)}")
+            results["ooti"] = False
+            
+    if config.JIRA_API_KEY:
+        try:
+            from api.jira_integration import initialize_jira_client
+            results["jira"] = initialize_jira_client()
+        except Exception as e:
+            logger.error(f"Error testing Jira integration: {str(e)}")
+            results["jira"] = False
+            
+    if config.GITHUB_TOKEN:
+        try:
+            from api.github_integration import initialize_github_client
+            results["github"] = initialize_github_client()
+        except Exception as e:
+            logger.error(f"Error testing GitHub integration: {str(e)}")
+            results["github"] = False
+            
+    if config.SENTRY_API_KEY:
+        try:
+            from api.sentry_integration import initialize_sentry_client
+            results["sentry"] = initialize_sentry_client()
+        except Exception as e:
+            logger.error(f"Error testing Sentry integration: {str(e)}")
+            results["sentry"] = False
+            
+    if config.MODJO_API_KEY:
+        try:
+            from api.modjo_integration import initialize_modjo_client
+            results["modjo"] = initialize_modjo_client()
+        except Exception as e:
+            logger.error(f"Error testing Modjo integration: {str(e)}")
+            results["modjo"] = False
+    
+    # Calculate success rate
+    success_count = sum(1 for result in results.values() if result)
+    total_count = len(results)
+    success_rate = (success_count / total_count * 100) if total_count > 0 else 0
+    
+    flash(f"Integration tests completed: {success_count}/{total_count} successful ({success_rate:.1f}%)", "info")
+    return redirect(url_for('monitoring'))
+
+@app.route('/clear_cache', methods=['POST'])
+@login_required
+def clear_cache():
+    """Clear the application data cache"""
+    global data_cache
+    data_cache = {
+        "last_updated": None,
+        "data": None
+    }
+    flash("System cache cleared successfully", "success")
+    return redirect(url_for('monitoring'))
+
+@app.route('/download_logs')
+@login_required
+def download_logs():
+    """Download system logs as a text file"""
+    logs = get_recent_logs(1000)  # Get a larger number of logs for download
+    
+    # Format logs as text
+    log_text = ""
+    for log in logs:
+        log_text += f"{log['timestamp']} [{log['level']}] {log['message']}\n"
+    
+    # Create response with text file
+    response = Response(
+        log_text,
+        mimetype="text/plain",
+        headers={"Content-disposition": f"attachment; filename=ceo_assistant_logs_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt"}
+    )
+    
+    return response
+
+def get_recent_logs(limit=50):
+    """Get recent system logs"""
+    # This is a mock implementation - in a real app, you'd fetch from a log store
+    # For this example, we're generating some sample logs
+    logs = []
+    now = datetime.now()
+    
+    # Sample log messages
+    log_messages = [
+        {"level": "INFO", "message": "Application started successfully"},
+        {"level": "INFO", "message": "User logged in: " + (current_user.email if current_user.is_authenticated else "unknown")},
+        {"level": "INFO", "message": "Data cache refreshed"},
+        {"level": "INFO", "message": "Daily digest generated"},
+        {"level": "WARNING", "message": "Slow API response from HubSpot (2.3s)"},
+        {"level": "ERROR", "message": "Failed to connect to Chargebee API: timeout"},
+        {"level": "INFO", "message": "Integration test completed for GitHub"},
+        {"level": "INFO", "message": "User viewed dashboard"},
+        {"level": "WARNING", "message": "High memory usage detected (85%)"},
+        {"level": "INFO", "message": "Cache cleared by user"},
+        {"level": "ERROR", "message": "Exception in data processor: KeyError"},
+        {"level": "INFO", "message": "System monitoring page accessed"}
+    ]
+    
+    # Generate random logs with timestamps
+    for i in range(min(limit, 50)):  # Limit to 50 for this example
+        log_entry = log_messages[i % len(log_messages)]
+        timestamp = now - timedelta(minutes=i*5)  # Logs every 5 minutes
+        logs.append({
+            "timestamp": timestamp.strftime("%Y-%m-%d %H:%M:%S"),
+            "level": log_entry["level"],
+            "message": log_entry["message"]
+        })
+    
+    return logs

@@ -544,10 +544,10 @@ def get_all_calendar_data():
     """
     if not initialize_calendar_client():
         logger.warning("Google Calendar client not initialized")
-        return {}
+        return {"error": "Google Calendar client not initialized, check CALENDAR_ENABLED and GOOGLE_CREDENTIALS_PATH settings"}
     
     try:
         return get_calendar_summary()
     except Exception as e:
         logger.error(f"Error getting Google Calendar data: {str(e)}")
-        return {}
+        return {"error": str(e)}

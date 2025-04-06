@@ -365,6 +365,323 @@
         </div>
     </div>
     
+    <!-- Key Business Activities Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header bg-gradient-primary">
+                    <h5 class="card-title mb-0 text-white">
+                        <i data-feather="activity" class="me-2"></i> Key Business Activities
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body p-0">
+                    {% if scorecard_data %}
+                        <div class="table-responsive">
+                            <table class="table table-dark table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 30%">Activity</th>
+                                        <th style="width: 15%">Status</th>
+                                        <th style="width: 15%">Health</th>
+                                        <th style="width: 20%">Metrics</th>
+                                        <th style="width: 20%">Next Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Project Delivery -->
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i data-feather="check-circle" class="text-primary me-2"></i>
+                                                <div>
+                                                    <strong>Project Delivery</strong>
+                                                    <div class="small text-muted">On-time project completion</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {% set delivery = scorecard_data.indicators.delivery_on_time|default(0) %}
+                                            <div class="d-flex align-items-center">
+                                                <div class="status-indicator 
+                                                    {% if delivery >= 90 %}status-success
+                                                    {% elif delivery >= 75 %}status-warning
+                                                    {% else %}status-danger{% endif %} me-2"></div>
+                                                <span>
+                                                    {% if delivery >= 90 %}On Track
+                                                    {% elif delivery >= 75 %}At Risk
+                                                    {% else %}Critical{% endif %}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="progress" style="height: 8px;">
+                                                <div class="progress-bar 
+                                                    {% if delivery >= 90 %}bg-success
+                                                    {% elif delivery >= 75 %}bg-warning
+                                                    {% else %}bg-danger{% endif %}"
+                                                    role="progressbar" style="width: {{ delivery }}%">
+                                                </div>
+                                            </div>
+                                            <div class="small text-center mt-1">{{ delivery }}%</div>
+                                        </td>
+                                        <td>
+                                            <div class="small">
+                                                <div>Target: 95%</div>
+                                                <div>Projects: {{ scorecard_data.metrics.active_projects_count }}</div>
+                                                <div>At Risk: {{ scorecard_data.metrics.at_risk_projects_count }}</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="small">
+                                                {% if delivery >= 90 %}
+                                                    Monitor project timelines
+                                                {% elif delivery >= 75 %}
+                                                    Schedule delivery reviews
+                                                {% else %}
+                                                    Escalate to management
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    
+                                    <!-- Customer Satisfaction -->
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i data-feather="users" class="text-info me-2"></i>
+                                                <div>
+                                                    <strong>Customer Satisfaction</strong>
+                                                    <div class="small text-muted">Client happiness index</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {% set satisfaction = scorecard_data.indicators.client_satisfaction|default(0) %}
+                                            <div class="d-flex align-items-center">
+                                                <div class="status-indicator 
+                                                    {% if satisfaction >= 90 %}status-success
+                                                    {% elif satisfaction >= 75 %}status-warning
+                                                    {% else %}status-danger{% endif %} me-2"></div>
+                                                <span>
+                                                    {% if satisfaction >= 90 %}Excellent
+                                                    {% elif satisfaction >= 75 %}Good
+                                                    {% else %}Needs Attention{% endif %}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="progress" style="height: 8px;">
+                                                <div class="progress-bar 
+                                                    {% if satisfaction >= 90 %}bg-success
+                                                    {% elif satisfaction >= 75 %}bg-warning
+                                                    {% else %}bg-danger{% endif %}"
+                                                    role="progressbar" style="width: {{ satisfaction }}%">
+                                                </div>
+                                            </div>
+                                            <div class="small text-center mt-1">{{ satisfaction }}%</div>
+                                        </td>
+                                        <td>
+                                            <div class="small">
+                                                <div>Target: 90%</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="small">
+                                                {% if satisfaction >= 90 %}
+                                                    Collect success stories
+                                                {% elif satisfaction >= 75 %}
+                                                    Schedule client reviews
+                                                {% else %}
+                                                    Launch improvement plan
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    
+                                    <!-- Sales Pipeline -->
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i data-feather="trending-up" class="text-success me-2"></i>
+                                                <div>
+                                                    <strong>Sales Pipeline</strong>
+                                                    <div class="small text-muted">New business acquisition</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {% set pipeline_goal = 3000000 %}
+                                            {% set pipeline_value = scorecard_data.indicators.sales_pipeline_value|default(0) %}
+                                            {% set pipeline_percent = (pipeline_value / pipeline_goal * 100)|round|min(100) %}
+                                            <div class="d-flex align-items-center">
+                                                <div class="status-indicator 
+                                                    {% if pipeline_percent >= 85 %}status-success
+                                                    {% elif pipeline_percent >= 60 %}status-warning
+                                                    {% else %}status-danger{% endif %} me-2"></div>
+                                                <span>
+                                                    {% if pipeline_percent >= 85 %}Strong
+                                                    {% elif pipeline_percent >= 60 %}Moderate
+                                                    {% else %}Weak{% endif %}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="progress" style="height: 8px;">
+                                                <div class="progress-bar 
+                                                    {% if pipeline_percent >= 85 %}bg-success
+                                                    {% elif pipeline_percent >= 60 %}bg-warning
+                                                    {% else %}bg-danger{% endif %}"
+                                                    role="progressbar" style="width: {{ pipeline_percent }}%">
+                                                </div>
+                                            </div>
+                                            <div class="small text-center mt-1">{{ pipeline_percent }}%</div>
+                                        </td>
+                                        <td>
+                                            <div class="small">
+                                                <div>Target: €3M</div>
+                                                <div>Current: €{{ "{:,.0f}".format(pipeline_value) }}</div>
+                                                <div>Win Rate: {{ scorecard_data.indicators.win_rate|default(0) }}%</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="small">
+                                                {% if pipeline_percent >= 85 %}
+                                                    Review top opportunities
+                                                {% elif pipeline_percent >= 60 %}
+                                                    Increase outbound activity
+                                                {% else %}
+                                                    Launch sales sprint
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    
+                                    <!-- Financial Performance -->
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i data-feather="dollar-sign" class="text-warning me-2"></i>
+                                                <div>
+                                                    <strong>Financial Performance</strong>
+                                                    <div class="small text-muted">Profitability and margins</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {% set profitability = scorecard_data.indicators.project_profitability|default(0) %}
+                                            <div class="d-flex align-items-center">
+                                                <div class="status-indicator 
+                                                    {% if profitability >= 25 %}status-success
+                                                    {% elif profitability >= 15 %}status-warning
+                                                    {% else %}status-danger{% endif %} me-2"></div>
+                                                <span>
+                                                    {% if profitability >= 25 %}Healthy
+                                                    {% elif profitability >= 15 %}Stable
+                                                    {% else %}Concerning{% endif %}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {% set profit_percent = (profitability / 35 * 100)|round|min(100) %}
+                                            <div class="progress" style="height: 8px;">
+                                                <div class="progress-bar 
+                                                    {% if profitability >= 25 %}bg-success
+                                                    {% elif profitability >= 15 %}bg-warning
+                                                    {% else %}bg-danger{% endif %}"
+                                                    role="progressbar" style="width: {{ profit_percent }}%">
+                                                </div>
+                                            </div>
+                                            <div class="small text-center mt-1">{{ profitability }}%</div>
+                                        </td>
+                                        <td>
+                                            <div class="small">
+                                                <div>Target: 25%</div>
+                                                <div>Budget: €{{ "{:,.0f}".format(scorecard_data.metrics.total_budget|default(0)) }}</div>
+                                                <div>Utilization: {{ "%.1f"|format(scorecard_data.metrics.overall_resource_utilization|default(0)) }}%</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="small">
+                                                {% if profitability >= 25 %}
+                                                    Monitor cash reserves
+                                                {% elif profitability >= 15 %}
+                                                    Review project budgets
+                                                {% else %}
+                                                    Cost reduction plan
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    
+                                    <!-- Team Performance -->
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <i data-feather="award" class="text-danger me-2"></i>
+                                                <div>
+                                                    <strong>Team Performance</strong>
+                                                    <div class="small text-muted">Employee productivity and satisfaction</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {% set emp_sat = scorecard_data.indicators.employee_satisfaction|default(0) %}
+                                            <div class="d-flex align-items-center">
+                                                <div class="status-indicator 
+                                                    {% if emp_sat >= 85 %}status-success
+                                                    {% elif emp_sat >= 70 %}status-warning
+                                                    {% else %}status-danger{% endif %} me-2"></div>
+                                                <span>
+                                                    {% if emp_sat >= 85 %}Strong
+                                                    {% elif emp_sat >= 70 %}Average
+                                                    {% else %}Needs Improvement{% endif %}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="progress" style="height: 8px;">
+                                                <div class="progress-bar 
+                                                    {% if emp_sat >= 85 %}bg-success
+                                                    {% elif emp_sat >= 70 %}bg-warning
+                                                    {% else %}bg-danger{% endif %}"
+                                                    role="progressbar" style="width: {{ emp_sat }}%">
+                                                </div>
+                                            </div>
+                                            <div class="small text-center mt-1">{{ emp_sat }}%</div>
+                                        </td>
+                                        <td>
+                                            <div class="small">
+                                                <div>Target: 85%</div>
+                                                <div>Utilization: {{ "%.1f"|format(scorecard_data.metrics.overall_resource_utilization|default(0)) }}%</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="small">
+                                                {% if emp_sat >= 85 %}
+                                                    Reward top performers
+                                                {% elif emp_sat >= 70 %}
+                                                    Schedule team workshops
+                                                {% else %}
+                                                    Launch engagement plan
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i data-feather="activity" class="text-muted mb-3" style="width: 64px; height: 64px;"></i>
+                            <h4>No Business Activity Data Available</h4>
+                            <p class="text-muted">Connect OOTI.co to view key business activities</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <!-- Historical Trends Section -->
     <div class="row">
         <div class="col-12">
@@ -384,6 +701,7 @@
                         <li><strong>Sales KPIs:</strong> Includes pipeline value, win rate, and average deal size.</li>
                         <li><strong>Project Metrics:</strong> Provides insights into project status and budget utilization.</li>
                         <li><strong>HR Metrics:</strong> Shows employee satisfaction and departmental utilization.</li>
+                        <li><strong>Key Business Activities:</strong> Provides status indicators for critical business functions.</li>
                     </ul>
                     <p>The data in this scorecard is updated in real-time from your OOTI.co account. Use these insights to make strategic decisions and keep your business on track.</p>
                 </div>

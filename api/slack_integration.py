@@ -20,7 +20,9 @@ if slack_token and slack_channel_id:
 
 def post_message(message: str, blocks=None, channel=None) -> bool:
     """
-    Post a message to Slack
+    [DISABLED - READ ONLY MODE] Post a message to Slack
+    
+    This function is currently disabled as the application is running in read-only mode.
     
     Args:
         message (str): The message to post
@@ -28,25 +30,10 @@ def post_message(message: str, blocks=None, channel=None) -> bool:
         channel (str, optional): Channel ID to post to. Defaults to configured channel.
     
     Returns:
-        bool: True if successful, False otherwise
+        bool: Always returns False (disabled)
     """
-    if not slack_client:
-        logger.error("Slack client not initialized. Cannot post message.")
-        return False
-    
-    target_channel = channel or slack_channel_id
-    
-    try:
-        response = slack_client.chat_postMessage(
-            channel=target_channel,
-            text=message,
-            blocks=blocks
-        )
-        logger.debug(f"Message posted to Slack: {response.data.get('ts')}")
-        return True
-    except SlackApiError as e:
-        logger.error(f"Error posting message to Slack: {str(e)}")
-        return False
+    logger.warning("Slack posting is disabled in read-only mode")
+    return False
 
 def format_digest_for_slack(digest):
     """
@@ -158,29 +145,15 @@ def format_digest_for_slack(digest):
 
 def post_digest_to_slack(digest):
     """
-    Post a digest to Slack
+    [DISABLED - READ ONLY MODE] Post a digest to Slack
+    
+    This function is currently disabled as the application is running in read-only mode.
     
     Args:
         digest (dict): The digest to post
     
     Returns:
-        bool: True if successful, False otherwise
+        bool: Always returns False (disabled)
     """
-    if not slack_client:
-        logger.error("Slack client not initialized. Cannot post digest.")
-        return False
-    
-    try:
-        blocks = format_digest_for_slack(digest)
-        summary = f"CEO Daily Digest - {digest.get('date', 'Today')}\n\n{digest.get('executive_summary', 'No summary available')}"
-        
-        response = slack_client.chat_postMessage(
-            channel=slack_channel_id,
-            text=summary,
-            blocks=blocks
-        )
-        logger.debug(f"Digest posted to Slack: {response.data.get('ts')}")
-        return True
-    except SlackApiError as e:
-        logger.error(f"Error posting digest to Slack: {str(e)}")
-        return False
+    logger.warning("Slack posting is disabled in read-only mode")
+    return False

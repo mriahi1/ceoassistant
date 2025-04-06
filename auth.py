@@ -3,6 +3,7 @@ import os
 import secrets
 import hashlib
 import logging
+import time
 
 import requests
 from flask import Blueprint, redirect, request, url_for, session, current_app, abort
@@ -66,9 +67,16 @@ def callback():
         return "Google OAuth Client ID not configured. Please check environment variables.", 500
     
     # Verify state parameter to prevent CSRF
-    if request.args.get('state') != session.get('oauth_state'):
+    stored_state = session.get('oauth_state')
+    received_state = request.args.get('state')
+    
+    if not stored_state or not received_state or stored_state != received_state:
         current_app.logger.warning("OAuth state parameter mismatch - possible CSRF attack")
-        abort(403, description="Invalid OAuth state parameter. Please try logging in again.")
+        # Log additional details for security analysis
+        current_app.logger.warning(f"Stored state: {stored_state}, Received state: {received_state}")
+        current_app.logger.warning(f"Request IP: {request.remote_addr}")
+        current_app.logger.warning(f"Request User-Agent: {request.headers.get('User-Agent')}")
+        abort(403, description="Invalid security parameters. Please try logging in again.")
     
     # Clear the state parameter now that it's been used
     session.pop('oauth_state', None)
@@ -76,11 +84,12 @@ def callback():
     # Get authorization code
     code = request.args.get("code")
     if not code:
+        current_app.logger.warning("Missing authorization code in OAuth callback")
         return "Authorization code not received from Google", 400
     
     try:
         # Get Google provider configuration
-        google_provider_cfg = requests.get(GOOGLE_DISCOVERY_URL).json()
+        google_provider_cfg = requests.get(GOOGLE_DISCOVERY_URL, timeout=10).json()
         token_endpoint = google_provider_cfg["token_endpoint"]
         
         # Prepare token request
@@ -100,8 +109,14 @@ def callback():
             timeout=10  # Add timeout for security
         )
         
+        # Validate token response
+        token_data = token_response.json()
+        if 'error' in token_data:
+            current_app.logger.error(f"OAuth token error: {token_data.get('error')}")
+            return "Authentication error. Please try again later.", 500
+        
         # Parse token response
-        client.parse_request_body_response(json.dumps(token_response.json()))
+        client.parse_request_body_response(json.dumps(token_data))
         
         # Get user info
         userinfo_endpoint = google_provider_cfg["userinfo_endpoint"]
@@ -110,37 +125,50 @@ def callback():
         
         # Verify user info
         userinfo = userinfo_response.json()
+        if not userinfo_response.ok:
+            current_app.logger.error(f"Failed to get user info: {userinfo.get('error', 'Unknown error')}")
+            return "Failed to retrieve user information. Please try again.", 500
+            
         if userinfo.get("email_verified"):
             user_id = userinfo["sub"]
             user_email = userinfo["email"]
-            user_name = userinfo["given_name"]
+            user_name = userinfo.get("given_name", "User")  # Provide fallback
             user_picture = userinfo.get("picture")
             
             # Check if email is allowed
             allowed_emails = ["mriahi@ooti.co", "maxriahi@gmail.com"]
-            if user_email not in allowed_emails:
+            if user_email.lower() not in [email.lower() for email in allowed_emails]:
                 current_app.logger.warning(f"Login attempt from unauthorized email: {user_email}")
                 return "Access denied. This application is restricted to authorized users only.", 403
         else:
+            current_app.logger.warning(f"Unverified email attempted login: {userinfo.get('email', 'unknown')}")
             return "User email not available or not verified by Google.", 400
         
-        # Create user
-        user = User(id=user_id, email=user_email, name=user_name, picture=user_picture)
+        # Create user with login timestamp for session management
+        login_timestamp = int(time.time())
+        user = User(id=user_id, email=user_email, name=user_name, picture=user_picture, login_time=login_timestamp)
         users_db[user_id] = user
         
         # Log in user
         login_user(user)
         
-        # Create new session to prevent session fixation
+        # Create completely new session to prevent session fixation
         old_session = dict(session)
         session.clear()
-        session.update(old_session)
+        # Only copy specific values needed, not the entire old session
+        session['user_id'] = old_session.get('user_id')
+        # Set the session as permanent with the configured lifetime
+        session.permanent = True
+        # Add session creation timestamp for additional validation
+        session['created_at'] = login_timestamp
+        
+        current_app.logger.info(f"Successful login: {user_email}")
         
         # Redirect to home page
         return redirect(url_for("index"))
         
     except Exception as e:
-        current_app.logger.error(f"Error during OAuth authentication: {str(e)}")
+        current_app.logger.error(f"Error during OAuth authentication: {str(e)}", exc_info=True)
         return "Authentication error. Please try again later.", 500
 
 

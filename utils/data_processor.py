@@ -74,11 +74,100 @@ def fetch_ooti_data():
             "error": str(e)
         }
 
+def fetch_calendar_data():
+    """Fetch data from Google Calendar"""
+    if not config.CALENDAR_ENABLED:
+        return {}
+    
+    try:
+        from api.calendar_integration import get_all_calendar_data
+        return get_all_calendar_data()
+    except Exception as e:
+        logger.error(f"Error fetching Calendar data: {str(e)}")
+        return {"error": str(e)}
+
+def fetch_gmail_data():
+    """Fetch data from Gmail"""
+    if not config.GMAIL_ENABLED:
+        return {}
+    
+    try:
+        from api.gmail_integration import get_unread_emails, get_recent_emails
+        
+        unread = get_unread_emails(max_results=10)
+        recent = get_recent_emails(max_results=20)
+        
+        return {
+            "unread_emails": unread,
+            "recent_emails": recent,
+            "metrics": {
+                "unread_count": len(unread),
+                "recent_count": len(recent)
+            }
+        }
+    except Exception as e:
+        logger.error(f"Error fetching Gmail data: {str(e)}")
+        return {"error": str(e)}
+
+def fetch_jira_data():
+    """Fetch data from Jira"""
+    if not config.JIRA_ENABLED:
+        return {}
+    
+    try:
+        from api.jira_integration import get_all_jira_data
+        return get_all_jira_data()
+    except Exception as e:
+        logger.error(f"Error fetching Jira data: {str(e)}")
+        return {"error": str(e)}
+
+def fetch_github_data():
+    """Fetch data from GitHub"""
+    if not config.GITHUB_ENABLED:
+        return {}
+    
+    try:
+        from api.github_integration import get_all_github_data
+        return get_all_github_data()
+    except Exception as e:
+        logger.error(f"Error fetching GitHub data: {str(e)}")
+        return {"error": str(e)}
+
+def fetch_sentry_data():
+    """Fetch data from Sentry"""
+    if not config.SENTRY_ENABLED:
+        return {}
+    
+    try:
+        from api.sentry_integration import get_all_sentry_data
+        return get_all_sentry_data()
+    except Exception as e:
+        logger.error(f"Error fetching Sentry data: {str(e)}")
+        return {"error": str(e)}
+
+def fetch_modjo_data():
+    """Fetch data from Modjo"""
+    if not config.MODJO_ENABLED:
+        return {}
+    
+    try:
+        from api.modjo_integration import get_all_modjo_data
+        return get_all_modjo_data()
+    except Exception as e:
+        logger.error(f"Error fetching Modjo data: {str(e)}")
+        return {"error": str(e)}
+
 def consolidate_data():
     """Consolidate data from all platforms"""
     hubspot_data = fetch_hubspot_data()
     chargebee_data = fetch_chargebee_data()
     ooti_data = fetch_ooti_data()
+    calendar_data = fetch_calendar_data()
+    gmail_data = fetch_gmail_data()
+    jira_data = fetch_jira_data()
+    github_data = fetch_github_data()
+    sentry_data = fetch_sentry_data()
+    modjo_data = fetch_modjo_data()
     
     # Check for errors
     errors = []
@@ -88,12 +177,30 @@ def consolidate_data():
         errors.append(f"Chargebee error: {chargebee_data['error']}")
     if "error" in ooti_data:
         errors.append(f"OOTI error: {ooti_data['error']}")
+    if "error" in calendar_data:
+        errors.append(f"Calendar error: {calendar_data['error']}")
+    if "error" in gmail_data:
+        errors.append(f"Gmail error: {gmail_data['error']}")
+    if "error" in jira_data:
+        errors.append(f"Jira error: {jira_data['error']}")
+    if "error" in github_data:
+        errors.append(f"GitHub error: {github_data['error']}")
+    if "error" in sentry_data:
+        errors.append(f"Sentry error: {sentry_data['error']}")
+    if "error" in modjo_data:
+        errors.append(f"Modjo error: {modjo_data['error']}")
     
     # Create consolidated data structure
     consolidated_data = {
         "hubspot": hubspot_data,
         "chargebee": chargebee_data,
         "ooti": ooti_data,
+        "calendar": calendar_data,
+        "gmail": gmail_data,
+        "jira": jira_data,
+        "github": github_data,
+        "sentry": sentry_data,
+        "modjo": modjo_data,
         "timestamp": datetime.now().isoformat(),
         "errors": errors if errors else None
     }

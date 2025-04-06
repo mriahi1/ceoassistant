@@ -14,9 +14,7 @@ logger = logging.getLogger(__name__)
 
 # Google Drive API Scopes
 SCOPES = [
-    'https://www.googleapis.com/auth/drive.metadata.readonly',
-    'https://www.googleapis.com/auth/drive.file',
-    'https://www.googleapis.com/auth/drive'
+    'https://www.googleapis.com/auth/drive.metadata.readonly'
 ]
 
 # Initialize Google Drive API client
@@ -210,7 +208,9 @@ def get_file(file_id):
 
 def upload_file(file_path, parent_folder_id=None, description=None):
     """
-    Upload a file to Google Drive
+    [DISABLED - READ ONLY MODE] Upload a file to Google Drive
+    
+    This function is currently disabled as the application is running in read-only mode.
     
     Args:
         file_path (str): Path to the file to upload
@@ -218,99 +218,32 @@ def upload_file(file_path, parent_folder_id=None, description=None):
         description (str, optional): Description of the file. Defaults to None.
     
     Returns:
-        dict: The uploaded file metadata or None if upload failed
+        dict: Always returns None (disabled)
     """
-    if not drive_service:
-        if not initialize_drive_client():
-            logger.error("Failed to initialize Drive client.")
-            return None
-    
-    try:
-        file_metadata = {
-            'name': os.path.basename(file_path)
-        }
-        
-        if description:
-            file_metadata['description'] = description
-            
-        if parent_folder_id:
-            file_metadata['parents'] = [parent_folder_id]
-        
-        media = MediaFileUpload(
-            file_path,
-            resumable=True
-        )
-        
-        file = drive_service.files().create(
-            body=file_metadata,
-            media_body=media,
-            fields='id, name, mimeType, createdTime, modifiedTime, webViewLink'
-        ).execute()
-        
-        logger.debug(f"File uploaded: {file.get('id')}")
-        
-        return {
-            'id': file.get('id'),
-            'name': file.get('name'),
-            'mimeType': file.get('mimeType'),
-            'createdTime': file.get('createdTime'),
-            'modifiedTime': file.get('modifiedTime'),
-            'webViewLink': file.get('webViewLink', '')
-        }
-    
-    except Exception as e:
-        logger.error(f"Error uploading file: {str(e)}")
-        return None
+    logger.warning("File upload is disabled in read-only mode")
+    return None
 
 def create_folder(folder_name, parent_folder_id=None):
     """
-    Create a folder in Google Drive
+    [DISABLED - READ ONLY MODE] Create a folder in Google Drive
+    
+    This function is currently disabled as the application is running in read-only mode.
     
     Args:
         folder_name (str): Name of the folder to create
         parent_folder_id (str, optional): ID of the parent folder. Defaults to root.
     
     Returns:
-        dict: The created folder metadata or None if creation failed
+        dict: Always returns None (disabled)
     """
-    if not drive_service:
-        if not initialize_drive_client():
-            logger.error("Failed to initialize Drive client.")
-            return None
-    
-    try:
-        folder_metadata = {
-            'name': folder_name,
-            'mimeType': 'application/vnd.google-apps.folder'
-        }
-        
-        if parent_folder_id:
-            folder_metadata['parents'] = [parent_folder_id]
-        
-        folder = drive_service.files().create(
-            body=folder_metadata,
-            fields='id, name, mimeType, createdTime, modifiedTime, webViewLink'
-        ).execute()
-        
-        logger.debug(f"Folder created: {folder.get('id')}")
-        
-        return {
-            'id': folder.get('id'),
-            'name': folder.get('name'),
-            'mimeType': folder.get('mimeType'),
-            'createdTime': folder.get('createdTime'),
-            'modifiedTime': folder.get('modifiedTime'),
-            'webViewLink': folder.get('webViewLink', ''),
-            'isFolder': True
-        }
-    
-    except Exception as e:
-        logger.error(f"Error creating folder: {str(e)}")
-        return None
+    logger.warning("Folder creation is disabled in read-only mode")
+    return None
 
 def share_file(file_id, email, role='reader'):
     """
-    Share a file with a specific user
+    [DISABLED - READ ONLY MODE] Share a file with a specific user
+    
+    This function is currently disabled as the application is running in read-only mode.
     
     Args:
         file_id (str): ID of the file to share
@@ -319,156 +252,39 @@ def share_file(file_id, email, role='reader'):
             Options: 'owner', 'organizer', 'fileOrganizer', 'writer', 'commenter', 'reader'
     
     Returns:
-        bool: True if shared successfully, False otherwise
+        bool: Always returns False (disabled)
     """
-    if not drive_service:
-        if not initialize_drive_client():
-            logger.error("Failed to initialize Drive client.")
-            return False
-    
-    try:
-        permission = {
-            'type': 'user',
-            'role': role,
-            'emailAddress': email
-        }
-        
-        drive_service.permissions().create(
-            fileId=file_id,
-            body=permission,
-            sendNotificationEmail=True
-        ).execute()
-        
-        logger.debug(f"File {file_id} shared with {email} as {role}")
-        return True
-    
-    except Exception as e:
-        logger.error(f"Error sharing file: {str(e)}")
-        return False
+    logger.warning("File sharing is disabled in read-only mode")
+    return False
 
 def export_file_as_pdf(file_id, output_path):
     """
-    Export a Google Doc, Sheet, or Slide as PDF
+    [DISABLED - READ ONLY MODE] Export a Google Doc, Sheet, or Slide as PDF
+    
+    This function is currently disabled as the application is running in read-only mode.
     
     Args:
         file_id (str): ID of the file to export
         output_path (str): Path where the PDF will be saved
     
     Returns:
-        bool: True if exported successfully, False otherwise
+        bool: Always returns False (disabled)
     """
-    if not drive_service:
-        if not initialize_drive_client():
-            logger.error("Failed to initialize Drive client.")
-            return False
-    
-    try:
-        # Get file metadata to check mime type
-        file = drive_service.files().get(fileId=file_id).execute()
-        mime_type = file.get('mimeType', '')
-        
-        # Set the export MIME type based on the file type
-        export_mime_type = 'application/pdf'
-        
-        # Check if the file is a Google Docs, Sheets, or Slides file
-        if not (mime_type.startswith('application/vnd.google-apps.')):
-            logger.error(f"File {file_id} is not a Google Docs, Sheets, or Slides file")
-            return False
-        
-        # Export the file
-        request = drive_service.files().export_media(
-            fileId=file_id, 
-            mimeType=export_mime_type
-        )
-        
-        with open(output_path, 'wb') as f:
-            downloaded = request.execute()
-            f.write(downloaded)
-        
-        logger.debug(f"File {file_id} exported as PDF to {output_path}")
-        return True
-    
-    except Exception as e:
-        logger.error(f"Error exporting file as PDF: {str(e)}")
-        return False
+    logger.warning("File export is disabled in read-only mode")
+    return False
 
 def upload_digest_to_drive(digest, parent_folder_id=None):
     """
-    Upload a CEO digest to Google Drive as JSON and create a summary document
+    [DISABLED - READ ONLY MODE] Upload a CEO digest to Google Drive
+    
+    This function is currently disabled as the application is running in read-only mode.
     
     Args:
         digest (dict): The digest data to upload
-        parent_folder_id (str, optional): ID of the parent folder. Defaults to None.
+        parent_folder_id (str, optional): ID of the folder to upload to. Defaults to root.
     
     Returns:
-        dict: Information about the uploaded files or None if upload failed
+        dict: Always returns None (disabled)
     """
-    if not drive_service:
-        if not initialize_drive_client():
-            logger.error("Failed to initialize Drive client.")
-            return None
-    
-    try:
-        # First, check or create a CEO Digests folder
-        digest_folder_id = None
-        
-        if parent_folder_id:
-            # Look for an existing CEO Digests folder in the specified parent
-            results = drive_service.files().list(
-                q=f"name='CEO Digests' and '{parent_folder_id}' in parents and mimeType='application/vnd.google-apps.folder'",
-                pageSize=1,
-                fields="files(id)"
-            ).execute()
-            
-            items = results.get('files', [])
-            
-            if items:
-                digest_folder_id = items[0]['id']
-            else:
-                # Create the folder
-                folder = create_folder('CEO Digests', parent_folder_id)
-                if folder:
-                    digest_folder_id = folder['id']
-        else:
-            # Look for an existing CEO Digests folder in root
-            results = drive_service.files().list(
-                q="name='CEO Digests' and 'root' in parents and mimeType='application/vnd.google-apps.folder'",
-                pageSize=1,
-                fields="files(id)"
-            ).execute()
-            
-            items = results.get('files', [])
-            
-            if items:
-                digest_folder_id = items[0]['id']
-            else:
-                # Create the folder
-                folder = create_folder('CEO Digests')
-                if folder:
-                    digest_folder_id = folder['id']
-        
-        if not digest_folder_id:
-            logger.error("Failed to find or create CEO Digests folder")
-            return None
-        
-        # Save digest to a temporary JSON file
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        temp_json_path = os.path.join(config.DATA_DIR, f"digest_{timestamp}.json")
-        
-        with open(temp_json_path, 'w') as f:
-            json.dump(digest, f, indent=2)
-        
-        # Upload the JSON file
-        json_file = upload_file(temp_json_path, digest_folder_id, f"CEO Digest - {digest.get('date', 'Today')}")
-        
-        # Clean up temporary file
-        os.remove(temp_json_path)
-        
-        return {
-            'folder_id': digest_folder_id,
-            'json_file': json_file
-        }
-    
-    except Exception as e:
-        logger.error(f"Error uploading digest to Drive: {str(e)}")
-        return None
+    logger.warning("Digest upload is disabled in read-only mode")
+    return None

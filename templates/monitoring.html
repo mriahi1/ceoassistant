@@ -1,0 +1,475 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1>System Monitoring</h1>
+            <p class="text-muted">Monitor system health, integrations status, and setup configuration</p>
+        </div>
+    </div>
+
+    <!-- System Status Overview -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header bg-gradient-primary">
+                    <h5 class="card-title mb-0 text-white">
+                        <i data-feather="activity" class="me-2"></i> System Status
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="p-3 border rounded bg-dark">
+                                <h6 class="mb-1">Application</h6>
+                                <div class="d-flex align-items-center">
+                                    <div class="status-indicator {% if app_status %}status-success{% else %}status-danger{% endif %} me-2"></div>
+                                    <span>{% if app_status %}Healthy{% else %}Issues Detected{% endif %}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="p-3 border rounded bg-dark">
+                                <h6 class="mb-1">Core Integrations</h6>
+                                <div class="d-flex align-items-center">
+                                    <div class="status-indicator {% if core_integrations_health >= 75 %}status-success{% elif core_integrations_health >= 50 %}status-warning{% else %}status-danger{% endif %} me-2"></div>
+                                    <span>{{ core_integrations_health }}% Online</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="p-3 border rounded bg-dark">
+                                <h6 class="mb-1">Last Data Refresh</h6>
+                                <div class="d-flex align-items-center">
+                                    <i data-feather="clock" class="text-muted me-2" style="width: 18px;"></i>
+                                    <span>{{ last_refresh|default('Never', true) }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 mb-3">
+                            <div class="p-3 border rounded bg-dark">
+                                <h6 class="mb-1">System Load</h6>
+                                <div class="d-flex align-items-center">
+                                    <i data-feather="cpu" class="text-muted me-2" style="width: 18px;"></i>
+                                    <span>{{ system_load|default('Normal', true) }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Integration Status Cards -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="link" class="me-2"></i> Integration Health
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body p-0">
+                    <table class="table table-dark table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Integration</th>
+                                <th>Status</th>
+                                <th>Last Success</th>
+                                <th>Error Rate</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Core Integrations -->
+                            <tr>
+                                <td><i data-feather="activity" class="text-danger me-2"></i> HubSpot</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="status-indicator {% if integration_status.hubspot %}status-success{% else %}status-danger{% endif %} me-2"></div>
+                                        <span>{% if integration_status.hubspot %}Connected{% else %}Disconnected{% endif %}</span>
+                                    </div>
+                                </td>
+                                <td>{{ integration_last_success.hubspot|default('Never', true) }}</td>
+                                <td>{{ integration_error_rates.hubspot|default('N/A', true) }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary test-integration" data-integration="hubspot">
+                                        <i data-feather="refresh-cw" style="width: 16px;"></i> Test
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><i data-feather="credit-card" class="text-primary me-2"></i> Chargebee</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="status-indicator {% if integration_status.chargebee %}status-success{% else %}status-danger{% endif %} me-2"></div>
+                                        <span>{% if integration_status.chargebee %}Connected{% else %}Disconnected{% endif %}</span>
+                                    </div>
+                                </td>
+                                <td>{{ integration_last_success.chargebee|default('Never', true) }}</td>
+                                <td>{{ integration_error_rates.chargebee|default('N/A', true) }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary test-integration" data-integration="chargebee">
+                                        <i data-feather="refresh-cw" style="width: 16px;"></i> Test
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><i data-feather="layers" class="text-success me-2"></i> OOTI</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="status-indicator {% if integration_status.ooti %}status-success{% else %}status-danger{% endif %} me-2"></div>
+                                        <span>{% if integration_status.ooti %}Connected{% else %}Disconnected{% endif %}</span>
+                                    </div>
+                                </td>
+                                <td>{{ integration_last_success.ooti|default('Never', true) }}</td>
+                                <td>{{ integration_error_rates.ooti|default('N/A', true) }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary test-integration" data-integration="ooti">
+                                        <i data-feather="refresh-cw" style="width: 16px;"></i> Test
+                                    </button>
+                                </td>
+                            </tr>
+                            
+                            <!-- New Integrations -->
+                            <tr>
+                                <td><i data-feather="trello" class="text-info me-2"></i> Jira</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="status-indicator {% if integration_status.jira %}status-success{% else %}status-danger{% endif %} me-2"></div>
+                                        <span>{% if integration_status.jira %}Connected{% else %}Disconnected{% endif %}</span>
+                                    </div>
+                                </td>
+                                <td>{{ integration_last_success.jira|default('Never', true) }}</td>
+                                <td>{{ integration_error_rates.jira|default('N/A', true) }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary test-integration" data-integration="jira">
+                                        <i data-feather="refresh-cw" style="width: 16px;"></i> Test
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><i data-feather="github" class="text-light me-2"></i> GitHub</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="status-indicator {% if integration_status.github %}status-success{% else %}status-danger{% endif %} me-2"></div>
+                                        <span>{% if integration_status.github %}Connected{% else %}Disconnected{% endif %}</span>
+                                    </div>
+                                </td>
+                                <td>{{ integration_last_success.github|default('Never', true) }}</td>
+                                <td>{{ integration_error_rates.github|default('N/A', true) }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary test-integration" data-integration="github">
+                                        <i data-feather="refresh-cw" style="width: 16px;"></i> Test
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><i data-feather="alert-triangle" class="text-warning me-2"></i> Sentry</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="status-indicator {% if integration_status.sentry %}status-success{% else %}status-danger{% endif %} me-2"></div>
+                                        <span>{% if integration_status.sentry %}Connected{% else %}Disconnected{% endif %}</span>
+                                    </div>
+                                </td>
+                                <td>{{ integration_last_success.sentry|default('Never', true) }}</td>
+                                <td>{{ integration_error_rates.sentry|default('N/A', true) }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary test-integration" data-integration="sentry">
+                                        <i data-feather="refresh-cw" style="width: 16px;"></i> Test
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><i data-feather="video" class="text-danger me-2"></i> Modjo</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="status-indicator {% if integration_status.modjo %}status-success{% else %}status-danger{% endif %} me-2"></div>
+                                        <span>{% if integration_status.modjo %}Connected{% else %}Disconnected{% endif %}</span>
+                                    </div>
+                                </td>
+                                <td>{{ integration_last_success.modjo|default('Never', true) }}</td>
+                                <td>{{ integration_error_rates.modjo|default('N/A', true) }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary test-integration" data-integration="modjo">
+                                        <i data-feather="refresh-cw" style="width: 16px;"></i> Test
+                                    </button>
+                                </td>
+                            </tr>
+                            
+                            <!-- Optional Integrations -->
+                            <tr>
+                                <td><i data-feather="mail" class="text-danger me-2"></i> Gmail</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="status-indicator {% if integration_status.gmail %}status-success{% else %}status-warning{% endif %} me-2"></div>
+                                        <span>{% if integration_status.gmail %}Connected{% else %}Optional{% endif %}</span>
+                                    </div>
+                                </td>
+                                <td>{{ integration_last_success.gmail|default('Never', true) }}</td>
+                                <td>{{ integration_error_rates.gmail|default('N/A', true) }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary test-integration" data-integration="gmail">
+                                        <i data-feather="refresh-cw" style="width: 16px;"></i> Test
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Environment Configuration -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="settings" class="me-2"></i> Environment Configuration
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    <div class="alert alert-info">
+                        <i data-feather="info" class="me-2"></i> 
+                        This view shows environment configuration status but does not display actual API keys or secrets for security.
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-dark table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Variable</th>
+                                    <th>Status</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for env in environment_vars %}
+                                <tr>
+                                    <td><code>{{ env.name }}</code></td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="status-indicator {% if env.configured %}status-success{% else %}status-danger{% endif %} me-2"></div>
+                                            <span>{% if env.configured %}Configured{% else %}Missing{% endif %}</span>
+                                        </div>
+                                    </td>
+                                    <td>{{ env.description }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Logs -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header">
+                    <h5 class="card-title mb-0">
+                        <i data-feather="file-text" class="me-2"></i> System Logs
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    {% if recent_logs %}
+                    <div class="logs-container bg-dark p-3 rounded" style="max-height: 300px; overflow-y: auto; font-family: monospace;">
+                        {% for log in recent_logs %}
+                        <div class="log-entry mb-1 {% if 'error' in log.level|lower %}text-danger{% elif 'warning' in log.level|lower %}text-warning{% else %}text-light{% endif %}">
+                            <span class="log-timestamp text-muted">{{ log.timestamp }}</span>
+                            <span class="log-level">[{{ log.level }}]</span>
+                            <span class="log-message">{{ log.message }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="alert alert-secondary">
+                        No recent logs available.
+                    </div>
+                    {% endif %}
+
+                    <div class="mt-3">
+                        <a href="{{ url_for('download_logs') }}" class="btn btn-outline-primary">
+                            <i data-feather="download" class="me-2"></i> Download Full Logs
+                        </a>
+                        <button class="btn btn-outline-secondary ms-2" id="clear-logs">
+                            <i data-feather="trash-2" class="me-2"></i> Clear Logs Display
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Actions -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card dashboard-card">
+                <div class="card-header dashboard-card-header bg-gradient-primary">
+                    <h5 class="card-title mb-0 text-white">
+                        <i data-feather="tool" class="me-2"></i> System Actions
+                    </h5>
+                </div>
+                <div class="card-body dashboard-card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <form action="{{ url_for('refresh_data') }}" method="post">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i data-feather="refresh-cw" class="me-2"></i> Refresh All Data
+                                </button>
+                            </form>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <form action="{{ url_for('test_all_integrations') }}" method="post">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="btn btn-outline-info w-100">
+                                    <i data-feather="check-circle" class="me-2"></i> Test All Integrations
+                                </button>
+                            </form>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <form action="{{ url_for('clear_cache') }}" method="post">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <button type="submit" class="btn btn-outline-warning w-100">
+                                    <i data-feather="trash" class="me-2"></i> Clear System Cache
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Store CSRF token for all AJAX requests
+        const csrfToken = "{{ csrf_token() }}";
+        
+        // Test integration button click handlers
+        document.querySelectorAll('.test-integration').forEach(button => {
+            button.addEventListener('click', function() {
+                const integration = this.getAttribute('data-integration');
+                const button = this;
+                
+                // Change button to loading state
+                button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Testing...';
+                button.disabled = true;
+                
+                // Create FormData with CSRF token for added security
+                const formData = new FormData();
+                formData.append('csrf_token', csrfToken);
+                
+                // Send test request with both token in header and form data for double protection
+                fetch(`/test_integration/${integration}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrfToken,
+                        'X-Requested-With': 'XMLHttpRequest' // Helps distinguish AJAX requests
+                    },
+                    body: formData,
+                    credentials: 'same-origin' // Ensure cookies are sent with the request
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        if (response.status === 403) {
+                            throw new Error('CSRF validation failed. Please refresh the page and try again.');
+                        }
+                        throw new Error(`HTTP error: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        // Create success message
+                        const alert = document.createElement('div');
+                        alert.className = 'alert alert-success alert-dismissible fade show mt-3';
+                        alert.innerHTML = `
+                            <strong>Success!</strong> Connection to ${integration} is working properly.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        `;
+                        document.querySelector('.container-fluid').prepend(alert);
+                    } else {
+                        // Create error message with safely escaped content
+                        const alert = document.createElement('div');
+                        alert.className = 'alert alert-danger alert-dismissible fade show mt-3';
+                        
+                        // Create safe elements instead of using innerHTML with template literals
+                        const strongEl = document.createElement('strong');
+                        strongEl.textContent = 'Error!';
+                        
+                        const messageText = document.createTextNode(` Could not connect to ${integration}: ${data.error || 'Unknown error'}`);
+                        
+                        const closeButton = document.createElement('button');
+                        closeButton.type = 'button';
+                        closeButton.className = 'btn-close';
+                        closeButton.setAttribute('data-bs-dismiss', 'alert');
+                        closeButton.setAttribute('aria-label', 'Close');
+                        
+                        // Append all elements safely
+                        alert.appendChild(strongEl);
+                        alert.appendChild(messageText);
+                        alert.appendChild(closeButton);
+                        
+                        document.querySelector('.container-fluid').prepend(alert);
+                    }
+                    
+                    // Restore button state
+                    button.innerHTML = '<i data-feather="refresh-cw" style="width: 16px;"></i> Test';
+                    button.disabled = false;
+                    feather.replace();
+                })
+                .catch(error => {
+                    // Create error message with safely escaped content
+                    const alert = document.createElement('div');
+                    alert.className = 'alert alert-danger alert-dismissible fade show mt-3';
+                    
+                    const strongEl = document.createElement('strong');
+                    strongEl.textContent = 'Error!';
+                    
+                    const messageText = document.createTextNode(` Test request failed: ${error.message || 'Unknown error'}`);
+                    
+                    const closeButton = document.createElement('button');
+                    closeButton.type = 'button';
+                    closeButton.className = 'btn-close';
+                    closeButton.setAttribute('data-bs-dismiss', 'alert');
+                    closeButton.setAttribute('aria-label', 'Close');
+                    
+                    alert.appendChild(strongEl);
+                    alert.appendChild(messageText);
+                    alert.appendChild(closeButton);
+                    
+                    document.querySelector('.container-fluid').prepend(alert);
+                    
+                    // Restore button state
+                    button.innerHTML = '<i data-feather="refresh-cw" style="width: 16px;"></i> Test';
+                    button.disabled = false;
+                    feather.replace();
+                    
+                    // Log error for debugging
+                    console.error('Integration test error:', error);
+                });
+            });
+        });
+        
+        // Clear logs button
+        document.querySelector('#clear-logs')?.addEventListener('click', function() {
+            const logsContainer = document.querySelector('.logs-container');
+            if (logsContainer) {
+                logsContainer.innerHTML = '<div class="text-muted">Logs cleared from display.</div>';
+            }
+        });
+    });
+</script>
+{% endblock %} 

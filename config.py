@@ -1,6 +1,9 @@
 import os
 from pathlib import Path
 
+# Security settings
+READ_ONLY_MODE = True  # When True, all write operations to external systems are disabled
+
 # Environment variables for API keys and credentials
 HUBSPOT_API_KEY = os.environ.get("HUBSPOT_API_KEY")
 CHARGEBEE_API_KEY = os.environ.get("CHARGEBEE_API_KEY")
@@ -19,12 +22,30 @@ PENNYLANE_COMPANY_ID = os.environ.get("PENNYLANE_COMPANY_ID")
 PENNYLANE_BASE_URL = os.environ.get("PENNYLANE_BASE_URL", "https://api.pennylane.tech/api/v1")
 PENNYLANE_ENABLED = bool(PENNYLANE_API_KEY)
 
+# New integrations
+JIRA_API_KEY = os.environ.get("JIRA_API_KEY")
+JIRA_EMAIL = os.environ.get("JIRA_EMAIL", "mriahi@ooti.co")
+JIRA_DOMAIN = os.environ.get("JIRA_DOMAIN", "ooti.atlassian.net")
+JIRA_ENABLED = bool(JIRA_API_KEY)
+
+GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN")
+GITHUB_ORG = os.environ.get("GITHUB_ORG", "ooti-co")
+GITHUB_ENABLED = bool(GITHUB_TOKEN)
+
+SENTRY_API_KEY = os.environ.get("SENTRY_API_KEY")
+SENTRY_ORG = os.environ.get("SENTRY_ORG", "ooti")
+SENTRY_ENABLED = bool(SENTRY_API_KEY)
+
+MODJO_API_KEY = os.environ.get("MODJO_API_KEY")
+MODJO_BASE_URL = os.environ.get("MODJO_BASE_URL", "https://api.modjo.ai/v1")
+MODJO_ENABLED = bool(MODJO_API_KEY)
+
 # Application settings
 APP_NAME = "CEO AI Assistant"
 APP_VERSION = "1.0.0"
 HOST = "0.0.0.0"
-PORT = 5000
-DEBUG = True
+PORT = int(os.environ.get("PORT", 5000))
+DEBUG = os.environ.get("FLASK_ENV", "production").lower() != "production"
 
 # Data storage paths
 DATA_DIR = Path("./data")

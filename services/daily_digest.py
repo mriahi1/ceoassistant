@@ -6,15 +6,17 @@ import config
 from api.openai_integration import summarize_data, generate_action_items, generate_key_metrics
 from utils.data_processor import save_data_snapshot
 from api.slack_integration import post_digest_to_slack
+from app import db, Digest  # Import here to avoid circular imports
 
 logger = logging.getLogger(__name__)
 
-def generate_daily_digest(data):
+def generate_daily_digest(data, user_id=None):
     """
-    Generate a daily digest from platform data
+    Generate a daily digest from platform data and store in database
     
     Args:
         data (dict): Consolidated platform data
+        user_id (str): ID of the user generating the digest
     
     Returns:
         dict: The generated digest
@@ -57,20 +59,24 @@ def generate_daily_digest(data):
             }
         }
         
-        # Save the digest
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        digest_path = config.DIGESTS_DIR / f"digest_{timestamp}.json"
-        with open(digest_path, 'w') as f:
-            json.dump(digest, f, indent=2)
+        # Save to database
+        today = datetime.now().strftime("%Y-%m-%d")
+        db_digest = Digest(
+            date=today,
+            content=json.dumps(digest),
+            user_id=user_id
+        )
+        db.session.add(db_digest)
+        db.session.commit()
         
-        logger.info(f"Daily digest saved to {digest_path}")
+        logger.info(f"Daily digest saved to database with ID {db_digest.id}")
         
         # Save a snapshot of the data that generated this digest
-        snapshot_path = config.DATA_DIR / f"data_snapshot_{timestamp}.json"
+        snapshot_path = config.DATA_DIR / f"data_snapshot_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
         with open(snapshot_path, 'w') as f:
             json.dump(data, f, indent=2)
         
-        # If Slack is configured, send the digest
+        # Send to Slack if configured
         if config.ENABLE_SLACK_NOTIFICATIONS and config.SLACK_BOT_TOKEN and config.SLACK_CHANNEL_ID:
             post_digest_to_slack(digest)
         
