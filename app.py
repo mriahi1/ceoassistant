@@ -1055,10 +1055,14 @@ os.makedirs(config.DIGESTS_DIR, exist_ok=True)
 # Create a new route for an anonymous landing page that auto-redirects to Google
 @app.route('/login')
 def login_page():
-    """Landing page that automatically redirects to Google OAuth"""
+    """Login page that redirects to Google OAuth"""
     if current_user.is_authenticated:
+        logger.debug(f"User already authenticated as {current_user.email}, redirecting to index")
         return redirect(url_for('index'))
-    # Directly redirect to Google authentication
+    
+    # Log the redirection for debugging
+    logger.info("Redirecting unauthenticated user to Google OAuth login")
+    # Redirect to Google authentication
     return redirect(url_for('auth.login'))
 
 @app.before_request
@@ -1414,3 +1418,21 @@ def get_recent_logs(limit=50):
         })
     
     return logs
+
+@app.route('/debug/session')
+def debug_session():
+    """Debug route to check session state - only available in development mode"""
+    if os.environ.get("FLASK_ENV", "production").lower() != "development":
+        return redirect(url_for('index'))
+        
+    debug_info = {
+        "session": dict(session),
+        "current_user": {
+            "is_authenticated": current_user.is_authenticated,
+            "id": current_user.id if current_user.is_authenticated else None,
+            "email": current_user.email if current_user.is_authenticated else None
+        },
+        "users_db": {k: {"email": v.email, "name": v.name} for k, v in auth.users_db.items()}
+    }
+    
+    return jsonify(debug_info)

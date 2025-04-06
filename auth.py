@@ -149,20 +149,20 @@ def callback():
         user = User(id=user_id, email=user_email, name=user_name, picture=user_picture, login_time=login_timestamp)
         users_db[user_id] = user
         
-        # Log in user
+        # Create completely new session to prevent session fixation
+        session.clear()
+        
+        # Log in user with Flask-Login which will set user_id in the session
         login_user(user)
         
-        # Create completely new session to prevent session fixation
-        old_session = dict(session)
-        session.clear()
-        # Only copy specific values needed, not the entire old session
-        session['user_id'] = old_session.get('user_id')
-        # Set the session as permanent with the configured lifetime
+        # Set additional session data
         session.permanent = True
-        # Add session creation timestamp for additional validation
         session['created_at'] = login_timestamp
         
-        current_app.logger.info(f"Successful login: {user_email}")
+        # Debug logging for troubleshooting
+        current_app.logger.info(f"Successful login: {user_email}, User ID: {user_id}")
+        current_app.logger.debug(f"Session contents after login: {dict(session)}")
+        current_app.logger.debug(f"Flask-Login current_user.is_authenticated: {current_user.is_authenticated}")
         
         # Redirect to home page
         return redirect(url_for("index"))
