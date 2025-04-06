@@ -37,7 +37,7 @@ from utils.insights_generator import generate_insights, generate_action_items
 from utils.data_processor import consolidate_data
 from api.ooti import OOTIAPI
 from models.user import User
-from api.openai_integration import generate_key_metrics, analyze_okr_alignment
+from api.openai_integration import generate_key_metrics, analyze_okr_alignment, generate_strategic_insights
 from api.hubspot import HubSpotAPI
 from api.chargebee import ChargebeeAPI
 from utils.access_control import restricted_access_required, check_user_email_authorization
@@ -241,8 +241,8 @@ def index():
     except Exception as e:
         logger.error(f"Error retrieving latest digest: {str(e)}")
     
-    insights = get_insights_from_data(platform_data) if platform_data else []
-    action_items = get_action_items_from_data(platform_data) if platform_data else []
+    insights = generate_insights(platform_data) if platform_data else []
+    action_items = generate_action_items(platform_data) if platform_data else []
     
     return render_template('dashboard.html', 
                           platform_data=platform_data, 
@@ -1608,7 +1608,7 @@ def insights_api():
             return jsonify({"error": "No data available"}), 400
         
         # Generate insights
-        insights = generate_strategic_insights(data)
+        insights = generate_insights(data)
         
         return jsonify(insights)
     except Exception as e:
