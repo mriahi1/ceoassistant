@@ -31,6 +31,8 @@ app.secret_key = os.environ.get("SESSION_SECRET")
 # Add CSRF protection
 csrf = CSRFProtect(app)
 
+# Add to app configuration
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=24)
 
 # Import Google services if enabled
 gmail_integration = None
@@ -976,3 +978,9 @@ def login_page():
         return redirect(url_for('index'))
     # Directly redirect to Google authentication
     return redirect(url_for('auth.login'))
+
+@app.before_request
+def enforce_https():
+    if request.headers.get('X-Forwarded-Proto') == 'http':
+        url = request.url.replace('http://', 'https://', 1)
+        return redirect(url, code=301)

@@ -115,6 +115,12 @@ def callback():
             user_email = userinfo["email"]
             user_name = userinfo["given_name"]
             user_picture = userinfo.get("picture")
+            
+            # Check if email is allowed
+            allowed_emails = ["mriahi@ooti.co", "maxriahi@gmail.com"]
+            if user_email not in allowed_emails:
+                current_app.logger.warning(f"Login attempt from unauthorized email: {user_email}")
+                return "Access denied. This application is restricted to authorized users only.", 403
         else:
             return "User email not available or not verified by Google.", 400
         
